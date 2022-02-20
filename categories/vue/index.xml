@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vue - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/vue/</link>
+    <description>Recent content in vue on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 12 Jul 2021 10:28:06 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/vue/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>基于D2admin定制化微服务前端应用的开发方法</title>
+      <link>https://taodanfang.github.io/posts/d2admin-study-1/</link>
+      <pubDate>Mon, 12 Jul 2021 10:28:06 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/d2admin-study-1/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/d2-projects/d2-admin&#34;&gt;D2Admin &lt;/a&gt;是一个完全 &lt;strong&gt;开源免费&lt;/strong&gt; 的企业中后台产品前端集成方案，使用最新的前端技术栈，小于 60kb 的本地首屏 js 加载，已经做好大部分项目前期准备工作，并且带有大量示例代码，助力管理系统快速开发。本文介绍基于D2admin框架进行微服务前端开发的基本思路和过程。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

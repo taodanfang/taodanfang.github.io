@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Golang 并发开发实践（6）- 微服务与Context &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  Golang 并发开发实践（6）- 微服务与Context</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >Golang 并发开发实践（6）- 微服务与Context</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-11-28">Nov 28, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/golang-channel-study-6-1/media/16391442225941_hubaae0ff782c8b75f8b806f4834290463_353712_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/golang-channel-study-6-1/media/16391442225941_hubaae0ff782c8b75f8b806f4834290463_353712_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/golang-channel-study-6-1/media/16391442225941_hubaae0ff782c8b75f8b806f4834290463_353712_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/golang-channel-study-6-1/media/16391442225941_hubaae0ff782c8b75f8b806f4834290463_353712_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#context-基础">Context 基础</a>
+      <ul>
+        <li><a href="#应用场景">应用场景</a></li>
+        <li><a href="#context-接口">Context 接口</a></li>
+        <li><a href="#根-context">根 Context</a></li>
+        <li><a href="#协程控制模板">协程控制模板</a></li>
+        <li><a href="#协程传值模板">协程传值模板</a></li>
+        <li><a href="#控制协程退出">控制协程退出</a></li>
+        <li><a href="#使用规则">使用规则</a></li>
+      </ul>
+    </li>
+    <li><a href="#context-实验一">Context 实验一</a>
+      <ul>
+        <li><a href="#起步程序永不停止">起步程序（永不停止）</a></li>
+        <li><a href="#发出结束通知使用channel">发出结束通知（使用channel）</a></li>
+        <li><a href="#发出立即结束通知使用context">发出立即结束通知（使用Context）</a></li>
+        <li><a href="#发出超时结束通知context">发出超时结束通知（Context)</a></li>
+        <li><a href="#发出定时结束通知context">发出定时结束通知（Context）</a></li>
+        <li><a href="#发出定时结束通知多个协程">发出定时结束通知（多个协程）</a></li>
+        <li><a href="#发出定时结束通知父子协程">发出定时结束通知（父子协程）</a></li>
+        <li><a href="#传递数据context">传递数据（Context）</a></li>
+      </ul>
+    </li>
+    <li><a href="#context-实验二">Context 实验二</a>
+      <ul>
+        <li><a href="#微服务api设计">微服务API设计</a></li>
+        <li><a href="#传值处理">传值处理</a></li>
+      </ul>
+    </li>
+    <li><a href="#context-实验三">Context 实验三</a></li>
+    <li><a href="#context官方示例">Context官方示例</a></li>
+    <li><a href="#接口封装模板">接口封装模板</a></li>
+    <li><a href="#context-封装tomb">Context 封装（Tomb）</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-5-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（5）- Channel 原理与模式</h2>
+    <p class="card-text">本文是对Go 101中关于“并发开发”内容的梳理。请借鉴操作系统中的“管程”概念对channel的内部工作原理进行理解。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-27 1127:00">Nov 27, 2021</time></p>
+      <p>#golang #channel </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>A Context carries a deadline, a cancelation signal, and other values across API boundaries. 一个上下文携带着一个到期时间，一个取消信号以及其它的值跨越 API 的界线。</p>
+<p>Google 在内部要求 Go 开发者必须将 Context 作为 API 的第一个参数，无论是提供给别人还是自己调用。</p>
+<h2 id="context-基础">Context 基础</h2>
+<p>从设计的目的上说，context 是用来控制 goroutine 的，确切地说，是为了当你需要的时候，能干掉一个 goroutine。</p>
+<p>Goroutine 的创建和调用关系往往是有着层级关系的，顶部的 Goroutine 应有办法主动关闭其下属的 Goroutine 的执行。为了实现这种关系，Context 结构也应该像一棵树，叶子节点须总是由根节点衍生出来的。</p>
+<p>第一个创建 Context 的 goroutine 被称为 root 节点：root 节点负责创建一个实现 Context 接口的具体对象，并将该对象作为参数传递至新拉起的 goroutine 作为其上下文。下游 goroutine 继续封装该对象并以此类推向下传递。</p>
+<p>Context 可以安全的被多个 goroutine 使用。开发者可以把一个 Context 传递给任意多个 goroutine 然后 cancel 这个 context 的时候就能够通知到所有的 goroutine。</p>
+<h3 id="应用场景">应用场景</h3>
+<p>区别于Channel，Context可以穿越进程，在父子进程（协程）之间传递重要的内容（超时、定时、参数等等），并实现从上层控制结束下层协程（进程）的机制。尤其适用于微服务架构的应用场景。举例如下：</p>
+<blockquote>
+<p>有一个获取订单详情的请求，会单独起一个 goroutine 去处理该请求。在该请求内部又有三个分支 goroutine 分别处理订单详情、推荐商品、物流信息；每个分支可能又需要单独调用DB、Redis等存储组件。那么面对这个场景我们需要哪些额外的事情呢？</p>
+<ul>
+<li>三个分支 goroutine 可能是对应的三个不同服务，我们想要携带一些基础信息过去，比如：LogID、UserID、IP等；</li>
+<li>每个分支我们需要设置过期时间，如果某个超时不影响整个流程；</li>
+<li>如果主 goroutine 发生错误，取消了请求，对应的三个分支应该也都取消，避免资源浪费；</li>
+</ul>
+</blockquote>
+<p><img src="media/16392239832592.jpg" alt=""></p>
+<h3 id="context-接口">Context 接口</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Context <span style="color:#008000;font-weight:bold">interface</span> {
+
+	<span style="color:#00f">Deadline</span>() (deadline time.Time, ok <span style="color:#b00040">bool</span>)
+	<span style="color:#00f">Done</span>() <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">struct</span>{}
+	<span style="color:#00f">Err</span>() <span style="color:#b00040">error</span>
+	<span style="color:#00f">Value</span>(key <span style="color:#008000;font-weight:bold">interface</span>{}) <span style="color:#008000;font-weight:bold">interface</span>{}
+}
+
+</code></pre></div><h3 id="根-context">根 Context</h3>
+<p>有两种方式创建根 Context：</p>
+<ul>
+<li>context.Background()</li>
+<li>context.TODO()</li>
+</ul>
+<h3 id="协程控制模板">协程控制模板</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">TemplateFunc</span>(ctx context.Context, out <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> Value) <span style="color:#b00040">error</span> {
+ 	<span style="color:#008000;font-weight:bold">for</span> {
+ 		v, err <span style="color:#666">:=</span> <span style="color:#00f">DoSomething</span>(ctx)
+ 		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+ 			<span style="color:#008000;font-weight:bold">return</span> err
+ 		}
+ 		<span style="color:#008000;font-weight:bold">select</span> {
+ 		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+ 			<span style="color:#008000;font-weight:bold">return</span> ctx.<span style="color:#00f">Err</span>()
+ 		<span style="color:#008000;font-weight:bold">case</span> out <span style="color:#666">&lt;-</span> v:
+ 		}
+ 	}
+ }
+
+</code></pre></div><h3 id="协程传值模板">协程传值模板</h3>
+<p><strong>注意</strong>：应该在协程的父子树中传递相关数据，每个传入的数据类型，应该参考以下模板进行封装“传参形式”</p>
+<p>值得注意的点：<strong>Context 默认不可变</strong></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">package</span> user
+
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#ba2121">&#34;context&#34;</span>
+
+<span style="color:#408080;font-style:italic">// User is the type of value stored in the Contexts.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> User <span style="color:#008000;font-weight:bold">struct</span> {<span style="color:#666">...</span>}
+
+<span style="color:#408080;font-style:italic">// key is an unexported type for keys defined in this package.
+</span><span style="color:#408080;font-style:italic">// This prevents collisions with keys defined in other packages.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> key <span style="color:#b00040">int</span>
+
+<span style="color:#408080;font-style:italic">// userKey is the key for user.User values in Contexts. It is
+</span><span style="color:#408080;font-style:italic">// unexported; clients use user.NewContext and user.FromContext
+</span><span style="color:#408080;font-style:italic">// instead of using this key directly.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">var</span> userKey key
+
+<span style="color:#408080;font-style:italic">// NewContext returns a new Context that carries value u.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">NewContext</span>(ctx context.Context, u <span style="color:#666">*</span>User) context.Context {
+    <span style="color:#008000;font-weight:bold">return</span> context.<span style="color:#00f">WithValue</span>(ctx, userKey, u)
+}
+
+<span style="color:#408080;font-style:italic">// FromContext returns the User value stored in ctx, if any.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">FromContext</span>(ctx context.Context) (<span style="color:#666">*</span>User, <span style="color:#b00040">bool</span>) {
+ 		u, ok <span style="color:#666">:=</span> ctx.<span style="color:#00f">Value</span>(userKey).(<span style="color:#666">*</span>User)
+ 		<span style="color:#008000;font-weight:bold">return</span> u, ok
+}
+	
+</code></pre></div><h3 id="控制协程退出">控制协程退出</h3>
+<p>Context为我们主要定义三种方法:</p>
+<ul>
+<li>WithDeadline（自动控制）</li>
+<li>WithTimeout（自动控制）</li>
+<li>WithCancel （手动控制）</li>
+</ul>
+<p>从而达到控制goroutine的目的</p>
+<h3 id="使用规则">使用规则</h3>
+<p>遵循以下规则，以保持包之间的接口一致，并启用静态分析工具以检查上下文传播。</p>
+<ul>
+<li>不要将 Contexts 放入结构体，相反context应该作为第一个参数传入，命名为ctx。 func DoSomething（ctx context.Context，arg Arg）error { // &hellip; use ctx &hellip; }</li>
+<li>即使函数允许，也不要传入nil的 Context。如果不知道用哪种 Context，可以使用context.TODO()。</li>
+<li>使用context的Value相关方法只应该用于在程序和接口中传递的和请求相关的元数据，不要用它来传递一些可选的参数</li>
+<li>相同的 Context 可以传递给在不同的goroutine；Context 是并发安全的。</li>
+</ul>
+<h2 id="context-实验一">Context 实验一</h2>
+<h3 id="起步程序永不停止">起步程序（永不停止）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor</span>(name <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, on monitoring ...\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name)
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">5</span>)
+		fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Monitor %s, monitoring is over.\n&#34;</span>, name)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+	wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">defer</span> wg.<span style="color:#00f">Done</span>()
+		<span style="color:#00f">monitor</span>(<span style="color:#ba2121">&#34;天眼&#34;</span>)
+	}()
+
+	wg.<span style="color:#00f">Wait</span>()
+}
+
+</code></pre></div><p><img src="media/16391448630376.jpg" alt=""></p>
+<h3 id="发出结束通知使用channel">发出结束通知（使用channel）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor_2</span>(signal <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">bool</span>, name <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>signal:		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal to stop.&#34;</span>)
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, on monitoring ...\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name)
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">5</span>)
+		fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Monitor %s, monitoring is over.\n&#34;</span>, name)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	signal <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">bool</span>)
+
+	wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">defer</span> wg.<span style="color:#00f">Done</span>()
+		<span style="color:#00f">monitor_2</span>(signal,<span style="color:#ba2121">&#34;天眼&#34;</span>)
+	}()
+
+	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">20</span>)
+	
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Send a signal to monitor.&#34;</span>)	signal <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">true</span>		<span style="color:#408080;font-style:italic">// 发出通知
+</span><span style="color:#408080;font-style:italic"></span>
+	wg.<span style="color:#00f">Wait</span>()
+}
+
+</code></pre></div><p><img src="media/16391453681232.jpg" alt=""></p>
+<h3 id="发出立即结束通知使用context">发出立即结束通知（使用Context）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+unc <span style="color:#00f">monitor_3</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal(ctx) to stop.&#34;</span>)
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, on monitoring ...\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name)
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">5</span>)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	ctx, stop_signal <span style="color:#666">:=</span> context.<span style="color:#00f">WithCancel</span>(context.<span style="color:#00f">Background</span>())
+
+	wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">defer</span> wg.<span style="color:#00f">Done</span>()
+		<span style="color:#00f">monitor_3</span>(ctx,<span style="color:#ba2121">&#34;天眼&#34;</span>)
+	}()
+
+	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">20</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Send a signal to monitor.&#34;</span>)
+
+	<span style="color:#00f">stop_signal</span>()		<span style="color:#408080;font-style:italic">// 发出通知
+</span><span style="color:#408080;font-style:italic"></span>
+	wg.<span style="color:#00f">Wait</span>()
+}
+
+</code></pre></div><p><img src="media/16391458107710.jpg" alt=""></p>
+<h3 id="发出超时结束通知context">发出超时结束通知（Context)</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor_4</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal(ctx) to stop.&#34;</span>)
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, on monitoring ...\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name)
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">5</span>)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	ctx, _ <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(context.<span style="color:#00f">Background</span>(), time.Second <span style="color:#666">*</span> <span style="color:#666">10</span>)
+
+	wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">defer</span> wg.<span style="color:#00f">Done</span>()
+		<span style="color:#00f">monitor_4</span>(ctx,<span style="color:#ba2121">&#34;天眼&#34;</span>)
+	}()
+
+	wg.<span style="color:#00f">Wait</span>()
+}
+
+</code></pre></div><p><img src="media/16391464298286.jpg" alt=""></p>
+<h3 id="发出定时结束通知context">发出定时结束通知（Context）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor_5</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal(ctx) to stop. at: &#34;</span>, time.<span style="color:#00f">Now</span>() )
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, on monitoring ...\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name)
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">1</span>)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main start at: &#34;</span>, time.<span style="color:#00f">Now</span>())
+	ctx, _ <span style="color:#666">:=</span> context.<span style="color:#00f">WithDeadline</span>(context.<span style="color:#00f">Background</span>(), time.<span style="color:#00f">Now</span>().<span style="color:#00f">Add</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">5</span>))
+
+	wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">defer</span> wg.<span style="color:#00f">Done</span>()
+		<span style="color:#00f">monitor_5</span>(ctx,<span style="color:#ba2121">&#34;天眼&#34;</span>)
+	}()
+
+	wg.<span style="color:#00f">Wait</span>()
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stop at: &#34;</span>, time.<span style="color:#00f">Now</span>())
+}
+
+</code></pre></div><p><img src="media/16391469261182.jpg" alt=""></p>
+<h3 id="发出定时结束通知多个协程">发出定时结束通知（多个协程）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor_6</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal(ctx) to stop. at: &#34;</span>, time.<span style="color:#00f">Now</span>() )
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, on monitoring ...\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name)
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">1</span>)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main start at: &#34;</span>, time.<span style="color:#00f">Now</span>())
+	ctx, _ <span style="color:#666">:=</span> context.<span style="color:#00f">WithDeadline</span>(context.<span style="color:#00f">Background</span>(), time.<span style="color:#00f">Now</span>().<span style="color:#00f">Add</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">3</span>))
+
+	i <span style="color:#666">:=</span> <span style="color:#666">0</span>
+
+	<span style="color:#008000;font-weight:bold">for</span> ; i&lt;<span style="color:#666">2</span>; i<span style="color:#666">++</span> {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>(j <span style="color:#b00040">int</span>) {
+			<span style="color:#008000;font-weight:bold">defer</span> wg.<span style="color:#00f">Done</span>()
+			<span style="color:#00f">monitor_6</span>(ctx,<span style="color:#ba2121">&#34;天眼&#34;</span><span style="color:#666">+</span>strconv.<span style="color:#00f">Itoa</span>(j))
+		}(i<span style="color:#666">+</span><span style="color:#666">1</span>)
+	}
+
+	wg.<span style="color:#00f">Wait</span>()
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stop at: &#34;</span>, time.<span style="color:#00f">Now</span>())
+}
+
+</code></pre></div><p><img src="media/16391474864173.jpg" alt=""></p>
+<h3 id="发出定时结束通知父子协程">发出定时结束通知（父子协程）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor_6_child</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal(ctx) to stop. at: &#34;</span>, time.<span style="color:#00f">Now</span>() )
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, on monitoring ...\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name)
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">1</span>)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor_6</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">monitor_6_child</span>(ctx, name <span style="color:#666">+</span> <span style="color:#ba2121">&#34;.child&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal(ctx) to stop. at: &#34;</span>, time.<span style="color:#00f">Now</span>() )
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, on monitoring ...\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name)
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">1</span>)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main start at: &#34;</span>, time.<span style="color:#00f">Now</span>())
+	ctx, _ <span style="color:#666">:=</span> context.<span style="color:#00f">WithDeadline</span>(context.<span style="color:#00f">Background</span>(), time.<span style="color:#00f">Now</span>().<span style="color:#00f">Add</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">3</span>))
+
+	i <span style="color:#666">:=</span> <span style="color:#666">0</span>
+
+	<span style="color:#008000;font-weight:bold">for</span> ; i&lt;<span style="color:#666">2</span>; i<span style="color:#666">++</span> {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>(j <span style="color:#b00040">int</span>) {
+			<span style="color:#008000;font-weight:bold">defer</span> wg.<span style="color:#00f">Done</span>()
+			<span style="color:#00f">monitor_6</span>(ctx,<span style="color:#ba2121">&#34;天眼&#34;</span><span style="color:#666">+</span>strconv.<span style="color:#00f">Itoa</span>(j))
+		}(i<span style="color:#666">+</span><span style="color:#666">1</span>)
+	}
+
+	wg.<span style="color:#00f">Wait</span>()
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stop at: &#34;</span>, time.<span style="color:#00f">Now</span>())
+}
+
+</code></pre></div><p><img src="media/16391477356442.jpg" alt=""></p>
+<h3 id="传递数据context">传递数据（Context）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor_7_child</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal(ctx) to stop. at: &#34;</span>, time.<span style="color:#00f">Now</span>() )
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, got user: %s\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name, ctx.<span style="color:#00f">Value</span>(<span style="color:#ba2121">&#34;user&#34;</span>))
+		}
+
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">1</span>)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">monitor_7</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>(ctx context.Context, name <span style="color:#b00040">string</span>) {
+		<span style="color:#00f">monitor_7_child</span>(ctx, name)
+	}(ctx, name <span style="color:#666">+</span> <span style="color:#ba2121">&#34;.child&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():		<span style="color:#408080;font-style:italic">// 等待通知
+</span><span style="color:#408080;font-style:italic"></span>			fmt.<span style="color:#00f">Println</span>(name, <span style="color:#ba2121">&#34;got a signal(ctx) to stop. at: &#34;</span>, time.<span style="color:#00f">Now</span>() )
+			<span style="color:#008000;font-weight:bold">return</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Time: %v Monitor: %s, got user: %s\n&#34;</span>, time.<span style="color:#00f">Now</span>().<span style="color:#00f">Unix</span>(), name, ctx.<span style="color:#00f">Value</span>(<span style="color:#ba2121">&#34;user&#34;</span>))
+
+			time.<span style="color:#00f">Sleep</span>(time.Second)
+		}
+	}
+
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main start at: &#34;</span>, time.<span style="color:#00f">Now</span>())
+	ctx, _ <span style="color:#666">:=</span> context.<span style="color:#00f">WithDeadline</span>(context.<span style="color:#00f">Background</span>(), time.<span style="color:#00f">Now</span>().<span style="color:#00f">Add</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">1</span>))
+	ctx_with_value <span style="color:#666">:=</span> context.<span style="color:#00f">WithValue</span>(ctx, <span style="color:#ba2121">&#34;user&#34;</span>, <span style="color:#ba2121">&#34;hanks&#34;</span>)
+
+	i <span style="color:#666">:=</span> <span style="color:#666">0</span>
+
+	<span style="color:#008000;font-weight:bold">for</span> ; i&lt;<span style="color:#666">2</span>; i<span style="color:#666">++</span> {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>(j <span style="color:#b00040">int</span>) {
+			<span style="color:#008000;font-weight:bold">defer</span> wg.<span style="color:#00f">Done</span>()
+			<span style="color:#00f">monitor_7</span>(ctx_with_value,<span style="color:#ba2121">&#34;天眼&#34;</span><span style="color:#666">+</span>strconv.<span style="color:#00f">Itoa</span>(j))
+		}(i<span style="color:#666">+</span><span style="color:#666">1</span>)
+	}
+
+	wg.<span style="color:#00f">Wait</span>()
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stop at: &#34;</span>, time.<span style="color:#00f">Now</span>())
+}
+
+</code></pre></div><p><img src="media/16391485179265.jpg" alt=""></p>
+<h2 id="context-实验二">Context 实验二</h2>
+<p>前面所述，以“获取订单详情的请求API”的设计进行实验。</p>
+<h3 id="微服务api设计">微服务API设计</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> key <span style="color:#b00040">int</span>
+
+<span style="color:#008000;font-weight:bold">const</span> (
+	user_ip = <span style="color:#008000;font-weight:bold">iota</span>
+	user_id
+	log_id
+)
+
+<span style="color:#008000;font-weight:bold">type</span> Result <span style="color:#008000;font-weight:bold">struct</span> {
+	order <span style="color:#b00040">string</span>
+	logistics <span style="color:#b00040">string</span>
+	recommand <span style="color:#b00040">string</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main start: &#34;</span>, time.<span style="color:#00f">Now</span>())
+
+	ctx, cancel <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(context.<span style="color:#00f">Background</span>(), time.Millisecond <span style="color:#666">*</span> <span style="color:#666">200</span>)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#00f">cancel</span>()
+
+	ctx = context.<span style="color:#00f">WithValue</span>(ctx, user_ip, <span style="color:#ba2121">&#34;127.0.0.1&#34;</span>)
+	ctx = context.<span style="color:#00f">WithValue</span>(ctx, user_id, <span style="color:#666">666888</span>)
+	ctx = context.<span style="color:#00f">WithValue</span>(ctx, log_id, <span style="color:#ba2121">&#34;123456&#34;</span>)
+
+	rst, err <span style="color:#666">:=</span> <span style="color:#00f">api</span>(ctx)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;api err: &#34;</span>, err.<span style="color:#00f">Error</span>())
+	}
+
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;api.result: %#v\n&#34;</span>, rst)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stop: &#34;</span>, time.<span style="color:#00f">Now</span>())
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">api</span>(ctx context.Context) (result <span style="color:#666">*</span>Result, err <span style="color:#b00040">error</span>) {
+
+	result = <span style="color:#666">&amp;</span>Result{}
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		result.order, err = <span style="color:#00f">get_order_detail</span>(ctx)
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		result.logistics, err = <span style="color:#00f">get_logistics_detail</span>(ctx)
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		result.recommand, err = <span style="color:#00f">get_recommend</span>(ctx)
+	}()
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+			<span style="color:#008000;font-weight:bold">return</span> result, ctx.<span style="color:#00f">Err</span>()
+		<span style="color:#008000;font-weight:bold">default</span>:
+		}
+
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span> result, err
+		}
+
+		<span style="color:#008000;font-weight:bold">if</span> result.order <span style="color:#666">!=</span> <span style="color:#ba2121">&#34;&#34;</span> <span style="color:#666">&amp;&amp;</span> result.logistics <span style="color:#666">!=</span> <span style="color:#ba2121">&#34;&#34;</span> <span style="color:#666">&amp;&amp;</span> result.recommand <span style="color:#666">!=</span> <span style="color:#ba2121">&#34;&#34;</span> {
+			<span style="color:#008000;font-weight:bold">return</span> result, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+	}
+}
+
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">get_order_detail</span>(ctx context.Context) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	ctx, cancel <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(ctx, time.Millisecond <span style="color:#666">*</span> <span style="color:#666">600</span>)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#00f">cancel</span>()
+
+	time.<span style="color:#00f">Sleep</span>(time.Millisecond <span style="color:#666">*</span> <span style="color:#666">100</span>)
+
+	uip <span style="color:#666">:=</span> ctx.<span style="color:#00f">Value</span>(user_ip).(<span style="color:#b00040">string</span>)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;user_ip&#34;</span>, uip)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">handle_timeout</span>(ctx, <span style="color:#008000;font-weight:bold">func</span>() <span style="color:#b00040">string</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;order&#34;</span>
+	})
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">get_logistics_detail</span>(ctx context.Context) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	ctx, cancel <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(ctx, time.Millisecond <span style="color:#666">*</span> <span style="color:#666">500</span>)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#00f">cancel</span>()
+
+	time.<span style="color:#00f">Sleep</span>(time.Millisecond <span style="color:#666">*</span> <span style="color:#666">200</span>)
+
+	uid <span style="color:#666">:=</span> ctx.<span style="color:#00f">Value</span>(user_id).(<span style="color:#b00040">int</span>)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;user_id&#34;</span>, uid)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">handle_timeout</span>(ctx, <span style="color:#008000;font-weight:bold">func</span>() <span style="color:#b00040">string</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;logistics&#34;</span>
+	})
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">get_recommend</span>(ctx context.Context) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	ctx, cancel <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(ctx, time.Millisecond <span style="color:#666">*</span> <span style="color:#666">400</span>)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#00f">cancel</span>()
+
+	time.<span style="color:#00f">Sleep</span>(time.Millisecond <span style="color:#666">*</span> <span style="color:#666">300</span>)
+
+	lid <span style="color:#666">:=</span> ctx.<span style="color:#00f">Value</span>(log_id).(<span style="color:#b00040">string</span>)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;log_id&#34;</span>, lid)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">handle_timeout</span>(ctx, <span style="color:#008000;font-weight:bold">func</span>() <span style="color:#b00040">string</span>{
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;recommend&#34;</span>
+	})
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">handle_timeout</span>(ctx context.Context, callback <span style="color:#008000;font-weight:bold">func</span>() <span style="color:#b00040">string</span>) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;&#34;</span>, ctx.<span style="color:#00f">Err</span>()
+	<span style="color:#008000;font-weight:bold">default</span>:
+	}
+
+	str <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		str <span style="color:#666">&lt;-</span> <span style="color:#00f">callback</span>()
+	}()
+
+	<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;&#34;</span>, ctx.<span style="color:#00f">Err</span>()
+		<span style="color:#008000;font-weight:bold">case</span> ret <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>str:
+			<span style="color:#008000;font-weight:bold">return</span> ret, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+</code></pre></div><p><img src="media/16392279739050.jpg" alt=""></p>
+<h3 id="传值处理">传值处理</h3>
+<blockquote>
+<p>user.go</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">package</span> user
+
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#ba2121">&#34;context&#34;</span>
+
+<span style="color:#008000;font-weight:bold">type</span> key <span style="color:#b00040">int</span>
+
+<span style="color:#008000;font-weight:bold">var</span> param_key key
+
+<span style="color:#008000;font-weight:bold">type</span> Params <span style="color:#008000;font-weight:bold">struct</span> {
+	User_ip <span style="color:#b00040">string</span>
+	User_id <span style="color:#b00040">int</span>
+	Log_id <span style="color:#b00040">string</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">NewParams</span>() <span style="color:#666">*</span>Params {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>Params{}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">NewContext</span>(ctx context.Context, params <span style="color:#666">*</span>Params) context.Context {
+	<span style="color:#008000;font-weight:bold">return</span> context.<span style="color:#00f">WithValue</span>(ctx, param_key, params)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">FromContext</span>(ctx context.Context) (<span style="color:#666">*</span>Params, <span style="color:#b00040">bool</span>) {
+	p, ok <span style="color:#666">:=</span> ctx.<span style="color:#00f">Value</span>(param_key).(<span style="color:#666">*</span>Params)
+	<span style="color:#008000;font-weight:bold">return</span> p, ok
+}
+
+</code></pre></div><blockquote>
+<p>main.go</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;context&#34;</span>
+	<span style="color:#ba2121">&#34;fmt&#34;</span>
+	<span style="color:#ba2121">&#34;go-context/user&#34;</span>
+	<span style="color:#ba2121">&#34;time&#34;</span>
+)
+
+
+<span style="color:#008000;font-weight:bold">type</span> Result <span style="color:#008000;font-weight:bold">struct</span> {
+	order <span style="color:#b00040">string</span>
+	logistics <span style="color:#b00040">string</span>
+	recommand <span style="color:#b00040">string</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main start: &#34;</span>, time.<span style="color:#00f">Now</span>())
+
+	ctx, cancel <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(context.<span style="color:#00f">Background</span>(), time.Millisecond <span style="color:#666">*</span> <span style="color:#666">400</span>)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#00f">cancel</span>()
+
+	params <span style="color:#666">:=</span> user.<span style="color:#00f">NewParams</span>()
+	params.User_ip = <span style="color:#ba2121">&#34;127.0.0.1&#34;</span>
+	params.User_id = <span style="color:#666">666888</span>
+	params.Log_id = <span style="color:#ba2121">&#34;123456&#34;</span>
+
+	ctx = user.<span style="color:#00f">NewContext</span>(ctx, params)
+
+	rst, err <span style="color:#666">:=</span> <span style="color:#00f">api</span>(ctx)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;api err: &#34;</span>, err.<span style="color:#00f">Error</span>())
+	}
+
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;api.result: %#v\n&#34;</span>, rst)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stop: &#34;</span>, time.<span style="color:#00f">Now</span>())
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">api</span>(ctx context.Context) (result <span style="color:#666">*</span>Result, err <span style="color:#b00040">error</span>) {
+
+	result = <span style="color:#666">&amp;</span>Result{}
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		result.order, err = <span style="color:#00f">get_order_detail</span>(ctx)
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		result.logistics, err = <span style="color:#00f">get_logistics_detail</span>(ctx)
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		result.recommand, err = <span style="color:#00f">get_recommend</span>(ctx)
+	}()
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+			<span style="color:#008000;font-weight:bold">return</span> result, ctx.<span style="color:#00f">Err</span>()
+		<span style="color:#008000;font-weight:bold">default</span>:
+		}
+
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span> result, err
+		}
+
+		<span style="color:#008000;font-weight:bold">if</span> result.order <span style="color:#666">!=</span> <span style="color:#ba2121">&#34;&#34;</span> <span style="color:#666">&amp;&amp;</span> result.logistics <span style="color:#666">!=</span> <span style="color:#ba2121">&#34;&#34;</span> <span style="color:#666">&amp;&amp;</span> result.recommand <span style="color:#666">!=</span> <span style="color:#ba2121">&#34;&#34;</span> {
+			<span style="color:#008000;font-weight:bold">return</span> result, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+	}
+}
+
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">get_order_detail</span>(ctx context.Context) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	ctx, cancel <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(ctx, time.Millisecond <span style="color:#666">*</span> <span style="color:#666">600</span>)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#00f">cancel</span>()
+
+	time.<span style="color:#00f">Sleep</span>(time.Millisecond <span style="color:#666">*</span> <span style="color:#666">100</span>)
+
+	uip <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;&#34;</span>
+	params, ok <span style="color:#666">:=</span> user.<span style="color:#00f">FromContext</span>(ctx)
+	<span style="color:#008000;font-weight:bold">if</span> ok {
+		uip = params.User_ip
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;user_ip&#34;</span>, uip)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">handle_timeout</span>(ctx, <span style="color:#008000;font-weight:bold">func</span>() <span style="color:#b00040">string</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;order&#34;</span>
+	})
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">get_logistics_detail</span>(ctx context.Context) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	ctx, cancel <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(ctx, time.Millisecond <span style="color:#666">*</span> <span style="color:#666">500</span>)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#00f">cancel</span>()
+
+	time.<span style="color:#00f">Sleep</span>(time.Millisecond <span style="color:#666">*</span> <span style="color:#666">200</span>)
+
+	uid <span style="color:#666">:=</span> <span style="color:#666">0</span>
+	params, ok <span style="color:#666">:=</span> user.<span style="color:#00f">FromContext</span>(ctx)
+	<span style="color:#008000;font-weight:bold">if</span> ok {
+		uid = params.User_id
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;user_id&#34;</span>, uid)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">handle_timeout</span>(ctx, <span style="color:#008000;font-weight:bold">func</span>() <span style="color:#b00040">string</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;logistics&#34;</span>
+	})
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">get_recommend</span>(ctx context.Context) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	ctx, cancel <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(ctx, time.Millisecond <span style="color:#666">*</span> <span style="color:#666">400</span>)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#00f">cancel</span>()
+
+	time.<span style="color:#00f">Sleep</span>(time.Millisecond <span style="color:#666">*</span> <span style="color:#666">300</span>)
+
+	lid <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;&#34;</span>
+	params, ok <span style="color:#666">:=</span> user.<span style="color:#00f">FromContext</span>(ctx)
+	<span style="color:#008000;font-weight:bold">if</span> ok {
+		lid = params.Log_id
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;log_id&#34;</span>, lid)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">handle_timeout</span>(ctx, <span style="color:#008000;font-weight:bold">func</span>() <span style="color:#b00040">string</span>{
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;recommend&#34;</span>
+	})
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">handle_timeout</span>(ctx context.Context, callback <span style="color:#008000;font-weight:bold">func</span>() <span style="color:#b00040">string</span>) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;&#34;</span>, ctx.<span style="color:#00f">Err</span>()
+	<span style="color:#008000;font-weight:bold">default</span>:
+	}
+
+	str <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		str <span style="color:#666">&lt;-</span> <span style="color:#00f">callback</span>()
+	}()
+
+	<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;&#34;</span>, ctx.<span style="color:#00f">Err</span>()
+		<span style="color:#008000;font-weight:bold">case</span> ret <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>str:
+			<span style="color:#008000;font-weight:bold">return</span> ret, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+
+</code></pre></div><p><img src="media/16392298094921.jpg" alt=""></p>
+<h2 id="context-实验三">Context 实验三</h2>
+<blockquote>
+<p>取消请求</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	err <span style="color:#666">:=</span> http.<span style="color:#00f">ListenAndServe</span>(<span style="color:#ba2121">&#34;:8000&#34;</span>, http.<span style="color:#00f">HandlerFunc</span>(<span style="color:#008000;font-weight:bold">func</span>(w http.ResponseWriter, r <span style="color:#666">*</span>http.Request) {
+		ctx <span style="color:#666">:=</span> r.<span style="color:#00f">Context</span>()
+		_, err <span style="color:#666">:=</span> fmt.<span style="color:#00f">Fprint</span>(os.Stdout, <span style="color:#ba2121">&#34;processing request.\n&#34;</span>)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span>
+		}
+
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>time.<span style="color:#00f">After</span>(<span style="color:#666">2</span> <span style="color:#666">*</span> time.Second):
+			_, err <span style="color:#666">:=</span> w.<span style="color:#00f">Write</span>([]<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;request processed&#34;</span>))
+			<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+				<span style="color:#008000;font-weight:bold">return</span>
+			}
+
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+			_, err <span style="color:#666">:=</span> fmt.<span style="color:#00f">Fprint</span>(os.Stderr, <span style="color:#ba2121">&#34;request cancelled\n&#34;</span>)
+			<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+				<span style="color:#008000;font-weight:bold">return</span>
+			}
+		}
+	}))
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+}
+
+</code></pre></div><p><img src="media/16393189608212.jpg" alt=""></p>
+<p><img src="media/16393189785829.jpg" alt=""></p>
+<blockquote>
+<p>超时处理</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#408080;font-style:italic">// Create a new context
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// With a deadline of 100 milliseconds
+</span><span style="color:#408080;font-style:italic"></span>	ctx <span style="color:#666">:=</span> context.<span style="color:#00f">Background</span>()
+	ctx, _ = context.<span style="color:#00f">WithTimeout</span>(ctx, <span style="color:#666">100</span><span style="color:#666">*</span>time.Millisecond)
+
+	<span style="color:#408080;font-style:italic">// Make a request, that will call the google homepage
+</span><span style="color:#408080;font-style:italic"></span>	req, _ <span style="color:#666">:=</span> http.<span style="color:#00f">NewRequest</span>(http.MethodGet, <span style="color:#ba2121">&#34;http://www.baidu.com&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>)
+	<span style="color:#408080;font-style:italic">// Associate the cancellable context we just created to the request
+</span><span style="color:#408080;font-style:italic"></span>	req = req.<span style="color:#00f">WithContext</span>(ctx)
+
+	<span style="color:#408080;font-style:italic">// Create a new HTTP client and execute the request
+</span><span style="color:#408080;font-style:italic"></span>	client <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>http.Client{}
+	res, err <span style="color:#666">:=</span> client.<span style="color:#00f">Do</span>(req)
+	<span style="color:#408080;font-style:italic">// If the request failed, log to STDOUT
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Request failed:&#34;</span>, err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+	<span style="color:#408080;font-style:italic">// Print the status code if the request succeeds
+</span><span style="color:#408080;font-style:italic"></span>	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Response received, status code:&#34;</span>, res.StatusCode)
+}
+
+
+</code></pre></div><p><img src="media/16393196472296.jpg" alt=""></p>
+<h2 id="context官方示例">Context官方示例</h2>
+<blockquote>
+<p>说明</p>
+</blockquote>
+<p>In Go servers, each incoming request is handled in its own goroutine. Request handlers often start additional goroutines to access backends such as databases and RPC services. The set of goroutines working on a request typically needs access to request-specific values such as the identity of the end user, authorization tokens, and the request’s deadline. When a request is canceled or times out, all the goroutines working on that request should exit quickly so the system can reclaim any resources they are using.</p>
+<p><img src="media/16393203362127.jpg" alt=""></p>
+<p>At Google, we developed a context package that makes it easy to pass request-scoped values, cancellation signals, and deadlines across API boundaries to all the goroutines involved in handling a request. The package is publicly available as context.</p>
+<blockquote>
+<p>例子：google web search</p>
+</blockquote>
+<h2 id="接口封装模板">接口封装模板</h2>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#408080;font-style:italic">// 随机睡眠一段时间
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Sleep_random</span>(func_name <span style="color:#b00040">string</span>) {
+
+	seed <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>()
+	r <span style="color:#666">:=</span> rand.<span style="color:#00f">New</span>(rand.<span style="color:#00f">NewSource</span>(seed))
+	randomNumber <span style="color:#666">:=</span> r.<span style="color:#00f">Intn</span>(<span style="color:#666">10</span>)
+	sleeptime <span style="color:#666">:=</span> randomNumber <span style="color:#666">+</span> <span style="color:#666">10</span>
+
+	fmt.<span style="color:#00f">Println</span>(func_name, <span style="color:#ba2121">&#34;Starting sleep for&#34;</span>, sleeptime, <span style="color:#ba2121">&#34;s&#34;</span>)
+	time.<span style="color:#00f">Sleep</span>(time.<span style="color:#00f">Duration</span>(sleeptime) <span style="color:#666">*</span> time.Second)
+	fmt.<span style="color:#00f">Println</span>(func_name, <span style="color:#ba2121">&#34;Waking up, slept for &#34;</span>, sleeptime, <span style="color:#ba2121">&#34;s&#34;</span>)
+
+}
+
+<span style="color:#408080;font-style:italic">// service_without_context: 模拟一个运行时间不确定的任务, runtime_ch 返回运行结束时花费的时间
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Slow_function_running_for_some_random_time</span>(func_name <span style="color:#b00040">string</span>, runtime_ch <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>) {
+	sleeptime <span style="color:#666">:=</span> <span style="color:#666">0</span>
+
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() { fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;%s ok, running time (%v s).\n&#34;</span>, func_name, sleeptime) }()
+
+	<span style="color:#408080;font-style:italic">// 获取一个随机运行时间
+</span><span style="color:#408080;font-style:italic"></span>	seed <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>()
+	r <span style="color:#666">:=</span> rand.<span style="color:#00f">New</span>(rand.<span style="color:#00f">NewSource</span>(seed))
+	randomNumber <span style="color:#666">:=</span> r.<span style="color:#00f">Intn</span>(<span style="color:#666">10</span>)
+	sleeptime = randomNumber <span style="color:#666">+</span> <span style="color:#666">10</span>
+
+	<span style="color:#408080;font-style:italic">// 模拟慢任务
+</span><span style="color:#408080;font-style:italic"></span>	time.<span style="color:#00f">Sleep</span>(time.<span style="color:#00f">Duration</span>(sleeptime) <span style="color:#666">*</span> time.Second)
+
+	<span style="color:#408080;font-style:italic">// 返回运行时间
+</span><span style="color:#408080;font-style:italic"></span>	runtime_ch <span style="color:#666">&lt;-</span> sleeptime
+}
+
+<span style="color:#408080;font-style:italic">// service_with_context: service 封装，通过context调用一个慢任务, done_ch 返回结束标志
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Call_a_slow_function_with_context</span>(ctx context.Context, func_name <span style="color:#b00040">string</span>, done_ch <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">bool</span>) {
+
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		done_ch <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">true</span>
+	}()
+
+
+	<span style="color:#408080;font-style:italic">// 通过创建一个独立的协程，来调用一个慢任务
+</span><span style="color:#408080;font-style:italic"></span>	runtime_ch <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Slow_function_running_for_some_random_time</span>(func_name, runtime_ch)
+
+	<span style="color:#408080;font-style:italic">// 通过 select 查看慢任务执行情况、超时情况等
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#408080;font-style:italic">// 检查context中的结束通知，及时结束当前调用
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Call_a_slow_function_with_context(&#34;</span>, func_name, <span style="color:#ba2121">&#34;) has been cancelled&#34;</span>)
+
+	<span style="color:#408080;font-style:italic">// 检查慢任务是否正常结束
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">case</span> runtime <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> runtime_ch:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Call_a_slow_function_with_context(&#34;</span>, func_name, <span style="color:#ba2121">&#34;) ok, and has run for (&#34;</span>, runtime, <span style="color:#ba2121">&#34;) s.&#34;</span>)
+	}
+}
+
+
+<span style="color:#408080;font-style:italic">// controller/helper: 通过调用若干个 service_context 完成某项工作，通过 context 设置超时期限等参数
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">API</span>(ctx context.Context, api_name <span style="color:#b00040">string</span>) {
+
+	<span style="color:#408080;font-style:italic">// 设置超时时间
+</span><span style="color:#408080;font-style:italic"></span>	ctxWithTimeout, cancelFunction <span style="color:#666">:=</span> context.<span style="color:#00f">WithTimeout</span>(ctx, time.<span style="color:#00f">Duration</span>(<span style="color:#666">30</span>)<span style="color:#666">*</span>time.Second)
+
+	<span style="color:#408080;font-style:italic">// 退出之前， 向 service 协程发出取消通知
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">if</span> ctxWithTimeout.<span style="color:#00f">Err</span>() <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;API Defer: ctx.err:&#34;</span>, ctxWithTimeout.<span style="color:#00f">Err</span>().<span style="color:#00f">Error</span>())
+		}
+		<span style="color:#00f">cancelFunction</span>()
+	}()
+
+
+	<span style="color:#408080;font-style:italic">// 创建通道，获取 service 结束情况
+</span><span style="color:#408080;font-style:italic"></span>	ch <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">bool</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Call_a_slow_function_with_context</span>(ctxWithTimeout, api_name, ch)
+
+	<span style="color:#408080;font-style:italic">// 通过 select 查看调用 API 的协程发来的通知，以及 service 的结束情况
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#408080;font-style:italic">// 查看调用 API 的协程发来的通知
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ctx.<span style="color:#00f">Done</span>():
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;API(&#34;</span>, api_name, <span style="color:#ba2121">&#34;) has been cancelled&#34;</span>)
+	<span style="color:#408080;font-style:italic">// 查看 service 的执行情况
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>ch:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;API(&#34;</span>, api_name, <span style="color:#ba2121">&#34;) ok.&#34;</span>)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	<span style="color:#408080;font-style:italic">// 创建根context
+</span><span style="color:#408080;font-style:italic"></span>	ctx <span style="color:#666">:=</span> context.<span style="color:#00f">Background</span>()
+	<span style="color:#408080;font-style:italic">// 创建 cancel_context
+</span><span style="color:#408080;font-style:italic"></span>	ctxWithCancel, cancelFunction <span style="color:#666">:=</span> context.<span style="color:#00f">WithCancel</span>(ctx)
+
+	<span style="color:#408080;font-style:italic">// main 结束前，通知所有的子协程结束
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">if</span> ctxWithCancel.<span style="color:#00f">Err</span>() <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Main Defer: ctx.err:&#34;</span>, ctxWithCancel.<span style="color:#00f">Err</span>().<span style="color:#00f">Error</span>())
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Main Defer: ok.&#34;</span>)
+		}
+
+		<span style="color:#00f">cancelFunction</span>()
+	}()
+
+	<span style="color:#408080;font-style:italic">// 模拟主程序随机执行一段时间
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#00f">Sleep_random</span>(<span style="color:#ba2121">&#34;Main&#34;</span>)
+		<span style="color:#00f">cancelFunction</span>()
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Main Sleep complete. canceling API().&#34;</span>)
+	}()
+
+	<span style="color:#408080;font-style:italic">// 调用 API
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#00f">API</span>(ctxWithCancel, <span style="color:#ba2121">&#34;slow_func_test&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16392416628025.jpg" alt=""></p>
+<h2 id="context-封装tomb">Context 封装（Tomb）</h2>
+<p>Tomb tracks whether one or more goroutines are alive, dying, or dead, and the death reason.</p>
+<blockquote>
+<p><a href="https://github.com/xsyr/tomb">https://github.com/xsyr/tomb</a></p>
+</blockquote>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://lebum.medium.com/understanding-and-usage-of-context-in-golang-6a460f9e8d2f">https://lebum.medium.com/understanding-and-usage-of-context-in-golang-6a460f9e8d2f</a></li>
+<li><a href="https://www.sohamkamani.com/golang/context-cancellation-and-values/">https://www.sohamkamani.com/golang/context-cancellation-and-values/</a></li>
+<li><a href="https://dayutalk.cn/2020/08/02/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8BContext%E7%9A%84%E4%BD%BF%E7%94%A8/">https://dayutalk.cn/2020/08/02/%E8%B5%B0%E8%BF%9BGolang%E4%B9%8BContext%E7%9A%84%E4%BD%BF%E7%94%A8/</a></li>
+<li><a href="https://www.icode9.com/content-4-853562.html">https://www.icode9.com/content-4-853562.html</a></li>
+<li><a href="https://blog.xizhibei.me/2019/08/26/golang-the-highly-controversial-context/">https://blog.xizhibei.me/2019/08/26/golang-the-highly-controversial-context/</a></li>
+<li><a href="https://developpaper.com/explain-the-context-package-in-detail-its-enough-to-read-this-one/">https://developpaper.com/explain-the-context-package-in-detail-its-enough-to-read-this-one/</a></li>
+<li><a href="https://laike9m.com/blog/ling-ren-mi-huo-de-context,112/">https://laike9m.com/blog/ling-ren-mi-huo-de-context,112/</a></li>
+<li><a href="https://blog.yingchi.io/posts/2020/8/go-context.html">https://blog.yingchi.io/posts/2020/8/go-context.html</a></li>
+<li><a href="https://blog.huoding.com/2019/04/15/730">https://blog.huoding.com/2019/04/15/730</a></li>
+<li><a href="http://p.agnihotry.com/post/understanding_the_context_package_in_golang/">http://p.agnihotry.com/post/understanding_the_context_package_in_golang/</a></li>
+<li><a href="https://go.dev/blog/context">https://go.dev/blog/context</a></li>
+<li><a href="https://blog.labix.org/2011/10/09/death-of-goroutines-under-control">https://blog.labix.org/2011/10/09/death-of-goroutines-under-control</a></li>
+<li></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-5-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/golang-channel-study-5-1/image-11_hu1732efa3771f9a4d339e501e24c789b6_9663617_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/golang-channel-study-5-1/image-11_hu1732efa3771f9a4d339e501e24c789b6_9663617_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/golang-channel-study-5-1/image-11_hu1732efa3771f9a4d339e501e24c789b6_9663617_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/golang-channel-study-5-1/image-11_hu1732efa3771f9a4d339e501e24c789b6_9663617_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（5）- Channel 原理与模式</h2>
+    <p class="card-text">本文是对Go 101中关于“并发开发”内容的梳理。请借鉴操作系统中的“管程”概念对channel的内部工作原理进行理解。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-27 1127:00">Nov 27, 2021</time></p>
+      <p>#golang #channel </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

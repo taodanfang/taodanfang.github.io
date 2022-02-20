@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>大规模数据集分页处理的相关问题及其解决方案 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  大规模数据集分页处理的相关问题及其解决方案</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >大规模数据集分页处理的相关问题及其解决方案</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-08-11">Aug 11, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/mongodb-pagination-1/j8_huf5ad6a8f920dc01634837444885e1a8f_347688_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/mongodb-pagination-1/j8_huf5ad6a8f920dc01634837444885e1a8f_347688_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/mongodb-pagination-1/j8_huf5ad6a8f920dc01634837444885e1a8f_347688_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/mongodb-pagination-1/j8_huf5ad6a8f920dc01634837444885e1a8f_347688_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#相关设计问题">相关设计问题</a></li>
+    <li><a href="#分页api">分页（API）</a>
+      <ul>
+        <li><a href="#相关参数">相关参数</a></li>
+        <li><a href="#api-模式">API 模式</a></li>
+        <li><a href="#定位模式api举例">定位模式API举例</a></li>
+      </ul>
+    </li>
+    <li><a href="#分页查询">分页查询</a>
+      <ul>
+        <li><a href="#分页相关设施">分页相关设施</a></li>
+        <li><a href="#分页查询模式">分页查询模式</a></li>
+        <li><a href="#性能考虑mongo">性能考虑(mongo)</a></li>
+      </ul>
+    </li>
+    <li><a href="#分页模式">分页模式</a>
+      <ul>
+        <li><a href="#常规模式">常规模式</a></li>
+        <li><a href="#改良模式">改良模式</a></li>
+        <li><a href="#搜索模式">搜索模式</a></li>
+      </ul>
+    </li>
+    <li><a href="#分页实践">分页实践</a></li>
+    <li><a href="#数据缓存">数据缓存</a></li>
+    <li><a href="#深度跳页">深度跳页</a>
+      <ul>
+        <li><a href="#问题描述">问题描述</a></li>
+        <li><a href="#解决思路">解决思路</a></li>
+      </ul>
+    </li>
+    <li><a href="#推荐方案">推荐方案</a>
+      <ul>
+        <li><a href="#参考代码">参考代码</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/gosf-study-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">基于GOSF的Websocket微服务框架开发方法</h2>
+    <p class="card-text">Go Socket.IO Framework or GOSF is an easy-to-use framework for developing Socket.IO APIs in Google’s Go programming language (GoLang). GOSF 对Websocket进行了封装，实现了一个websocket服务器，并提供了一个Socket.io风格的前端接口，同时也可以基于websocket风格的前端接口进行连接和操作。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-09 89:00">Aug 9, 2021</time></p>
+      <p>#golang #websocket </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>随着物联网，大数据业务的白热化，一般企业级系统的数据量也会呈现出快速的增长。而传统的数据库分页方案在海量数据场景下很难满足性能的要求。分页在大数据集场景下，是一个务必需要重视的性能优化问题。分页是极为常见的数据展现方式，一般在数据集较大而无法在单个页面中呈现时会采用分页的方法。各种前端UI组件在实现上也都会支持分页的功能，而数据交互呈现所相应的后端系统、数据库都对数据查询的分页提供了良好的支持。本文结合mongodb数据库和Vuex技术，尝试给出一般的大数据分页处理解决方案。</p>
+<h2 id="相关设计问题">相关设计问题</h2>
+<blockquote>
+<p>You paginate whenever you want to process result in chunks. Some common scenarios are：</p>
+</blockquote>
+<ul>
+<li>Batch processing（批处理）</li>
+<li>Showing huge set of results on user interface（大数据集展示）</li>
+</ul>
+<blockquote>
+<p>Paginating on client and server side are both really very expensive and should not be considered. Hence pagination is generally handled at database level and databases are optimized for such needs too. <strong>无论在客户端还是服务端，分页处理都是相当费时的操作</strong>，因此一般分页机制都是在数据库层面进行处理，同时一般数据库都对分页操作进行了良好的优化。</p>
+</blockquote>
+<blockquote>
+<p>大数据集的分页查询和展示，涉及到以下几个问题：</p>
+</blockquote>
+<ul>
+<li>分页UI的设计问题</li>
+<li>分页API的设计</li>
+<li>分页数据的管理与缓存（以Vuex为例）</li>
+<li>分页参数的获取</li>
+<li>分页查询的性能瓶颈</li>
+<li>分页查询的基本模式（以mongodb为例）</li>
+</ul>
+<h2 id="分页api">分页（API）</h2>
+<h3 id="相关参数">相关参数</h3>
+<p>分页展示，一般前端会需要传递以下参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Page_number</td>
+<td>当前页号</td>
+<td>必选</td>
+</tr>
+<tr>
+<td>Page_size</td>
+<td>每页记录数</td>
+<td>必选</td>
+</tr>
+<tr>
+<td>Page_group_number</td>
+<td>页组号</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>Page_group_max_size</td>
+<td>每个页组中的最大页数</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>Page_group_real_size</td>
+<td>当前页组中的实际页数</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>Total_count</td>
+<td>记录总数</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>Total_page_count</td>
+<td>总页数</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>Total_page_group_count</td>
+<td>总页组数</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>Sort_by_xxx</td>
+<td>排序字段</td>
+<td>可选，默认为ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api-模式">API 模式</h3>
+<blockquote>
+<p>分页API设计模式：Page_based, Time_based,  Cursor_based API</p>
+</blockquote>
+<ul>
+<li>Page_based</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://api.github.com/user/repos?page<span style="color:#666">=</span>2&amp;<span style="color:#19177c">per_page</span><span style="color:#666">=</span><span style="color:#666">100</span>
+</code></pre></div><blockquote>
+<p>问题：This pattern has a big flaw: if the results list has changed between calls to the API, the indices would shift and cause an item to be either returned twice or skipped and never returned. 查询过程中会由于数据修改，导致出现数据缺失或者数据重复的现象。（对于历史数据，不会出现此问题）</p>
+</blockquote>
+<ul>
+<li>Time_based</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://api.mywebsite.com/items?created_before_timestamp<span style="color:#666">=</span>1505086265160&amp;<span style="color:#19177c">limit</span><span style="color:#666">=</span><span style="color:#666">50</span>
+</code></pre></div><blockquote>
+<p>问题：this approach has a major flaw: what if there is more than one item that was created at the same time? So if there were 51 items with the <code>created</code> timestamp of exactly <code>1505086265160</code>, then when we query the next page, we’ll miss the 51st entry because we’re querying items created before 1505086265160. You’ll miss results. 会出现数据缺失的现象。（对于历史数据，也会出现此问题）</p>
+</blockquote>
+<ul>
+<li>Cursor_based</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://api.twitter.com/1.1/followers/ids.json?screen_name<span style="color:#666">=</span>theSeanCook&amp;<span style="color:#19177c">cursor</span><span style="color:#666">=</span><span style="color:#666">1374004777531007833</span>
+</code></pre></div><blockquote>
+<p>优点：By returning a “cursor”, the API guarantees that it will return the exactly the next entry in the list, regardless of what changes happen to the collection between API calls. Think of the cursor as permanent marker in the list that says “we left off here”. 排序字段定位模式（推荐模式），此类模式，需要选择一个合适的排序字段（该字段务必具有不可重复、可排序、不可修改的特点，例如 _id）</p>
+</blockquote>
+<h3 id="定位模式api举例">定位模式API举例</h3>
+<p>When using the module that runs queries similar the example code below, it’s important that you create the proper MongoDB indexes. This is especially important for <strong>large collections (&gt;1k records)</strong> as you might accidentally slow your database. So for the below query, always be sure to create a index that covers all the properties used in the query along with the cursor field (called the paginatedField in the module) and the <code>_id</code> field.（注意，对于以下示例中采用的排序字段，务必事先创建索引）</p>
+<blockquote>
+<p>基于 _id</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// 首页
+</span><span style="color:#408080;font-style:italic"></span>curl https<span style="color:#666">:</span><span style="color:#408080;font-style:italic">//api.mixmax.com/items?limit=2
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">const</span> items <span style="color:#666">=</span> db.items.find({}).sort({
+   <span style="color:#666">_</span>id<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>
+}).limit(<span style="color:#666">2</span>);
+
+<span style="color:#408080;font-style:italic">// 下一页定位
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">const</span> next <span style="color:#666">=</span> items[items.length <span style="color:#666">-</span> <span style="color:#666">1</span>].<span style="color:#666">_</span>id
+res.json({ items, next })
+
+<span style="color:#408080;font-style:italic">// 下一页
+</span><span style="color:#408080;font-style:italic"></span>curl https<span style="color:#666">:</span><span style="color:#408080;font-style:italic">//api.mixmax.com/items?limit=2&amp;next=590e9abd4abbf1165862d342
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">const</span> items <span style="color:#666">=</span> db.items.find({
+  <span style="color:#666">_</span>id<span style="color:#666">:</span> { $lt<span style="color:#666">:</span> req.query.next }
+}).sort({
+   <span style="color:#666">_</span>id<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>
+}).limit(<span style="color:#666">2</span>);
+
+<span style="color:#008000;font-weight:bold">const</span> next <span style="color:#666">=</span> items[items.length <span style="color:#666">-</span> <span style="color:#666">1</span>].<span style="color:#666">_</span>id
+res.json({ items, next })
+</code></pre></div><blockquote>
+<p>基于排序字段（例如时间）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// 首页
+</span><span style="color:#408080;font-style:italic"></span>curl https<span style="color:#666">:</span><span style="color:#408080;font-style:italic">//api.mixmax.com/items?limit=2&amp;sort=launchDate
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">const</span> items <span style="color:#666">=</span> db.items.find({}).sort({
+   launchDate<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>
+}).limit(<span style="color:#666">2</span>);
+
+<span style="color:#008000;font-weight:bold">const</span> next <span style="color:#666">=</span> items[items.length <span style="color:#666">-</span> <span style="color:#666">1</span>].launchDate;
+res.json({ items, next })
+
+<span style="color:#408080;font-style:italic">// 下一页
+</span><span style="color:#408080;font-style:italic"></span>curl https<span style="color:#666">:</span><span style="color:#408080;font-style:italic">//api.mixmax.com/items?limit=2&amp;sort=launchDate&amp;next=2017-09-11T00%3A44%3A54.036Z
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">const</span> items <span style="color:#666">=</span> db.items.find({
+  launchDate<span style="color:#666">:</span> { $lt<span style="color:#666">:</span> req.query.next }
+}).sort({
+   <span style="color:#666">_</span>id<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>
+}).limit(<span style="color:#666">2</span>);
+
+<span style="color:#008000;font-weight:bold">const</span> next <span style="color:#666">=</span> items[items.length <span style="color:#666">-</span> <span style="color:#666">1</span>].launchDate;
+res.json({ items, next });
+</code></pre></div><blockquote>
+<p>基于排序字段与ID字段的混合方式</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// 首页
+</span><span style="color:#408080;font-style:italic"></span>curl https<span style="color:#666">:</span><span style="color:#408080;font-style:italic">//api.mixmax.com/items?limit=2&amp;sort=launchDate
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">const</span> items <span style="color:#666">=</span> db.items.find({}).sort({
+   launchDate<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>,
+  <span style="color:#666">_</span>id<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span> <span style="color:#408080;font-style:italic">// secondary sort in case there are duplicate launchDate values
+</span><span style="color:#408080;font-style:italic"></span>}).limit(<span style="color:#666">2</span>);
+
+<span style="color:#008000;font-weight:bold">const</span> lastItem <span style="color:#666">=</span> items[items.length <span style="color:#666">-</span> <span style="color:#666">1</span>];
+<span style="color:#408080;font-style:italic">// The cursor is a concatenation of the two cursor fields, since both are needed to satisfy the requirements of being a cursor field
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">const</span> next <span style="color:#666">=</span> <span style="color:#ba2121">`</span><span style="color:#b68;font-weight:bold">${</span>lastItem.launchDate<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">_</span><span style="color:#b68;font-weight:bold">${</span>lastItem.<span style="color:#666">_</span>id<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">`</span>;
+res.json({ items, next });
+
+<span style="color:#408080;font-style:italic">// 下一页
+</span><span style="color:#408080;font-style:italic"></span>curl https<span style="color:#666">:</span><span style="color:#408080;font-style:italic">//api.mixmax.com/items?limit=2&amp;sort=launchDate&amp;next=2017-09-11T00%3A44%3A54.036Z_590e9abd4abbf1165862d342
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">const</span> [nextLaunchDate, nextId] <span style="color:#666">=</span> req.query.next.split(<span style="">‘</span><span style="color:#666">_</span><span style="">’</span>);
+<span style="color:#008000;font-weight:bold">const</span> items <span style="color:#666">=</span> db.items.find({
+  $or<span style="color:#666">:</span> [{
+    launchDate<span style="color:#666">:</span> { $lt<span style="color:#666">:</span> nextLaunchDate }
+  }, {
+    <span style="color:#408080;font-style:italic">// If the launchDate is an exact match, we need a tiebreaker, so we use the _id field from the cursor.
+</span><span style="color:#408080;font-style:italic"></span>    launchDate<span style="color:#666">:</span> nextLaunchDate,
+  <span style="color:#666">_</span>id<span style="color:#666">:</span> { $lt<span style="color:#666">:</span> nextId }
+  }]
+}).sort({
+   launchDate<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>,
+   <span style="color:#666">_</span>id<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>,
+}).limit(<span style="color:#666">2</span>);
+
+<span style="color:#008000;font-weight:bold">const</span> lastItem <span style="color:#666">=</span> items[items.length <span style="color:#666">-</span> <span style="color:#666">1</span>];
+<span style="color:#408080;font-style:italic">// The cursor is a concatenation of the two cursor fields, since both are needed to satisfy the requirements of being a cursor field
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">const</span> next <span style="color:#666">=</span> <span style="color:#ba2121">`</span><span style="color:#b68;font-weight:bold">${</span>lastItem.launchDate<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">_</span><span style="color:#b68;font-weight:bold">${</span>lastItem.<span style="color:#666">_</span>id<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">`</span>;
+res.json({ items, next });
+</code></pre></div><h2 id="分页查询">分页查询</h2>
+<h3 id="分页相关设施">分页相关设施</h3>
+<table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作用</th>
+<th>性能（备注）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count</td>
+<td>统计记录总数</td>
+<td>较差</td>
+</tr>
+<tr>
+<td>find</td>
+<td>条件查询（定位游标 cursor）</td>
+<td>一般（索引查询较快）</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>限制返回数据总量</td>
+<td>高</td>
+</tr>
+<tr>
+<td>skip</td>
+<td>跳过n条记录</td>
+<td>较差</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>排序（1: 升序，-1: 降序）</td>
+<td>一般（无索引情况）,根据排序条件，可事先堆排序字段创建索引。</td>
+</tr>
+<tr>
+<td>_id</td>
+<td>记录ID</td>
+<td><em>ObjectId has natural ordering</em>，It simplifies that we can apply all the <em>less-than-s</em> and all the <em>greater-than-s you</em> want to it。同时，It is always indexed。<em>If you are using a field other than</em> <code>_id</code> <em>for offset, make sure the field is indexed and properly ordered else the performance will suffer.</em></td>
+</tr>
+</tbody>
+</table>
+<h3 id="分页查询模式">分页查询模式</h3>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>说明</th>
+<th>性能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1）总数 count；2）首页 db.collection.find().limit(page_size)；3）其他页 db.collection.find().limit(page_size).skip(page_number * page_size)</td>
+<td>常规模式：可跨页查询，数据完整性较好</td>
+<td>最差</td>
+</tr>
+<tr>
+<td>1）总数 count；2）首页 db.collection.find().limit(page_size)；3）次页 db.collection.find({ _id: {$gt: 上一页最后一个记录的 id}}).limit(page_size).sort({ _id : 1})</td>
+<td>改良模式：按需翻页，不能跨页查询</td>
+<td>适中</td>
+</tr>
+<tr>
+<td>1）页组 page_group_page_count = 10, count = page_group_page_count * page_size；2）db.collection.find().limit(count)；3）下一个页组，重新批量查询</td>
+<td>搜索模式：页组模式，数据完整性为大概模式（例如baidu, google等模式）</td>
+<td>最好</td>
+</tr>
+</tbody>
+</table>
+<h3 id="性能考虑mongo">性能考虑(mongo)</h3>
+<blockquote>
+<ul>
+<li>基于查询条件创建索引，尽可能围绕索引构造查询语句；</li>
+<li>尽量避免使用有过滤条件的count函数统计数据总量（即使是基于索引查询），该操作非常耗时；</li>
+<li>尽量使用基于索引的范围查询代替skip操作，因为带有大偏移量的skip操作非常耗时。</li>
+</ul>
+</blockquote>
+<h2 id="分页模式">分页模式</h2>
+<h3 id="常规模式">常规模式</h3>
+<blockquote>
+<p>传统分页展示，一般前端会需要传递两个参数：页码(当前是第几页)，页大小(每页展示的数据个数)。</p>
+<p>问题如下：随着页码的增大，skip 跳过的条目也会随之变大，而这个操作是通过 cursor 的迭代器来实现的，对于cpu的消耗会比较明显。而当<strong>需要查询的数据达到千万级及以上时，会发现响应时间非常的长</strong>，可能会让你几乎无法接受！<strong>或许，假如你的机器性能很差，在数十万、百万数据量时已经会出现瓶颈</strong></p>
+</blockquote>
+<p><img src="image-20210811222446540.png" alt="image-20210811222446540"></p>
+<h3 id="改良模式">改良模式</h3>
+<blockquote>
+<p>改进做法：选取一个唯一有序的关键字段，比如 _id，作为翻页的排序字段；每次翻页时以当前页的最后一条数据_id值作为起点，将此并入查询条件中。</p>
+<ul>
+<li>
+<p>优点：这种分页方案其实采用的就是时间轴(TImeLine)的模式，实际应用场景也非常的广，比如Twitter、微博、朋友圈动态都可采用这样的方式。而同时除了上述的mongodb数据库之外，HBase、ElastiSearch 在Range Query的实现上也支持这种模式。</p>
+</li>
+<li>
+<p>缺点：时间轴(TimeLine)的模式通常是做成“加载更多”、上下翻页这样的形式，但无法自由的选择某个页码。</p>
+</li>
+</ul>
+</blockquote>
+<p><img src="image-20210811222812855.png" alt="image-20210811222812855"></p>
+<h3 id="搜索模式">搜索模式</h3>
+<blockquote>
+<p>通常在数据量非常大的情况下，页码也会有很多，于是可以采用<strong>页码分组</strong>的方式。
+<strong>以一段页码作为一组，每一组内数据的翻页采用ID 偏移量 + 少量的 skip 操作实现</strong></p>
+</blockquote>
+<p><img src="image-20210811223422140.png" alt="image-20210811223422140"></p>
+<blockquote>
+<p>实现思路：</p>
+<ul>
+<li>对页码进行分组(groupSize=8, pageSize=20)，每组为8个页码；</li>
+<li>提前查询 end_offset，同时获得本组页码数量</li>
+<li>分页数据查询以本页组 start_offset 作为起点，在有限的页码上翻页(skip)。由于一个分组的数据量通常很小(8*20=160)，在分组内进行skip产生的代价会非常小，因此性能上可以得到保证。</li>
+</ul>
+</blockquote>
+<h2 id="分页实践">分页实践</h2>
+<blockquote>
+<p>Google关于分页的处理方法是，采用一定的方法获取匹配到的结果的大概值，这种方法类似于：只匹配重要度排名靠前的部分数据，然后根据这部分所占比例估算出总匹配结果数。在数据呈现时也只显示xxx条左右的数据，因为用户基本不会翻那么多页。这是一种性能与客户体验的折中方案，一般来说，用户在搜索结果的前10页就能解决自己想要的问题。即使没找到，Google认为翻到70页还没找到结果就应该修改或者更换关键词再次搜索了。</p>
+</blockquote>
+<blockquote>
+<p>搜索引擎分页模式：限制最大的分页数为10页，每页显示的数据条目最大为500条（页数和条数根据情况适当调整）。当用户需要获取[t1, t2]时间段内的数据时，定义一个游标变量lastTime来保存当前最新的一条数据的时间节点。此外，可以为导航栏加上“向前20页”、“向后20页”这样的功能，是完全没有问题的。还有“首页”“末页”也是可以实现的。</p>
+<ul>
+<li>优点：可以避免使用大偏移量的skip操作，也不需要使用count函数预先统计区间内的数据总量，进而提高性能。</li>
+<li>缺点：可能会存在数据重复的问题（比如，同一时刻存在多条数据，那么下一页获取的数据中可能会包含上一页的数据项）</li>
+</ul>
+</blockquote>
+<ul>
+<li>预加载（首页）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">const</span> maxPage <span style="color:#666">=</span> <span style="color:#666">10</span>; <span style="color:#408080;font-style:italic">// 按照百度分页方式，跳页数不会大于10
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">const</span> pageSize <span style="color:#666">=</span> <span style="color:#666">500</span>; <span style="color:#408080;font-style:italic">// 每页显示的最大数据量（如果是动态配置，需要同时更新游标）
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">let</span> data; <span style="color:#408080;font-style:italic">// 用来保存获取的数据
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">let</span> lastTime; <span style="color:#408080;font-style:italic">// 用来保存当前最新的一条数据的时间戳
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#408080;font-style:italic">// 基于时间戳创建索引
+</span><span style="color:#408080;font-style:italic"></span>db.data.createIndex({time<span style="color:#666">:</span> <span style="color:#666">1</span>});
+
+<span style="color:#408080;font-style:italic">// 当我们第一次加载页面时，呈现的是第一页的数据内容
+</span><span style="color:#408080;font-style:italic"></span>data <span style="color:#666">=</span> db.data.find({time<span style="color:#666">:</span> {<span style="color:#ba2121">&#34;$gte&#34;</span><span style="color:#666">:</span> t1, <span style="color:#ba2121">&#34;$lte&#34;</span><span style="color:#666">:</span> t2}}).limit(pageSize).toArray();
+lastTime <span style="color:#666">=</span> data[pageSize <span style="color:#666">-</span> <span style="color:#666">1</span>].time;
+show(data);
+</code></pre></div><ul>
+<li>向前跳页（含下一页）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// 当用户点击下一页或者跳页（正方向）
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> (skipPage <span style="color:#666">==</span> <span style="color:#666">1</span>) { <span style="color:#408080;font-style:italic">// 下一页处理，如第一页到第二页
+</span><span style="color:#408080;font-style:italic"></span>    data <span style="color:#666">=</span> db.data.find({{time<span style="color:#666">:</span> {<span style="color:#ba2121">&#34;$gte&#34;</span><span style="color:#666">:</span> lastTime, <span style="color:#ba2121">&#34;$lte&#34;</span><span style="color:#666">:</span> t2}}).limit(pageSize).toArray();
+} <span style="color:#008000;font-weight:bold">else</span> { <span style="color:#408080;font-style:italic">// 跳页处理（理论上不常用，如果用户能明确跳转几页可获取到想要的数据项，应该建议用户使用精确匹配，这样查询效率更高），如从第一页跳到第六页，此时skipPage = 5
+</span><span style="color:#408080;font-style:italic"></span>    data <span style="color:#666">=</span> db.data.find({{time<span style="color:#666">:</span> {<span style="color:#ba2121">&#34;$gte&#34;</span><span style="color:#666">:</span> lastTime, <span style="color:#ba2121">&#34;$lte&#34;</span><span style="color:#666">:</span> t2}}).skip(skipPage<span style="color:#666">*</span>pageSize).limit(pageSize).toArray();
+}
+lastTime <span style="color:#666">=</span> data[pageSize <span style="color:#666">-</span> <span style="color:#666">1</span>].time;
+show(data);
+</code></pre></div><ul>
+<li>向后跳页（含上一页）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// 当用户点击上一页或者跳页（反方向）
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> (skipPage <span style="color:#666">==</span> <span style="color:#666">1</span>) { <span style="color:#408080;font-style:italic">// 上一页处理，如第二页到第一页
+</span><span style="color:#408080;font-style:italic"></span>    data <span style="color:#666">=</span> db.data.find({{time<span style="color:#666">:</span> {<span style="color:#ba2121">&#34;$gte&#34;</span><span style="color:#666">:</span> t1, <span style="color:#ba2121">&#34;$lte&#34;</span><span style="color:#666">:</span> lastTime}}).sort({time<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>}).limit(pageSize).toArray();
+} <span style="color:#008000;font-weight:bold">else</span> { <span style="color:#408080;font-style:italic">// 跳页处理，如从第六页跳到第一页，此时skipPage = 5
+</span><span style="color:#408080;font-style:italic"></span>    data <span style="color:#666">=</span> db.data.find({{time<span style="color:#666">:</span> {<span style="color:#ba2121">&#34;$gte&#34;</span><span style="color:#666">:</span> t1, <span style="color:#ba2121">&#34;$lte&#34;</span><span style="color:#666">:</span> lastTime}}).sort({time<span style="color:#666">:</span> <span style="color:#666">-</span><span style="color:#666">1</span>}).skip(skipPage<span style="color:#666">*</span>pageSize).limit(pageSize).toArray();
+}
+lastTime <span style="color:#666">=</span> data[pageSize <span style="color:#666">-</span> <span style="color:#666">1</span>].time;
+show(data);
+</code></pre></div><h2 id="数据缓存">数据缓存</h2>
+<blockquote>
+<p>将查询到的相关信息缓存起来，当然，缓存也有两种不同的方式：</p>
+<ol>
+<li>
+<p>缓存全部查询到的信息。这个视每次查询到的数据量大小以及你的服务器内存大小而定，不行的话就用第二种方式。</p>
+</li>
+<li>
+<p>缓存关键索引信息。主要是用户用于排序的字段。</p>
+</li>
+</ol>
+</blockquote>
+<ul>
+<li>缓存页号相关的关键信息
+<ul>
+<li>以ID为唯一索引的表为例，用户查询后也是按照ID进行排序的，不提供其他排序方式，那么可以采用每10个ID缓存一次的数据结构进行存储，采取10的原因是一般每页显示数量为10,20或50比较常见。如果采用的是键值对方式的缓存方案，如MemberCached或Redis，可以存储为：{key: value} = {id，页号}</li>
+<li>以可排序字段为例，缓存关键信息结构为：{key: value} = { 排序字段取值:ID，页号}</li>
+</ul>
+</li>
+</ul>
+<h2 id="深度跳页">深度跳页</h2>
+<h3 id="问题描述">问题描述</h3>
+<p>教训：<strong>深度分页可以做，但是深度随机跳页绝对需要禁止</strong>。</p>
+<p><img src="image-20210811220749295.png" alt="image-20210811220749295"></p>
+<blockquote>
+<p>点一下第<code>142360</code>页，服务会不会爆炸？像<code>MySQL</code>，<code>MongoDB</code>数据库还好，本身就是专业的数据库，处理的不好，最多就是慢，但如果涉及到<code>ES</code>，性质就不一样了，我们不得不利用 <code>SearchAfter</code> Api，去循环获取数据，这就牵扯到内存占用的问题，如果当时代码写的不优雅，直接就可能导致内存溢出。</p>
+</blockquote>
+<ul>
+<li>mongodb</li>
+</ul>
+<p>随着页码的增大，skip 跳过的条目也会随之变大，而这个操作是通过 cursor 的迭代器来实现的，对于cpu的消耗会非常明显，当页码非常大时且频繁时，必然爆炸。</p>
+<ul>
+<li>elasticsearch</li>
+</ul>
+<p>从业务的角度来说，<code>ElasticSearch</code>不是典型的数据库，它是一个搜索引擎，如果在筛选条件下没有搜索出想要的数据，继续深度分页也不会找到想要的数据，退一步讲，假如我们把<code>ES</code>作为数据库来使用进行查询，在进行分页的时候一定会遇到<code>max_result_window </code>的限制，看到没，官方都告诉你最大偏移量限制是一万。</p>
+<h3 id="解决思路">解决思路</h3>
+<blockquote>
+<p>通过选择合理的UI跳页手段，避免随意深度跳页，例如：</p>
+<ul>
+<li>尽可能的增加默认的筛选条件，如：时间周期，目的是为了减少数据量的展示</li>
+<li>修改跳页的展现方式，改为滚动显示，或小范围跳页（搜索引擎分页模式）</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>终极方案：先定位（find/match），获取固定区间数据ID（limit)，对该区间的数据进行额外处理（aggregate)</p>
+</blockquote>
+<h2 id="推荐方案">推荐方案</h2>
+<blockquote>
+<p>基本思路：定位(find)与聚合(aggregate)相结合的方法</p>
+</blockquote>
+<p>获取数据有两种方法：</p>
+<ul>
+<li>find
+<ul>
+<li>常用于定位到一个数据区间（起始记录ID，或已排序记录ID序列）</li>
+</ul>
+</li>
+<li>aggregate
+<ul>
+<li>常用于对指定区间的数据（记录集）进行各种处理</li>
+<li>$skip，在大数据情况下，对于改进查询性能没有帮助</li>
+<li>$limit，对于优化数据处理的性能，有明显改进</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>基本流程</p>
+</blockquote>
+<ul>
+<li>首先获取满足条件的数据总量
+<ul>
+<li>Count</li>
+<li>Aggregate（$count）</li>
+</ul>
+</li>
+<li>进行分页计算，确认数据区间的大小
+<ul>
+<li>分页参数
+<ul>
+<li>Page_size</li>
+<li>Page_number</li>
+<li>Page_count</li>
+<li>Total_count</li>
+</ul>
+</li>
+<li>区间参数
+<ul>
+<li>Skip_count（用于获取首记录）</li>
+<li>Limit_count（用于获取数据区间长度）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>获取数据区间的首记录
+<ul>
+<li>Find（where）</li>
+<li>Aggregate（Skip，Sort、Group、$first）</li>
+</ul>
+</li>
+<li>获取数据区间的记录ID序列
+<ul>
+<li>Record_uuids</li>
+</ul>
+</li>
+<li>对数据区间的记录进行处理
+<ul>
+<li>Aggreate</li>
+</ul>
+</li>
+<li>返回记录数据和分页信息</li>
+</ul>
+<blockquote>
+<p>尤为注意</p>
+<ul>
+<li>Match 尽量写在 aggregate的最前面</li>
+<li>优先考虑通过 Find 定位和缩小数据区域</li>
+</ul>
+</blockquote>
+<h3 id="参考代码">参考代码</h3>
+<ul>
+<li>前端</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">        dr_table_page<span style="color:#666">:</span> {
+          current_page<span style="color:#666">:</span> <span style="color:#666">1</span>,
+          page_size<span style="color:#666">:</span> <span style="color:#666">10</span>,
+          total_count<span style="color:#666">:</span> <span style="color:#666">0</span>
+        },
+          
+        <span style="color:#008000;font-weight:bold">let</span> data <span style="color:#666">=</span> {
+          archive_uuids<span style="color:#666">:</span> <span style="color:#008000;font-weight:bold">this</span>.dr_archive_uuids_with_tags,
+          page_number<span style="color:#666">:</span> <span style="color:#008000">Number</span>(<span style="color:#008000;font-weight:bold">this</span>.dr_table_page.current_page).toFixed(<span style="color:#666">0</span>),
+          page_size<span style="color:#666">:</span> <span style="color:#008000">Number</span>(<span style="color:#008000;font-weight:bold">this</span>.dr_table_page.page_size).toFixed(<span style="color:#666">0</span>)
+        }
+        <span style="color:#008000;font-weight:bold">let</span> result <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">await</span> ArchiveServices.get_data_from_some_archives(data)
+        <span style="color:#008000;font-weight:bold">if</span> (result.success <span style="color:#666">===</span> <span style="color:#008000;font-weight:bold">false</span>) {
+          <span style="color:#008000;font-weight:bold">this</span>.dw_table_rows <span style="color:#666">=</span> []
+          <span style="color:#008000;font-weight:bold">this</span>.dr_table_loading <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">false</span>
+          <span style="color:#008000;font-weight:bold">this</span>.dr_table_page.current_page <span style="color:#666">=</span> <span style="color:#666">1</span>
+          <span style="color:#008000;font-weight:bold">this</span>.dr_table_page.total_count <span style="color:#666">=</span> <span style="color:#666">0</span>
+          <span style="color:#008000;font-weight:bold">this</span>.dw_table_current_row <span style="color:#666">=</span> {}
+          <span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>
+        }
+
+        <span style="color:#008000;font-weight:bold">this</span>.dr_archive_record_contents <span style="color:#666">=</span> result.response.data.archive_record_contents
+        <span style="color:#008000;font-weight:bold">this</span>.dr_table_page.total_count <span style="color:#666">=</span> result.response.data.total_count
+</code></pre></div><ul>
+<li>后端</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// 支持分页
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>ArchiveController) <span style="color:#00f">Get_data_from_some_archives</span>() <span style="color:#666">*</span>mvc.Response {
+	<span style="color:#008000;font-weight:bold">var</span> request_body = iris.Map{}
+	_ = ctl.Ctx.<span style="color:#00f">ReadJSON</span>(<span style="color:#666">&amp;</span>request_body)
+
+	archive_uuids <span style="color:#666">:=</span> tools.<span style="color:#00f">Iarray_to_Sarray</span>(request_body[<span style="color:#ba2121">&#34;archive_uuids&#34;</span>].([]<span style="color:#008000;font-weight:bold">interface</span>{}))
+
+	archive_uuids = funk.<span style="color:#00f">UniqString</span>(archive_uuids)
+
+	<span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">len</span>(archive_uuids) <span style="color:#666">&lt;=</span> <span style="color:#666">0</span> {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Failure</span>(tools.EmptyMap)
+	}
+
+	<span style="color:#008000;font-weight:bold">var</span> all_archive_record_counts = <span style="color:#666">0</span>
+
+	<span style="color:#008000;font-weight:bold">for</span> _, an_archive_uuid <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> archive_uuids {
+		rs <span style="color:#666">:=</span> ctl.Handler_record.<span style="color:#00f">Find_total_count_of_all_records_for_archive</span>(an_archive_uuid)
+		<span style="color:#008000;font-weight:bold">if</span> rs.Success <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">false</span> {
+			<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Failure</span>(rs.Data, rs.Msg)
+		}
+
+		an_archive_record_counts <span style="color:#666">:=</span> rs.Data[<span style="color:#ba2121">&#34;total_count&#34;</span>].(<span style="color:#b00040">int</span>)
+		all_archive_record_counts = all_archive_record_counts <span style="color:#666">+</span> an_archive_record_counts
+	}
+
+	the_archive_record_counts <span style="color:#666">:=</span> all_archive_record_counts
+	the_page_size, _ <span style="color:#666">:=</span> strconv.<span style="color:#00f">Atoi</span>(request_body[<span style="color:#ba2121">&#34;page_size&#34;</span>].(<span style="color:#b00040">string</span>))
+	the_page_number, _ <span style="color:#666">:=</span> strconv.<span style="color:#00f">Atoi</span>(request_body[<span style="color:#ba2121">&#34;page_number&#34;</span>].(<span style="color:#b00040">string</span>))
+	the_total_count <span style="color:#666">:=</span> the_archive_record_counts
+	the_page_count <span style="color:#666">:=</span> <span style="color:#008000">int</span>(math.<span style="color:#00f">Ceil</span>(<span style="color:#008000">float64</span>(the_total_count) <span style="color:#666">/</span> <span style="color:#008000">float64</span>(the_page_size)))
+
+	<span style="color:#008000;font-weight:bold">var</span> the_skip_count = <span style="color:#666">0</span>
+	<span style="color:#008000;font-weight:bold">var</span> the_limit_count = the_page_size
+
+	<span style="color:#008000;font-weight:bold">if</span> the_page_number &lt; the_page_count {
+		start_index <span style="color:#666">:=</span> (the_page_number<span style="color:#666">-</span><span style="color:#666">1</span>)<span style="color:#666">*</span>the_page_size <span style="color:#666">+</span> <span style="color:#666">1</span>
+		the_skip_count = start_index
+	} <span style="color:#008000;font-weight:bold">else</span> {
+		start_index <span style="color:#666">:=</span> <span style="color:#666">1</span>
+		<span style="color:#008000;font-weight:bold">if</span> the_archive_record_counts &gt; the_page_size {
+			start_index = (the_page_count<span style="color:#666">-</span><span style="color:#666">1</span>)<span style="color:#666">*</span>the_page_size <span style="color:#666">+</span> <span style="color:#666">1</span>
+			the_page_number = the_page_count
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			the_page_number = <span style="color:#666">1</span>
+		}
+		the_skip_count = start_index
+	}
+
+	rs <span style="color:#666">:=</span> ctl.Handler_record.<span style="color:#00f">Find_first_record_for_archives</span>(archive_uuids, the_skip_count)
+	<span style="color:#008000;font-weight:bold">if</span> rs.Success <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">false</span> {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Failure</span>(rs.Data, rs.Msg)
+	}
+
+	<span style="color:#008000;font-weight:bold">if</span> rs.Data[<span style="color:#ba2121">&#34;is_ok&#34;</span>].(<span style="color:#b00040">bool</span>) <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">false</span> {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Failure</span>(rs.Data, rs.Msg)
+	}
+
+	<span style="color:#408080;font-style:italic">//pp.Println(&#34;before.find_all_records_for_archives_with_page&#34;, the_page_size, the_page_number, the_total_count, the_page_count, the_skip_count, the_limit_count, archive_uuids)
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#408080;font-style:italic">//the_first_record_uuid := rs.Data[&#34;record_uuid&#34;].(string)
+</span><span style="color:#408080;font-style:italic"></span>	the_first_record_index <span style="color:#666">:=</span> rs.Data[<span style="color:#ba2121">&#34;record_index&#34;</span>].(<span style="color:#b00040">int</span>)
+	the_first_record_manager_archive_uuid <span style="color:#666">:=</span> rs.Data[<span style="color:#ba2121">&#34;manager_archive_uuid&#34;</span>].(<span style="color:#b00040">string</span>)
+
+	rs = ctl.Handler_record.<span style="color:#00f">Find_all_records_for_archives_with_page</span>(archive_uuids,
+		the_first_record_manager_archive_uuid, the_first_record_index, the_limit_count)
+
+	the_records <span style="color:#666">:=</span> rs.Data[<span style="color:#ba2121">&#34;records&#34;</span>]
+	the_record_uuids <span style="color:#666">:=</span> tools.<span style="color:#00f">Get_fields_from_IMarray</span>(the_records, <span style="color:#ba2121">&#34;record_uuid&#34;</span>)
+
+	<span style="color:#408080;font-style:italic">//pp.Println(&#34;after.find_all_records_for_archives_with_page&#34;, the_record_uuids)
+</span><span style="color:#408080;font-style:italic"></span>
+	rs = ctl.Handler_record.<span style="color:#00f">Get_all_records_for_archives_with_page</span>(the_record_uuids)
+	<span style="color:#008000;font-weight:bold">if</span> rs.Success <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">false</span> {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Failure</span>(rs.Data, rs.Msg)
+	}
+
+	<span style="color:#408080;font-style:italic">//pp.Println(&#34;after.get_all_records_for_archives_with_page&#34;)
+</span><span style="color:#408080;font-style:italic"></span>
+	the_archive_record_contents <span style="color:#666">:=</span> tools.<span style="color:#00f">Interface_to_Iarray</span>(rs.Data[<span style="color:#ba2121">&#34;archive_record_contents&#34;</span>])
+
+	<span style="color:#408080;font-style:italic">//pp.Println(&#34;the_page_count: &#34;, the_page_count)
+</span><span style="color:#408080;font-style:italic"></span>
+	data <span style="color:#666">:=</span> iris.Map{}
+
+	<span style="color:#008000;font-weight:bold">if</span> the_page_number &lt; the_page_count {
+		<span style="color:#408080;font-style:italic">//start_index := (the_page_number - 1) * the_page_size
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#408080;font-style:italic">//end_index := start_index + the_page_size
+</span><span style="color:#408080;font-style:italic"></span>		data = iris.Map{
+			<span style="color:#ba2121">&#34;archive_record_contents&#34;</span>: the_archive_record_contents,
+			<span style="color:#ba2121">&#34;archive_record_counts&#34;</span>:   the_archive_record_counts,
+			<span style="color:#ba2121">&#34;page_size&#34;</span>:               the_page_size,
+			<span style="color:#ba2121">&#34;page_number&#34;</span>:             the_page_number,
+			<span style="color:#ba2121">&#34;page_count&#34;</span>:              the_page_count,
+			<span style="color:#ba2121">&#34;total_count&#34;</span>:             the_total_count,
+		}
+	} <span style="color:#008000;font-weight:bold">else</span> {
+		<span style="color:#408080;font-style:italic">//start_index := 0
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#008000;font-weight:bold">if</span> the_archive_record_counts &gt; the_page_size {
+			<span style="color:#408080;font-style:italic">//start_index = (the_page_count - 1) * the_page_size
+</span><span style="color:#408080;font-style:italic"></span>			the_page_number = the_page_count
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			the_page_number = <span style="color:#666">1</span>
+		}
+
+		data = iris.Map{
+			<span style="color:#ba2121">&#34;archive_record_contents&#34;</span>: the_archive_record_contents,
+			<span style="color:#ba2121">&#34;archive_record_counts&#34;</span>:   the_archive_record_counts,
+			<span style="color:#ba2121">&#34;page_size&#34;</span>:               the_page_size,
+			<span style="color:#ba2121">&#34;page_number&#34;</span>:             the_page_number,
+			<span style="color:#ba2121">&#34;page_count&#34;</span>:              the_page_count,
+			<span style="color:#ba2121">&#34;total_count&#34;</span>:             the_total_count,
+		}
+	}
+
+	<span style="color:#408080;font-style:italic">//log.Println(tools.Green(tools.MethodOk()), tools.JsonInfo(data))
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Success</span>(data)
+}
+</code></pre></div><h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="https://mongoing.com/archives/25469">https://mongoing.com/archives/25469</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1702760">https://cloud.tencent.com/developer/article/1702760</a></li>
+<li><a href="https://segmentfault.com/a/1190000022079466">https://segmentfault.com/a/1190000022079466</a></li>
+<li><a href="https://www.biecuoliao.com/pa/3wEoLbM.html">https://www.biecuoliao.com/pa/3wEoLbM.html</a></li>
+<li><a href="https://developer.aliyun.com/article/768447">https://developer.aliyun.com/article/768447</a></li>
+<li><a href="https://www.codementor.io/@arpitbhayani/fast-and-efficient-pagination-in-mongodb-9095flbqr">https://www.codementor.io/@arpitbhayani/fast-and-efficient-pagination-in-mongodb-9095flbqr</a></li>
+<li><a href="https://www.mixmax.com/engineering/api-paging-built-the-right-way">https://www.mixmax.com/engineering/api-paging-built-the-right-way</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/gosf-study-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/gosf-study-1/6_hu3d03a01dcc18bc5be0e67db3d8d209a6_5203290_400x0_resize_lanczos_3.png 1x, https://taodanfang.github.io/posts/gosf-study-1/6_hu3d03a01dcc18bc5be0e67db3d8d209a6_5203290_800x0_resize_lanczos_3.png 2x, https://taodanfang.github.io/posts/gosf-study-1/6_hu3d03a01dcc18bc5be0e67db3d8d209a6_5203290_1200x0_resize_lanczos_3.png 3x">
+      <img src="https://taodanfang.github.io/posts/gosf-study-1/6_hu3d03a01dcc18bc5be0e67db3d8d209a6_5203290_400x0_resize_lanczos_3.png" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">基于GOSF的Websocket微服务框架开发方法</h2>
+    <p class="card-text">Go Socket.IO Framework or GOSF is an easy-to-use framework for developing Socket.IO APIs in Google’s Go programming language (GoLang). GOSF 对Websocket进行了封装，实现了一个websocket服务器，并提供了一个Socket.io风格的前端接口，同时也可以基于websocket风格的前端接口进行连接和操作。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-09 89:00">Aug 9, 2021</time></p>
+      <p>#golang #websocket </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

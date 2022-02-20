@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Golang 并发开发实践（2）- 用户并发注册开发实践 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  Golang 并发开发实践（2）- 用户并发注册开发实践</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >Golang 并发开发实践（2）- 用户并发注册开发实践</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-11-23">Nov 23, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/golang-channel-study-2-1/image-7_hu7097fc17546f9bb13044ec2d4bcd6998_68742_711x0_resize_q75_lanczos.jpeg 1x, https://taodanfang.github.io/posts/golang-channel-study-2-1/image-7_hu7097fc17546f9bb13044ec2d4bcd6998_68742_1422x0_resize_q75_lanczos.jpeg 2x, https://taodanfang.github.io/posts/golang-channel-study-2-1/image-7_hu7097fc17546f9bb13044ec2d4bcd6998_68742_2133x0_resize_q75_lanczos.jpeg 3x">
+            <img src="https://taodanfang.github.io/posts/golang-channel-study-2-1/image-7_hu7097fc17546f9bb13044ec2d4bcd6998_68742_711x0_resize_q75_lanczos.jpeg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#需求场景">需求场景</a></li>
+    <li><a href="#解决思路非并发版本">解决思路(非并发版本）</a></li>
+    <li><a href="#优化思路并发版本">优化思路（并发版本）</a></li>
+    <li><a href="#解除死锁的方法">解除死锁的方法</a>
+      <ul>
+        <li><a href="#waitgroup">WaitGroup</a></li>
+        <li><a href="#如何获知受理协程已经结束">如何获知受理协程已经结束</a></li>
+        <li><a href="#何时关闭通道">何时关闭通道</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#最终版">最终版</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（1）- 入门与规则</h2>
+    <p class="card-text">Go语言设计团队的首任负责人Rob Pike对并发编程的一个建议是不要让计算通过共享内存来通讯，而应该让它们通过通讯来共享内存。 通道机制就是这种哲学的一个设计结果。（在Go编程中，我们可以认为一个计算就是一个协程。）
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-23 1123:00">Nov 23, 2021</time></p>
+      <p>#golang #goroutine #channel </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>In this post, we&rsquo;ll use goroutines, channels and WaitGroups to process a &ldquo;bulk user registration&rdquo; request.</p>
+<h2 id="需求场景">需求场景</h2>
+<p>Let&rsquo;s say we&rsquo;re responsible for building a Go service that registers students in some kind of school management system. An administrator can upload a list of students who have signed up for a given course and our service will register each student for that course. Our courses are, of course, wildly popular, and a student list for a course could be hundreds of students long. We&rsquo;ll build a function that will accept a list of students to register along with the course for which they are signing up. Our function will spawn a set of tasks that will register students concurrently.</p>
+<h2 id="解决思路非并发版本">解决思路(非并发版本）</h2>
+<blockquote>
+<p>类型定义</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#408080;font-style:italic">// 课程
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> Course <span style="color:#008000;font-weight:bold">struct</span> {
+	Name <span style="color:#b00040">string</span>
+}
+
+<span style="color:#408080;font-style:italic">// 学生
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> Student <span style="color:#008000;font-weight:bold">struct</span> {
+	Name <span style="color:#b00040">string</span>
+}
+
+<span style="color:#408080;font-style:italic">// 课程注册请求
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> StudentRegistration <span style="color:#008000;font-weight:bold">struct</span> {
+	Student Student
+	Course  Course
+}
+
+<span style="color:#408080;font-style:italic">// 注册受理结果
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> StudentRegistrationResult <span style="color:#008000;font-weight:bold">struct</span> {
+	Registration StudentRegistration
+	Error        <span style="color:#b00040">error</span>
+}
+
+<span style="color:#408080;font-style:italic">// 结果集
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> RegisterStudentsResults <span style="color:#008000;font-weight:bold">struct</span> {
+	Results []StudentRegistrationResult
+}
+
+</code></pre></div><blockquote>
+<p>受理一个学生的注册课程申请</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">RegisterStudent</span>(student Student, course Course) StudentRegistrationResult, <span style="color:#b00040">error</span> {
+    <span style="color:#408080;font-style:italic">// dummy student registration code, doesn&#39;t matter what&#39;s happening under the hood of `doRegistration`!
+</span><span style="color:#408080;font-style:italic"></span>    registration, <span style="color:#b00040">error</span> <span style="color:#666">:=</span> <span style="color:#00f">doRegistration</span>(student, Course) 
+    <span style="color:#008000;font-weight:bold">return</span> StudentRegistrationResult{
+        Registration: registration, 
+        Error: <span style="color:#b00040">error</span>,
+    } 
+}
+</code></pre></div><blockquote>
+<p>受理大量学生的注册申请</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">RegisterStudents</span>(students []Student, course Course) RegisterStudentResults {
+    <span style="color:#008000;font-weight:bold">var</span> results RegisterStudentsResults
+    <span style="color:#008000;font-weight:bold">for</span> _, student <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> students {
+        studentRegistrationResult = <span style="color:#00f">RegisterStudent</span>(student, course)
+        results.Results = <span style="color:#008000">append</span>(results.Results, studentRegistrationResult)
+    }
+    <span style="color:#008000;font-weight:bold">return</span> results
+}
+
+</code></pre></div><h2 id="优化思路并发版本">优化思路（并发版本）</h2>
+<blockquote>
+<p>并发受理大量学生的注册申请</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">RegisterStudents</span>(students []Student, course Course) RegisterStudentResults {
+    <span style="color:#008000;font-weight:bold">var</span> result RegisterStudentsResults
+    <span style="color:#008000;font-weight:bold">for</span> _, student <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> students {
+        <span style="color:#408080;font-style:italic">// 错误
+</span><span style="color:#408080;font-style:italic"></span>        studentRegistrationResult = <span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">RegisterStudent</span>(student, course)
+        result.results = <span style="color:#008000">append</span>(result.Results, studentRegistrationResult)
+    }
+    <span style="color:#008000;font-weight:bold">return</span> results
+}
+
+</code></pre></div><blockquote>
+<p>并发版受理单个注册申请</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">ConcurrentRegisterStudent</span>
+(student Student, course Course, input <span style="color:#008000;font-weight:bold">chan</span> StudentRegistrationResult) {
+    result <span style="color:#666">:=</span> <span style="color:#00f">RegisterStudent</span>(student, course)
+    input <span style="color:#666">&lt;-</span> result
+}
+
+</code></pre></div><blockquote>
+<p>使用channel获取注册结果</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">RegisterStudents</span>(students []Student, course Course) RegisterStudentsResults {
+	<span style="color:#008000;font-weight:bold">var</span> results RegisterStudentsResults
+	input <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> StudentRegistrationResult)
+	<span style="color:#008000;font-weight:bold">for</span> _, student <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> students {
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">ConcurrentRegisterStudent</span>(student, course, input)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> studentResult <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> input {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;receive result: &#34;</span>, studentResult)
+		results.Results = <span style="color:#008000">append</span>(results.Results, studentResult)
+	}
+	<span style="color:#008000;font-weight:bold">return</span> results
+}
+
+</code></pre></div><blockquote>
+<p>测试程序</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+    students <span style="color:#666">:=</span> []Student{
+            Student{Name: <span style="color:#ba2121">&#34;Sophie&#34;</span>},
+            Student{Name: <span style="color:#ba2121">&#34;Ben&#34;</span>},
+        }
+
+    result <span style="color:#666">:=</span> <span style="color:#00f">RegisterStudents</span>(students, Course{Name: <span style="color:#ba2121">&#34;Into To Golang&#34;</span>})
+    
+    fmt.<span style="color:#00f">Print</span>(result)
+}
+
+</code></pre></div><p>测试结果（出现死锁）</p>
+<p><img src="media/16378408598973.jpg" alt=""></p>
+<blockquote>
+<p>死锁原因分析：</p>
+</blockquote>
+<pre><code>- 死锁位置：第53行
+- 读取通道阻塞：如果通道没有关闭，但是channel没有可读取的数据，它会阻塞在 range 这句位置，直到被唤醒。
+</code></pre>
+<h2 id="解除死锁的方法">解除死锁的方法</h2>
+<blockquote>
+<p>解决思路：We need to tell our input channel to close once the spawned ConcurrentRegisterStudent routines have concluded.</p>
+</blockquote>
+<blockquote>
+<p>如何正确关闭通道：how can we ensure that we close this channel only after those goroutines have finished running?</p>
+</blockquote>
+<h3 id="waitgroup">WaitGroup</h3>
+<p>A WaitGroup maintains a count of the goroutines its waiting for. We&rsquo;re responsible for incrementing that count when we want a WaitGroup to keep track of a given goroutine. We&rsquo;re also responsible for decrementing that count when a given goroutine finishes. Then, a call to WaitGroup&rsquo;s Wait function in the main execution thread will block that execution until the WaitGroup&rsquo;s counter is back down to zero.</p>
+<p>WaitGroup 跟踪了一组等待结束的协程，调用 wait 方法时，若跟踪的协程数量不为零，则会阻塞，直到跟踪的协程数量变为0.</p>
+<blockquote>
+<p>支持WaitGroup的受理函数（每次生成一个协程，将其加入跟踪集合）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">RegisterStudents</span>(students []Student, course Course) RegisterStudentsResults {
+    input <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> StudentRegistrationResult)
+    <span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+	<span style="color:#008000;font-weight:bold">for</span> _, student <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> students {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">ConcurrentRegisterStudent</span>(student, course, input)
+	}
+    <span style="color:#666">...</span>
+}
+
+</code></pre></div><h3 id="如何获知受理协程已经结束">如何获知受理协程已经结束</h3>
+<p>We need a way to read from the input channel in a separate goroutine. This separate goroutine will be responsible for iterating over the range of messages sent to our input channel. Every time it receives a message over this channel, we will know that the goroutine that wrote that message is finished running. This is the moment in time to decrement the WaitGroup&rsquo;s count.</p>
+<p>我们需要创建另外一个协程，主要的作用是：</p>
+<ul>
+<li>用于读取input通道的内容，每当获得一个input消息，意味着一个受理协程的结束，从而减少跟踪协程集合的中协程的数量。</li>
+<li>当input关闭后，返回已经收到的所有受理结果</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">handleResults</span>(input <span style="color:#008000;font-weight:bold">chan</span> StudentRegistrationResult, output <span style="color:#008000;font-weight:bold">chan</span> RegisterStudentsResults, wg <span style="color:#666">*</span>sync.WaitGroup) {
+    <span style="color:#008000;font-weight:bold">var</span> results RegisterStudentsResults
+    <span style="color:#008000;font-weight:bold">for</span> result <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> input {
+        results.Results = <span style="color:#008000">append</span>(results.Results, result)
+        wg.<span style="color:#00f">Done</span>()
+    }
+    output <span style="color:#666">&lt;-</span> results
+}
+
+</code></pre></div><h3 id="何时关闭通道">何时关闭通道</h3>
+<blockquote>
+<p>关闭input通道的前提是，所有的受理协程已经结束，即跟踪协程集合为空。只有正确的关闭 input 之后，才能消除 range 通道存在的阻塞情况</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">RegisterStudents</span>(students []Student, course Course) RegisterStudentsResults {
+	output <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> RegisterStudentsResults)
+	input <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> StudentRegistrationResult)
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+    
+    <span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">handleResults</span>(input, output, <span style="color:#666">&amp;</span>wg)
+    
+    <span style="color:#008000;font-weight:bold">for</span> _, student <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> students {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">ConcurrentRegisterStudent</span>(student, course, input)
+	}
+
+    wg.<span style="color:#00f">Wait</span>() <span style="color:#408080;font-style:italic">// Wait until the count is back to zero
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#008000">close</span>(input) <span style="color:#408080;font-style:italic">// Close the input channel
+</span><span style="color:#408080;font-style:italic"></span>    
+    results <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> output <span style="color:#408080;font-style:italic">// Read the message written to the output channel
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#008000;font-weight:bold">return</span> results
+}
+</code></pre></div><blockquote>
+<p>注意：这里 wg 需要传入指针，否则会导致wg.Wait永远等待的问题</p>
+</blockquote>
+<blockquote>
+<p>何时关闭 output 通道：We need to ensure that the output channel is closed before the RegisterStudents function returns. We&rsquo;ll add a call to close(output) to the defer stack of the RegisterStudents function</p>
+</blockquote>
+<h2 id="总结">总结</h2>
+<ul>
+<li>We establish an input channel, an output channel and a WaitGroup</li>
+<li>We spawn a goroutine to run handleResults. This function is listening for messages over the input channel</li>
+<li>We iterate over the list of students to be registered, incrementing the WaitGroup&rsquo;s count for each student and spawning a goroutine to do each student registration</li>
+<li>While each goroutine runs, the main execution blocks thanks to wg.Wait()</li>
+<li>Each time a goroutine sends a message over the input channel and finishes running, the handleResults function running in its own goroutine will collect the result and decrement the WaitGroup&rsquo;s count.</li>
+<li>Once the last ConcurrentRegisterStudent goroutine finishes running, the WaitGroup&rsquo;s count will be back at zero.</li>
+<li>Our main execution will un-block, calling close(input) to close the input channel.</li>
+<li>Once the input channel is closed, the for loop that is listening for messages over this channel in the goroutine running the handleResults function will stop. That function will then move on to its next step––writing the results to the output channel.</li>
+<li>Those results are read from the output channel back in our main execution</li>
+<li>This read operation is blocking, so we won&rsquo;t move on to the last line of the function until a message is received. Once we do receive a message over the output channel, the function will return that message</li>
+</ul>
+<p><img src="media/16378439469714.jpg" alt=""></p>
+<h2 id="最终版">最终版</h2>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;fmt&#34;</span>
+	<span style="color:#ba2121">&#34;sync&#34;</span>
+)
+
+<span style="color:#408080;font-style:italic">// models
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">type</span> Student <span style="color:#008000;font-weight:bold">struct</span> {
+	Name <span style="color:#b00040">string</span>
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Course <span style="color:#008000;font-weight:bold">struct</span> {
+	Name <span style="color:#b00040">string</span>
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Student_registration_order <span style="color:#008000;font-weight:bold">struct</span> {
+	Student Student
+	Course Course
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Student_registration_result <span style="color:#008000;font-weight:bold">struct</span> {
+	Registration Student_registration_order
+	Error <span style="color:#b00040">error</span> 
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Registration_results <span style="color:#008000;font-weight:bold">struct</span> {
+	Results []Student_registration_result
+}
+
+<span style="color:#408080;font-style:italic">// services
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Register_a_student</span>(student Student, course Course) Student_registration_result {
+	<span style="color:#008000;font-weight:bold">return</span> Student_registration_result{
+		Registration: Student_registration_order{
+			Student: student,
+			Course: course,
+		},
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Concurrent_register_a_student</span>(student Student, course Course, output <span style="color:#008000;font-weight:bold">chan</span> Student_registration_result) {
+	result <span style="color:#666">:=</span> <span style="color:#00f">Register_a_student</span>(student, course)
+	output <span style="color:#666">&lt;-</span> result
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Handle_results</span>(input <span style="color:#008000;font-weight:bold">chan</span> Student_registration_result, output <span style="color:#008000;font-weight:bold">chan</span> Registration_results, wg <span style="color:#666">*</span>sync.WaitGroup) {
+	<span style="color:#008000;font-weight:bold">var</span> results Registration_results
+	<span style="color:#008000;font-weight:bold">for</span> result <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> input {
+		results.Results = <span style="color:#008000">append</span>(results.Results, result)
+		wg.<span style="color:#00f">Done</span>()
+	}
+
+	output <span style="color:#666">&lt;-</span> results
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Do_register_some_students</span>(students []Student, course Course) Registration_results {
+	output <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> Registration_results)
+	input <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> Student_registration_result)
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Handle_results</span>(input, output, <span style="color:#666">&amp;</span>wg)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000">close</span>(output)
+
+	<span style="color:#008000;font-weight:bold">for</span> _, student <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> students {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Concurrent_register_a_student</span>(student, course, input)
+	}
+
+	wg.<span style="color:#00f">Wait</span>()
+	<span style="color:#008000">close</span>(input)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&lt;-</span> output
+}
+
+<span style="color:#408080;font-style:italic">// Test Main
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	students <span style="color:#666">:=</span> []Student{
+		Student{Name: <span style="color:#ba2121">&#34;Sophia&#34;</span>},
+		Student{Name: <span style="color:#ba2121">&#34;Bennie&#34;</span>},
+	}
+
+	course <span style="color:#666">:=</span> Course{Name: <span style="color:#ba2121">&#34;big data&#34;</span>}
+	result <span style="color:#666">:=</span> <span style="color:#00f">Do_register_some_students</span>(students, course)
+	
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;result: %#v\n&#34;</span>, result)
+}
+
+</code></pre></div><blockquote>
+<p>测试结果</p>
+</blockquote>
+<p><img src="media/16378460395613.jpg" alt=""></p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.thegreatcodeadventure.com/building-concurrent-workflows-in-go-with-goroutines-and-channels/">https://www.thegreatcodeadventure.com/building-concurrent-workflows-in-go-with-goroutines-and-channels/</a></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/golang-channel-study-1/image-5_hu922bd7c4b038ab90c5342c626323db77_495881_400x0_resize_lanczos_3.png 1x, https://taodanfang.github.io/posts/golang-channel-study-1/image-5_hu922bd7c4b038ab90c5342c626323db77_495881_800x0_resize_lanczos_3.png 2x, https://taodanfang.github.io/posts/golang-channel-study-1/image-5_hu922bd7c4b038ab90c5342c626323db77_495881_1200x0_resize_lanczos_3.png 3x">
+      <img src="https://taodanfang.github.io/posts/golang-channel-study-1/image-5_hu922bd7c4b038ab90c5342c626323db77_495881_400x0_resize_lanczos_3.png" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（1）- 入门与规则</h2>
+    <p class="card-text">Go语言设计团队的首任负责人Rob Pike对并发编程的一个建议是不要让计算通过共享内存来通讯，而应该让它们通过通讯来共享内存。 通道机制就是这种哲学的一个设计结果。（在Go编程中，我们可以认为一个计算就是一个协程。）
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-23 1123:00">Nov 23, 2021</time></p>
+      <p>#golang #goroutine #channel </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

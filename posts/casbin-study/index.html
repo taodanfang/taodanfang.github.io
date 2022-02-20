@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>多租户权限管理技术实践 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  多租户权限管理技术实践</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >多租户权限管理技术实践</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2022-01-26">Jan 26, 2022</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/casbin-study/media/16449360852497_hubaae0ff782c8b75f8b806f4834290463_76038_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/casbin-study/media/16449360852497_hubaae0ff782c8b75f8b806f4834290463_76038_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/casbin-study/media/16449360852497_hubaae0ff782c8b75f8b806f4834290463_76038_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/casbin-study/media/16449360852497_hubaae0ff782c8b75f8b806f4834290463_76038_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#casbin">Casbin</a>
+      <ul>
+        <li><a href="#基本特性">基本特性</a></li>
+        <li><a href="#规范">规范</a></li>
+        <li><a href="#abac">ABAC</a></li>
+        <li><a href="#api">API</a></li>
+        <li><a href="#casbin-应用">Casbin 应用</a></li>
+        <li><a href="#管理型授权菜单管理">管理型授权（菜单管理）</a></li>
+      </ul>
+    </li>
+    <li><a href="#restrict">Restrict</a>
+      <ul>
+        <li><a href="#基本概念">基本概念</a></li>
+        <li><a href="#policy">Policy</a></li>
+        <li><a href="#accessrequest">AccessRequest</a></li>
+        <li><a href="#accessmanager">AccessManager</a></li>
+        <li><a href="#conditions">Conditions</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/cc-table-progress-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">熙熙表格-开发进展（2022.2.20）</h2>
+    <p class="card-text">熙熙表格（CC-Table）： 尝试将社交互动、协同文档、业务管理三者相结合， 提供更加自由、灵活、安全的线上办公与业务体验。我们将通过分享功能截图的方式，来记录CC-Table的开发进展。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2022-01-20 120:00">Jan 20, 2022</time></p>
+      <p>#cc-table </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>Casbin是一个强大的、高效的开源访问控制框架，其权限管理机制支持多种访问控制模型。Restrict is an authorization library that provides a hybrid of RBAC and ABAC models, allowing to define simple role-based policies while using more fine-grained control when needed. 本文总结了基于这两种技术实现角色授权管理的基本过程和相应实践方法。</p>
+<p><img src="media/16432099894319.jpg" alt=""></p>
+<h2 id="casbin">Casbin</h2>
+<p>Casbin是一个国产开源项目，专注于解决Go语言中的权限管理问题。Casbin由北京大学罗杨博士在2017年4月发起，罗杨博士的研究方向为云计算访问控制，目前已发表数十篇相关学术论文，曾经在ICWS、IEEE CLOUD、ICICS等多个顶级学术会议进行论文宣讲。Casbin项目则是其研究成果的落地。目前经过一年多的发展，Casbin在GitHub上已经2500+ stars，已成为Go语言Access Control领域排名第一的项目。</p>
+<p><img src="media/16432070502826.jpg" alt=""></p>
+<h3 id="基本特性">基本特性</h3>
+<ul>
+<li>支持自定义请求的格式，默认的请求格式为{subject, object, action}</li>
+<li>支持RBAC中的多层角色继承，不止主体可以有角色，资源也可以具有角色</li>
+<li>支持内置的超级用户 例如：root 或 administrator。超级用户可以执行任何操作而无需显式的权限声明</li>
+<li>要新建一个Casbin执行器，你必须提供一个Model和一个Adapter</li>
+<li>基本请求是一个元组对象，至少需要主题(访问实体)、对象(访问资源) 和动作(访问方式)</li>
+<li>如果未定义eft (policy result)，则策略文件中的结果字段将不会被读取， 和匹配的策略结果将默认被允许</li>
+<li>对于 ABAC，您在可以在 Casbin golang 版本中尝试 in 操作</li>
+<li>就像Linux系统的root一样，用户被授权为 root, 我们就有访问所有文件和设置的权限</li>
+<li>与 policy 不同，model 只能加载，不能保存。</li>
+<li>一些adapter支持过滤策略管理。 这意味着Casbin加载的策略是基于给定过滤器的存储策略的子集</li>
+</ul>
+<h3 id="规范">规范</h3>
+<ul>
+<li>Model CONF 至少应包含四个部分:
+<ul>
+<li>[request_definition]</li>
+<li>[policy_definition]</li>
+<li>[policy_effect]</li>
+<li>[matchers]</li>
+</ul>
+</li>
+<li>如果 model 使用 RBAC, 还需要添加[role_definition]部分。</li>
+<li>[matchers] 是策略匹配程序的定义。匹配程序是表达式。它定义了如何根据请求评估策略规则。您可以在匹配器中使用诸如 +, -, *, / 和逻辑操作员，例如 &amp;&amp;, ||, !</li>
+<li>如果您需要多个策略定义或多个匹配器，您可以使用 p2, m2。 事实上，以上四个部分都可以使用多个类型，语法是 r+number 。 例如 r2, e2。 默认情况下，这四个部分应对应一个。 如您的 r2 只能使用匹配器 m2 匹配策略 p2。您可以通过 EnforceContext 作为 的第一个参数来执行 方法来指定类型</li>
+<li>你甚至可以在Matcher中指定函数，使它更强大。 你可以使用内置函数，或者指定你自己的函数。</li>
+<li>Casbin 支持 RBAC 系统的多个实例, 例如, 用户可以具有角色及其继承关系, 资源也可以具有角色及其继承关系。 这两个 RBAC 系统不会互相干扰。 例如，g 是一个 RBAC系统, g2 是另一个 RBAC 系统。 _, _表示角色继承关系的前项和后项，即前项继承后项角色的权限。 一般来讲，如果您需要进行角色和用户的绑定，直接使用g 即可。 当您需要表示角色（或者组）与用户和资源的绑定关系时，可以使用g 和 g2 这样的表现形式</li>
+<li>对于Casbin中的内置角色管理器, 可以指定最大层次结构级别。 默认值为10。</li>
+<li>通过使用模式匹配，特别是在一些比较复杂的环境中有很多的域以及我们需要考虑很多物体的时候，我们可以更简洁高效地实现 policy_definition</li>
+</ul>
+<h3 id="abac">ABAC</h3>
+<ul>
+<li>ABAC是 基于属性的访问控制，可以使用主体、客体或动作的属性，而不是字符串本身来控制访问</li>
+<li>在ABAC中，可以使用struct(或基于编程语言的类实例) 而不是字符串来表示模型元素</li>
+<li>要使用ABAC，您需要做两件事：
+<ul>
+<li>在模型匹配器中指定属性。</li>
+<li>将元素的结构或类实例作为Casbin的Enforce() 的参数传入。</li>
+</ul>
+</li>
+<li>目前，仅有形如r.sub, r.obj, r.act 等请求元素支持ABAC</li>
+<li>我们可以选择在策略中添加规则代替在模型中添加规则。 这是通过引入一个 eval() 功能结构完成的</li>
+</ul>
+<h3 id="api">API</h3>
+<ul>
+<li>RoleManager提供接口来定义管理角色的操作。 添加匹配函数到角色管理器允许在角色名称和域中使用通配符。</li>
+<li>Casbin.js提供了一个完美的解决方案来将您的前端访问控制管理和后端Casbin服务一体化。</li>
+</ul>
+<h3 id="casbin-应用">Casbin 应用</h3>
+<ul>
+<li>充分考虑subject, object, action所代表的的含义</li>
+<li>充分考虑所要解决的问题</li>
+</ul>
+<h3 id="管理型授权菜单管理">管理型授权（菜单管理）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">v</span>:<span style="color:#bbb"> </span>view<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">c</span>:<span style="color:#bbb"> </span>config<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>[request_definition]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>r = sub, dom, obj, act // 用户(角色)，租客，菜单，操作(v/c)<span style="color:#bbb">
+</span><span style="color:#bbb"> 
+</span><span style="color:#bbb"></span>[policy_definition]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>p = sub, dom, obj, act // 用户(角色)，租客，菜单，权限(v/c)<span style="color:#bbb">
+</span><span style="color:#bbb"> 
+</span><span style="color:#bbb"></span>[role_definition]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>g = _, _, _ // 用户，角色，租客（门店）<span style="color:#bbb">
+</span><span style="color:#bbb"> 
+</span><span style="color:#bbb"></span>[policy_effect]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>e = some(where (p.eft == allow)) // 授权条件<span style="color:#bbb">
+</span><span style="color:#bbb"> 
+</span><span style="color:#bbb"></span>[matchers]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>m = g(r.sub, p.sub, r.dom) &amp;&amp; r.dom == p.dom &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act // 匹配条件<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div><h2 id="restrict">Restrict</h2>
+<p>Restrict is an authorization library that provides a hybrid of RBAC and ABAC models, allowing to define simple role-based policies while using more fine-grained control when needed. It helps you keep enforcing your access policies away from the business logic, and express them in a convenient way.</p>
+<h3 id="基本概念">基本概念</h3>
+<ul>
+<li>Subject - an entity that wants to perform some actions. Needs to implement Subject interface and provide unique role name. Subject is usually any kind of user or client in your domain. 主体，是执行操作的主语，通常是一个domain中的用户</li>
+<li>Resource - an entity that is a target of the actions. Needs to implement Resource interface and provide unique resource name. Resource can be implemented by any entity or object in your domain. 客体，是操作的对象。通常是一个domain中的资源。</li>
+<li>Action - an arbitrary operation that can be performed on given Resource. 操作，是施加在客体上的动作。</li>
+<li>Context - a map of values containing any additional data needed to validate the access rights. 上下文，是验证权限的相关信息。</li>
+<li>Condition - requirement that needs to be satisfied in order to grant the access. There are couple of built-in Conditions, but any custom Condition can be added, as long as it implements Condition interface. Conditions are the way to express more granular control. 条件，授予相应权限的要求。</li>
+</ul>
+<h3 id="policy">Policy</h3>
+<p>Policy is the description of access rules that should be enforced in given system. It consists of a Roles map, each with a set of Permissions granted per Resource, and Permission presets, that can be reused under various Roles and Resources.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> PolicyDefinition <span style="color:#008000;font-weight:bold">struct</span> {
+	<span style="color:#408080;font-style:italic">// PermissionPresets - a map of Permission presets.
+</span><span style="color:#408080;font-style:italic"></span>	PermissionPresets PermissionPresets <span style="color:#ba2121">`json:&#34;permissionPresets,omitempty&#34; yaml:&#34;permissionPresets,omitempty&#34;`</span>
+	<span style="color:#408080;font-style:italic">// Roles - collection of Roles used in the domain.
+</span><span style="color:#408080;font-style:italic"></span>	Roles Roles <span style="color:#ba2121">`json:&#34;roles&#34; yaml:&#34;roles&#34;`</span>
+}
+
+</code></pre></div><h3 id="accessrequest">AccessRequest</h3>
+<p>AccessRequest is an object describing a question about the access - can Subject perform given Actions on particular Resource.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> AccessRequest <span style="color:#008000;font-weight:bold">struct</span> {
+	<span style="color:#408080;font-style:italic">// Subject - subject (typically a user) that wants to perform given Actions.
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// Needs to implement Subject interface.
+</span><span style="color:#408080;font-style:italic"></span>	Subject Subject
+	<span style="color:#408080;font-style:italic">// Resource - resource that given Subject wants to interact with.
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// Needs to implement Resource interface.
+</span><span style="color:#408080;font-style:italic"></span>	Resource Resource
+	<span style="color:#408080;font-style:italic">// Actions - list of operations Subject wants to perform on given Resource.
+</span><span style="color:#408080;font-style:italic"></span>	Actions []<span style="color:#b00040">string</span>
+	<span style="color:#408080;font-style:italic">// Context - map of any additional values needed while checking the access.
+</span><span style="color:#408080;font-style:italic"></span>	Context Context
+	<span style="color:#408080;font-style:italic">// SkipConditions - allows to skip Conditions while checking the access.
+</span><span style="color:#408080;font-style:italic"></span>	SkipConditions <span style="color:#b00040">bool</span>
+}
+
+</code></pre></div><h3 id="accessmanager">AccessManager</h3>
+<p>AccessManager is responsible for the actual validation. Once set up with proper PolicyManager instance, you can use its Authorize method in order to check given AccessRequest. Authorize returns an error if access is not granted, and nil otherwise (meaning there is no error and the access is granted).</p>
+<h3 id="conditions">Conditions</h3>
+<p>Conditions allows to define more specific access control. It&rsquo;s similar to ABAC model, where more than just associated role needs to be validated in order to grant the access. For example, a Subject can only update the Resource if it was created by it. Such a requirement can be expressed with Restrict as a Condition. If the Condition is not satsfied, access will not be granted, even if Subject does have the required Role.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Permission <span style="color:#008000;font-weight:bold">struct</span> {
+	<span style="color:#408080;font-style:italic">// Action that will be allowed to perform if the Permission is granted, and Conditions
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// are satisfied.
+</span><span style="color:#408080;font-style:italic"></span>	Action <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;action,omitempty&#34; yaml:&#34;action,omitempty&#34;`</span>
+	<span style="color:#408080;font-style:italic">// Conditions that need to be satisfied in order to allow the subject perform given Action.
+</span><span style="color:#408080;font-style:italic"></span>	Conditions Conditions <span style="color:#ba2121">`json:&#34;conditions,omitempty&#34; yaml:&#34;conditions,omitempty&#34;`</span>
+	<span style="color:#408080;font-style:italic">// Preset allows to extend Permission defined in PolicyDefinition.
+</span><span style="color:#408080;font-style:italic"></span>	Preset <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;preset,omitempty&#34; yaml:&#34;preset,omitempty&#34;`</span>
+}
+
+</code></pre></div><h2 id="总结">总结</h2>
+<p>Casbin更像一个内存权限(ACL）表，Restrict更像一个内存权限检测规则引擎。两者都可以实现RBAC/ABAC权限模型，都支持角色继承。相对来说，Casbin开发更加简单，但是Restrict授权粒度更细和授权方式更加灵活。</p>
+<ul>
+<li>Casbin适用于简单的资源数量相对固定的RBAC授权管理（例如菜单、按钮等等），相对成熟</li>
+<li>Restrict适用于资源数量不确定的较为复杂的ABAC授权管理（例如数据范围、多因素、环境多变授权等等），技术实现相对较弱，需要进一步扩展（例如多角色校验、多条件检验、多容器管理接口扩展等等）</li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://casbin.org/docs/zh-CN/overview">https://casbin.org/docs/zh-CN/overview</a></li>
+<li>一种基于元模型的访问控制策略描述语言，软件学报，2020-31(2)</li>
+<li><a href="https://medium.com/wesionary-team/understanding-casbin-with-different-access-control-model-configurations-faebc60f6da5">https://medium.com/wesionary-team/understanding-casbin-with-different-access-control-model-configurations-faebc60f6da5</a></li>
+<li><a href="https://blog.gmem.cc/casbin">https://blog.gmem.cc/casbin</a></li>
+<li><a href="https://blog.haojunyu.com/post/authority_rbac/">https://blog.haojunyu.com/post/authority_rbac/</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/63769951">https://zhuanlan.zhihu.com/p/63769951</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/87009472">https://zhuanlan.zhihu.com/p/87009472</a></li>
+<li><a href="https://blog.csdn.net/peihexian/article/details/92798040">https://blog.csdn.net/peihexian/article/details/92798040</a></li>
+<li><a href="https://www.cnblogs.com/yjf512/p/12200206.html">https://www.cnblogs.com/yjf512/p/12200206.html</a></li>
+<li><a href="https://studygolang.com/articles/12323">https://studygolang.com/articles/12323</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/azure-sql/database/saas-tenancy-app-design-patterns">https://docs.microsoft.com/en-us/azure/azure-sql/database/saas-tenancy-app-design-patterns</a></li>
+<li><a href="https://terminal.im/blog/GraphQL_with_Casbin_RBAC_with_domain_field_level">https://terminal.im/blog/GraphQL_with_Casbin_RBAC_with_domain_field_level</a></li>
+<li><a href="https://python.iitter.com/other/134908.html">https://python.iitter.com/other/134908.html</a></li>
+<li><a href="https://casbin.org/docs/zh-CN/rbac-with-domains">https://casbin.org/docs/zh-CN/rbac-with-domains</a></li>
+<li><a href="https://medium.com/silo-blog/designing-a-flexible-permissions-system-with-casbin-f5d97fef17b8">https://medium.com/silo-blog/designing-a-flexible-permissions-system-with-casbin-f5d97fef17b8</a></li>
+<li><a href="https://www.programmersought.com/article/22987896234/">https://www.programmersought.com/article/22987896234/</a></li>
+<li><a href="https://habr.com/ru/company/custis/blog/248649/">https://habr.com/ru/company/custis/blog/248649/</a></li>
+<li><a href="https://github.com/el-mike/restrict">https://github.com/el-mike/restrict</a></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/cc-table-progress-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/cc-table-progress-1/media/16426799077446_hu99a744ea0805facb74e8940a81aa0415_213503_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/cc-table-progress-1/media/16426799077446_hu99a744ea0805facb74e8940a81aa0415_213503_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/cc-table-progress-1/media/16426799077446_hu99a744ea0805facb74e8940a81aa0415_213503_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/cc-table-progress-1/media/16426799077446_hu99a744ea0805facb74e8940a81aa0415_213503_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">熙熙表格-开发进展（2022.2.20）</h2>
+    <p class="card-text">熙熙表格（CC-Table）： 尝试将社交互动、协同文档、业务管理三者相结合， 提供更加自由、灵活、安全的线上办公与业务体验。我们将通过分享功能截图的方式，来记录CC-Table的开发进展。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2022-01-20 120:00">Jan 20, 2022</time></p>
+      <p>#cc-table </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

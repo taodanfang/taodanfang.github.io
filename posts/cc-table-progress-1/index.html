@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>熙熙表格-开发进展（2022.2.20） &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  熙熙表格-开发进展（2022.2.20）</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >熙熙表格-开发进展（2022.2.20）</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2022-01-20">Jan 20, 2022</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/cc-table-progress-1/media/16426799077446_hu99a744ea0805facb74e8940a81aa0415_213503_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/cc-table-progress-1/media/16426799077446_hu99a744ea0805facb74e8940a81aa0415_213503_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/cc-table-progress-1/media/16426799077446_hu99a744ea0805facb74e8940a81aa0415_213503_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/cc-table-progress-1/media/16426799077446_hu99a744ea0805facb74e8940a81aa0415_213503_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#登录">登录</a></li>
+    <li><a href="#首页">首页</a></li>
+    <li><a href="#基础功能">基础功能</a></li>
+    <li><a href="#待续2022220">待续（2022.2.20）</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/bleve-study-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">全文搜索引擎库（Bleve）学习实践</h2>
+    <p class="card-text">Bleve is an open-sourced text indexing and search library implemented in Go, developed in-house at Couchbase.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-12-16 1216:00">Dec 16, 2021</time></p>
+      <p>#golang #search #bleve #boltdb </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>熙熙表格（CC-Table）： 尝试将社交互动、协同文档、业务管理三者相结合， 提供更加自由、灵活、安全的线上办公与业务体验。我们将通过分享功能截图的方式，来记录CC-Table的开发进展。</p>
+<h2 id="登录">登录</h2>
+<p><img src="media/16453286101072.jpg" alt=""></p>
+<h2 id="首页">首页</h2>
+<p><img src="media/16453286473815.jpg" alt=""></p>
+<h2 id="基础功能">基础功能</h2>
+<blockquote>
+<p>个人文档</p>
+</blockquote>
+<p><img src="media/16453289025201.jpg" alt=""></p>
+<blockquote>
+<p>协同填表</p>
+</blockquote>
+<p><img src="media/16432101579653.jpg" alt=""></p>
+<blockquote>
+<p>购物车（数据搜索）</p>
+</blockquote>
+<p><img src="media/16426798031927.jpg" alt=""></p>
+<blockquote>
+<p>任务管理</p>
+</blockquote>
+<p><img src="media/16453287119558.jpg" alt=""></p>
+<h2 id="待续2022220">待续（2022.2.20）</h2>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/bleve-study-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/bleve-study-1/media/16396295213776_hubaae0ff782c8b75f8b806f4834290463_239809_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/bleve-study-1/media/16396295213776_hubaae0ff782c8b75f8b806f4834290463_239809_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/bleve-study-1/media/16396295213776_hubaae0ff782c8b75f8b806f4834290463_239809_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/bleve-study-1/media/16396295213776_hubaae0ff782c8b75f8b806f4834290463_239809_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">全文搜索引擎库（Bleve）学习实践</h2>
+    <p class="card-text">Bleve is an open-sourced text indexing and search library implemented in Go, developed in-house at Couchbase.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-12-16 1216:00">Dec 16, 2021</time></p>
+      <p>#golang #search #bleve #boltdb </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

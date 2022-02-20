@@ -1,0 +1,48 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/</link>
+    <description>Recent content in Categories on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>casbin</title>
+      <link>https://taodanfang.github.io/categories/casbin/</link>
+      <pubDate>Wed, 26 Jan 2022 22:22:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/casbin/</guid>
+      <description></description>
+    </item><item>
+      <title>rule</title>
+      <link>https://taodanfang.github.io/categories/rule/</link>
+      <pubDate>Wed, 26 Jan 2022 22:22:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/rule/</guid>
+      <description></description>
+    </item><item>
+      <title>tenant</title>
+      <link>https://taodanfang.github.io/categories/tenant/</link>
+      <pubDate>Wed, 26 Jan 2022 22:22:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/tenant/</guid>
+      <description></description>
+    </item><item>
+      <title>cc-table</title>
+      <link>https://taodanfang.github.io/categories/cc-table/</link>
+      <pubDate>Thu, 20 Jan 2022 19:43:15 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/cc-table/</guid>
+      <description></description>
+    </item><item>
+      <title>bleve</title>
+      <link>https://taodanfang.github.io/categories/bleve/</link>
+      <pubDate>Thu, 16 Dec 2021 12:34:57 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/bleve/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

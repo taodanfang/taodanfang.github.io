@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Go Kit 官方示例学习及其 API Gateway 实现 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  Go Kit 官方示例学习及其 API Gateway 实现</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >Go Kit 官方示例学习及其 API Gateway 实现</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-07-07">Jul 7, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/go-kit-example-study-1/4_hu3d03a01dcc18bc5be0e67db3d8d209a6_2292329_711x0_resize_lanczos_3.png 1x, https://taodanfang.github.io/posts/go-kit-example-study-1/4_hu3d03a01dcc18bc5be0e67db3d8d209a6_2292329_1422x0_resize_lanczos_3.png 2x, https://taodanfang.github.io/posts/go-kit-example-study-1/4_hu3d03a01dcc18bc5be0e67db3d8d209a6_2292329_2133x0_resize_lanczos_3.png 3x">
+            <img src="https://taodanfang.github.io/posts/go-kit-example-study-1/4_hu3d03a01dcc18bc5be0e67db3d8d209a6_2292329_711x0_resize_lanczos_3.png" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一stringsvc1基本框架">一，StringSvc1（基本框架）</a>
+      <ul>
+        <li><a href="#1业务逻辑">1，业务逻辑</a></li>
+        <li><a href="#2请求与响应">2，请求与响应</a></li>
+        <li><a href="#3endpoints">3，Endpoints</a></li>
+        <li><a href="#4transports">4，Transports</a></li>
+        <li><a href="#5测试">5，测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#二stringsvc2中间件">二，StringSvc2（中间件）</a>
+      <ul>
+        <li><a href="#1关注点分离">1，关注点分离</a></li>
+        <li><a href="#2transport-logging">2，Transport Logging</a></li>
+        <li><a href="#3application-logging">3，Application Logging</a></li>
+        <li><a href="#4application-设施">4，Application 设施</a></li>
+        <li><a href="#5测试-1">5，测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#三服务注册与发现">三，服务注册与发现</a>
+      <ul>
+        <li><a href="#1基本原理">1，基本原理</a></li>
+        <li><a href="#2常用服务注册与发现框架">2，常用服务注册与发现框架</a></li>
+        <li><a href="#3使用consul">3，使用Consul</a></li>
+        <li><a href="#4consul-api">4，Consul API</a></li>
+        <li><a href="#5gokit-consul-插件">5，Gokit Consul 插件</a></li>
+      </ul>
+    </li>
+    <li><a href="#四stringsvc3api-gateway">四，StringSvc3（API Gateway）</a>
+      <ul>
+        <li><a href="#1修改stringsvc3使其支持服务注册">1，修改StringSvc3，使其支持服务注册</a></li>
+        <li><a href="#2网关实现">2，网关实现</a></li>
+        <li><a href="#3测试">3，测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#五关于context">五，关于context</a></li>
+    <li><a href="#六stringsvc4nats">六，StringSvc4（NATS）</a></li>
+    <li><a href="#七stringsvc5websocket">七，StringSvc5（websocket）</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/crdt-5-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">CRDT协议基础知识(5) - 安全隐私处理</h2>
+    <p class="card-text">Privacy focused means the application developers never get to see the content their users are creating - your data is yours only. Powerful means real-time collaboration between multiple users, search, notifications. User friendly means it’s easy to access or recover your data on a new device and easy to invite collaborators.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-02-03 23:00">Feb 3, 2021</time></p>
+      <p>#CRDT </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>该文是Go kit 官方示例的学习笔记，并总结了结合stringsvc实现 API Gateway 的方法</p>
+<h2 id="一stringsvc1基本框架">一，StringSvc1（基本框架）</h2>
+<h3 id="1业务逻辑">1，业务逻辑</h3>
+<ul>
+<li>业务逻辑以服务方式存在，在gokit中，一个服务首先定义为一个interface。例如，定义服务 StringService 如下：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#408080;font-style:italic">// StringService provides operations on strings.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">import</span> <span style="color:#ba2121">&#34;context&#34;</span>
+
+<span style="color:#408080;font-style:italic">// 服务接口
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> StringService <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Uppercase</span>(<span style="color:#b00040">string</span>) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>)
+	<span style="color:#00f">Count</span>(<span style="color:#b00040">string</span>) <span style="color:#b00040">int</span>
+}
+</code></pre></div><!-- raw HTML omitted -->
+<ul>
+<li>同时需要定义该 interface 的实现对象</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// 服务对象
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> stringService <span style="color:#008000;font-weight:bold">struct</span>{}
+
+<span style="color:#408080;font-style:italic">// 服务实现
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (stringService) <span style="color:#00f">Uppercase</span>(s <span style="color:#b00040">string</span>) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">if</span> s <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;&#34;</span>, ErrEmpty
+	}
+	<span style="color:#008000;font-weight:bold">return</span> strings.<span style="color:#00f">ToUpper</span>(s), <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#408080;font-style:italic">// ErrEmpty is returned when input string is empty
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">var</span> ErrEmpty = errors.<span style="color:#00f">New</span>(<span style="color:#ba2121">&#34;Empty string&#34;</span>)
+</code></pre></div><h3 id="2请求与响应">2，请求与响应</h3>
+<ul>
+<li>在Go kit中，首选的消息通信模式是 RPC。因此，服务接口中的每个方法会对应一个RPC调用方法。这样，我们需要定义这些方法的请求与响应参数结构。例如：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// 请求
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> uppercaseRequest <span style="color:#008000;font-weight:bold">struct</span> {
+	S <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;s&#34;`</span>
+}
+
+<span style="color:#408080;font-style:italic">// 响应
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> uppercaseResponse <span style="color:#008000;font-weight:bold">struct</span> {
+	V   <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;v&#34;`</span>
+	Err <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;err,omitempty&#34;`</span> <span style="color:#408080;font-style:italic">// errors don&#39;t JSON-marshal, so we use a string
+</span><span style="color:#408080;font-style:italic"></span>}
+</code></pre></div><h3 id="3endpoints">3，Endpoints</h3>
+<ul>
+<li>Go kit通过一个称为 endpoint 的抽象概念来提供服务功能</li>
+<li>一个 endpoint 代表了一个rpc，也就对应与服务 interface 中的方法，其定义方式如下：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Endpoint <span style="color:#008000;font-weight:bold">func</span>(ctx context.Context, request <span style="color:#008000;font-weight:bold">interface</span>{}) (response <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>)
+</code></pre></div><ul>
+<li>我们需要编写一个适配器函数，将interface中的方法转换成一个endpoint。例如：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;context&#34;</span>
+	<span style="color:#ba2121">&#34;github.com/go-kit/kit/endpoint&#34;</span>
+)
+
+<span style="color:#408080;font-style:italic">// 适配器
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">makeUppercaseEndpoint</span>(svc StringService) endpoint.Endpoint {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(_ context.Context, request <span style="color:#008000;font-weight:bold">interface</span>{}) (<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#b00040">error</span>) {
+		req <span style="color:#666">:=</span> request.(uppercaseRequest)
+		v, err <span style="color:#666">:=</span> svc.<span style="color:#00f">Uppercase</span>(req.S)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span> uppercaseResponse{v, err.<span style="color:#00f">Error</span>()}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+		<span style="color:#008000;font-weight:bold">return</span> uppercaseResponse{v, <span style="color:#ba2121">&#34;&#34;</span>}, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+</code></pre></div><h3 id="4transports">4，Transports</h3>
+<ul>
+<li>为了可以从外部调用这些服务，我们需要将其以某种传输协议（Transport）暴露出去。Go kit 支持多种传输协议，包括http, grpc 等等。</li>
+<li>针对StringService服务，我们选择 Json over HTTP 协议，将其暴露出去。Go kit 提供了transport包，方便实现。例如：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;context&#34;</span>
+	<span style="color:#ba2121">&#34;encoding/json&#34;</span>
+	<span style="color:#ba2121">&#34;log&#34;</span>
+	<span style="color:#ba2121">&#34;net/http&#34;</span>
+
+  <span style="color:#408080;font-style:italic">// gokit 提供的transport工具包
+</span><span style="color:#408080;font-style:italic"></span>	httptransport <span style="color:#ba2121">&#34;github.com/go-kit/kit/transport/http&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	svc <span style="color:#666">:=</span> stringService{}
+
+	uppercaseHandler <span style="color:#666">:=</span> httptransport.<span style="color:#00f">NewServer</span>(
+		<span style="color:#00f">makeUppercaseEndpoint</span>(svc),
+		decodeUppercaseRequest,
+		encodeResponse,
+	)
+
+	http.<span style="color:#00f">Handle</span>(<span style="color:#ba2121">&#34;/uppercase&#34;</span>, uppercaseHandler)
+	http.<span style="color:#00f">Handle</span>(<span style="color:#ba2121">&#34;/count&#34;</span>, countHandler)
+	log.<span style="color:#00f">Fatal</span>(http.<span style="color:#00f">ListenAndServe</span>(<span style="color:#ba2121">&#34;:8080&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>))
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">decodeUppercaseRequest</span>(_ context.Context, r <span style="color:#666">*</span>http.Request) (<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">var</span> request uppercaseRequest
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> json.<span style="color:#00f">NewDecoder</span>(r.Body).<span style="color:#00f">Decode</span>(<span style="color:#666">&amp;</span>request); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+	}
+	<span style="color:#008000;font-weight:bold">return</span> request, <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">encodeResponse</span>(_ context.Context, w http.ResponseWriter, response <span style="color:#008000;font-weight:bold">interface</span>{}) <span style="color:#b00040">error</span> {
+	<span style="color:#008000;font-weight:bold">return</span> json.<span style="color:#00f">NewEncoder</span>(w).<span style="color:#00f">Encode</span>(response)
+}
+</code></pre></div><h3 id="5测试">5，测试</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> stringsvc1
+go run main.go
+
+curl -XPOST -d <span style="color:#ba2121">&#39;{&#34;s&#34;: &#34;hello, world&#34;}&#39;</span> localhost:8080/uppercase
+<span style="color:#666">{</span><span style="color:#ba2121">&#34;v&#34;</span>:<span style="color:#ba2121">&#34;HELLO, WORLD&#34;</span><span style="color:#666">}</span>
+</code></pre></div><h2 id="二stringsvc2中间件">二，StringSvc2（中间件）</h2>
+<blockquote>
+<p>一个具备产品标准的服务，必须提供日志和度量机制。</p>
+</blockquote>
+<h3 id="1关注点分离">1，关注点分离</h3>
+<ul>
+<li>随着服务端口的不断增多，需要采用分层分解思想将这些代码进行组织。以stringsvc1的分解为例，我们需要作如下调整。</li>
+<li>将 services 分离到 service.go 文件中</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> StringService
+<span style="color:#008000;font-weight:bold">type</span> stringService
+<span style="color:#008000;font-weight:bold">func</span> Uppercase
+
+<span style="color:#008000;font-weight:bold">var</span> ErrEmpty
+
+<span style="color:#408080;font-style:italic">// ServiceMiddleware is a chainable behavior modifier for StringService.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> ServiceMiddleware <span style="color:#008000;font-weight:bold">func</span>(StringService) StringService
+</code></pre></div><ul>
+<li>将 transports 分离到 transport.go 文件中</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> makeUppercaseEndpoint
+
+<span style="color:#008000;font-weight:bold">func</span> decodeUppercaseRequest
+<span style="color:#008000;font-weight:bold">func</span> encodeResponse
+
+<span style="color:#008000;font-weight:bold">type</span> uppercaseRequest
+<span style="color:#008000;font-weight:bold">type</span> uppercaseResponse
+</code></pre></div><h3 id="2transport-logging">2，Transport Logging</h3>
+<blockquote>
+<p>每个组件应当将 logger 作为一个依赖组件，不同的组件可以采用不同的 logger。我们可以为不同组件创建不同的logger，并将其传递给该组件，这称为“依赖注入”。不建议采用全局范围的 logger。</p>
+<p>Go kit 采用了一种称为中间件(middleware)的思路实现这种“依赖注入”。</p>
+</blockquote>
+<ul>
+<li>一个 middleware 是定义为以下形式的函数</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Middleware <span style="color:#008000;font-weight:bold">func</span>(Endpoint) Endpoint
+</code></pre></div><ul>
+<li>你可以在 middleware 中加入日志处理（引入日志模块），实现依赖注入。例如：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">loggingMiddleware</span>(logger log.Logger) Middleware {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(next endpoint.Endpoint) endpoint.Endpoint {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(ctx context.Context, request <span style="color:#008000;font-weight:bold">interface</span>{}) (<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#b00040">error</span>) {
+			logger.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;msg&#34;</span>, <span style="color:#ba2121">&#34;calling endpoint&#34;</span>)
+			<span style="color:#008000;font-weight:bold">defer</span> logger.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;msg&#34;</span>, <span style="color:#ba2121">&#34;called endpoint&#34;</span>)
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">next</span>(ctx, request)
+		}
+	}
+}
+</code></pre></div><ul>
+<li>通过一个 middleware 可以实现针对一个 endpoint 的进一步依赖注入，将外部服务传入到该endpoint</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">logger <span style="color:#666">:=</span> log.<span style="color:#00f">NewLogfmtLogger</span>(os.Stderr)
+
+svc <span style="color:#666">:=</span> stringService{}
+
+<span style="color:#008000;font-weight:bold">var</span> uppercase endpoint.Endpoint
+uppercase = <span style="color:#00f">makeUppercaseEndpoint</span>(svc)
+
+<span style="color:#408080;font-style:italic">// 实现依赖注入
+</span><span style="color:#408080;font-style:italic"></span>uppercase = <span style="color:#00f">loggingMiddleware</span>(log.<span style="color:#00f">With</span>(logger, <span style="color:#ba2121">&#34;method&#34;</span>, <span style="color:#ba2121">&#34;uppercase&#34;</span>))(uppercase)
+
+uppercaseHandler <span style="color:#666">:=</span> httptransport.<span style="color:#00f">NewServer</span>(
+	uppercase,
+	<span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>)
+</code></pre></div><h3 id="3application-logging">3，Application Logging</h3>
+<ul>
+<li>应用（服务）范围的依赖注入方法，可以定义一个 Middleware 对象，用于封装针对的 service 接口。例如，我们定义针对 StringService 的Middleware 对象如下：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> loggingMiddleware <span style="color:#008000;font-weight:bold">struct</span> {
+	logger log.Logger
+	next   StringService
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (mw loggingMiddleware) <span style="color:#00f">Uppercase</span>(s <span style="color:#b00040">string</span>) (output <span style="color:#b00040">string</span>, err <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>(begin time.Time) {
+		mw.logger.<span style="color:#00f">Log</span>(
+			<span style="color:#ba2121">&#34;method&#34;</span>, <span style="color:#ba2121">&#34;uppercase&#34;</span>,
+			<span style="color:#ba2121">&#34;input&#34;</span>, s,
+			<span style="color:#ba2121">&#34;output&#34;</span>, output,
+			<span style="color:#ba2121">&#34;err&#34;</span>, err,
+			<span style="color:#ba2121">&#34;took&#34;</span>, time.<span style="color:#00f">Since</span>(begin),
+		)
+	}(time.<span style="color:#00f">Now</span>())
+
+	output, err = mw.next.<span style="color:#00f">Uppercase</span>(s)
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+</code></pre></div><ul>
+<li>然后，应用该middleware 如下：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;os&#34;</span>
+
+	<span style="color:#ba2121">&#34;github.com/go-kit/kit/log&#34;</span>
+	httptransport <span style="color:#ba2121">&#34;github.com/go-kit/kit/transport/http&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	logger <span style="color:#666">:=</span> log.<span style="color:#00f">NewLogfmtLogger</span>(os.Stderr)
+
+	<span style="color:#008000;font-weight:bold">var</span> svc StringService
+	svc = stringService{}
+	svc = loggingMiddleware{logger, svc}
+
+	<span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>
+	uppercaseHandler <span style="color:#666">:=</span> httptransport.<span style="color:#00f">NewServer</span>(
+		<span style="color:#00f">makeUppercaseEndpoint</span>(svc),
+		<span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>	)
+}
+</code></pre></div><ul>
+<li>Go kit 提供的 Middleware 分为（根据范围）以下几种：
+<ul>
+<li>Endpoint middleware，关注传输层（transport），例如熔断处理、限流处理等</li>
+<li>Service middleware，关注业务层（service），例如日志，度量等等</li>
+</ul>
+</li>
+</ul>
+<h3 id="4application-设施">4，Application 设施</h3>
+<p>In Go kit, instrumentation means using <strong>package metrics</strong> to record statistics about your service’s runtime behavior. Counting the number of jobs processed, recording the duration of requests after they’ve finished, and tracking the number of in-flight operations would all be considered instrumentation.</p>
+<p>在Go kit中，Application Instrumentation是指服务运行时行为的度量统计，包括任务处理数量，请求完成时间，在线操作的跟踪等等操作。Go kit采用service middleware的方法处理Application Instrumentation。例如：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> instrumentingMiddleware <span style="color:#008000;font-weight:bold">struct</span> {
+	requestCount   metrics.Counter
+	requestLatency metrics.Histogram
+	next           StringService
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (mw instrumentingMiddleware) <span style="color:#00f">Uppercase</span>(s <span style="color:#b00040">string</span>) (output <span style="color:#b00040">string</span>, err <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>(begin time.Time) {
+		lvs <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{<span style="color:#ba2121">&#34;method&#34;</span>, <span style="color:#ba2121">&#34;uppercase&#34;</span>, <span style="color:#ba2121">&#34;error&#34;</span>, fmt.<span style="color:#00f">Sprint</span>(err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span>)}
+		mw.requestCount.<span style="color:#00f">With</span>(lvs<span style="color:#666">...</span>).<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		mw.requestLatency.<span style="color:#00f">With</span>(lvs<span style="color:#666">...</span>).<span style="color:#00f">Observe</span>(time.<span style="color:#00f">Since</span>(begin).<span style="color:#00f">Seconds</span>())
+	}(time.<span style="color:#00f">Now</span>())
+
+	output, err = mw.next.<span style="color:#00f">Uppercase</span>(s)
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+</code></pre></div><p>然后，将其应用到服务中，如下：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">import</span> (
+	stdprometheus <span style="color:#ba2121">&#34;github.com/prometheus/client_golang/prometheus&#34;</span>
+	kitprometheus <span style="color:#ba2121">&#34;github.com/go-kit/kit/metrics/prometheus&#34;</span>
+	<span style="color:#ba2121">&#34;github.com/go-kit/kit/metrics&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	logger <span style="color:#666">:=</span> log.<span style="color:#00f">NewLogfmtLogger</span>(os.Stderr)
+
+	fieldKeys <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{<span style="color:#ba2121">&#34;method&#34;</span>, <span style="color:#ba2121">&#34;error&#34;</span>}
+	requestCount <span style="color:#666">:=</span> kitprometheus.<span style="color:#00f">NewCounterFrom</span>(stdprometheus.CounterOpts{
+		Namespace: <span style="color:#ba2121">&#34;my_group&#34;</span>,
+		Subsystem: <span style="color:#ba2121">&#34;string_service&#34;</span>,
+		Name:      <span style="color:#ba2121">&#34;request_count&#34;</span>,
+		Help:      <span style="color:#ba2121">&#34;Number of requests received.&#34;</span>,
+	}, fieldKeys)
+	requestLatency <span style="color:#666">:=</span> kitprometheus.<span style="color:#00f">NewSummaryFrom</span>(stdprometheus.SummaryOpts{
+		Namespace: <span style="color:#ba2121">&#34;my_group&#34;</span>,
+		Subsystem: <span style="color:#ba2121">&#34;string_service&#34;</span>,
+		Name:      <span style="color:#ba2121">&#34;request_latency_microseconds&#34;</span>,
+		Help:      <span style="color:#ba2121">&#34;Total duration of requests in microseconds.&#34;</span>,
+	}, fieldKeys)
+	countResult <span style="color:#666">:=</span> kitprometheus.<span style="color:#00f">NewSummaryFrom</span>(stdprometheus.SummaryOpts{
+		Namespace: <span style="color:#ba2121">&#34;my_group&#34;</span>,
+		Subsystem: <span style="color:#ba2121">&#34;string_service&#34;</span>,
+		Name:      <span style="color:#ba2121">&#34;count_result&#34;</span>,
+		Help:      <span style="color:#ba2121">&#34;The result of each count method.&#34;</span>,
+	}, []<span style="color:#b00040">string</span>{}) <span style="color:#408080;font-style:italic">// no fields here
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">var</span> svc StringService
+	svc = stringService{}
+	svc = loggingMiddleware{logger, svc}
+  
+  <span style="color:#408080;font-style:italic">// 应用 application instrumentation
+</span><span style="color:#408080;font-style:italic"></span>	svc = instrumentingMiddleware{requestCount, requestLatency, countResult, svc}
+
+	uppercaseHandler <span style="color:#666">:=</span> httptransport.<span style="color:#00f">NewServer</span>(
+		<span style="color:#00f">makeUppercaseEndpoint</span>(svc),
+		decodeUppercaseRequest,
+		encodeResponse,
+	)
+
+	http.<span style="color:#00f">Handle</span>(<span style="color:#ba2121">&#34;/uppercase&#34;</span>, uppercaseHandler)
+	http.<span style="color:#00f">Handle</span>(<span style="color:#ba2121">&#34;/metrics&#34;</span>, promhttp.<span style="color:#00f">Handler</span>())
+	logger.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;msg&#34;</span>, <span style="color:#ba2121">&#34;HTTP&#34;</span>, <span style="color:#ba2121">&#34;addr&#34;</span>, <span style="color:#ba2121">&#34;:8080&#34;</span>)
+	logger.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;err&#34;</span>, http.<span style="color:#00f">ListenAndServe</span>(<span style="color:#ba2121">&#34;:8080&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>))
+}
+</code></pre></div><h3 id="5测试-1">5，测试</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> stringsvc2
+go run main.go
+
+curl -XPOST -d <span style="color:#ba2121">&#39;{&#34;s&#34;: &#34;hello, world&#34;}&#39;</span> localhost:8080/uppercase      <span style="color:#666">(</span>base<span style="color:#666">)</span>
+<span style="color:#666">{</span><span style="color:#ba2121">&#34;v&#34;</span>:<span style="color:#ba2121">&#34;HELLO, WORLD&#34;</span><span style="color:#666">}</span>
+
+<span style="color:#19177c">method</span><span style="color:#666">=</span>uppercase <span style="color:#19177c">input</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;hello, world&#34;</span> <span style="color:#19177c">output</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;HELLO, WORLD&#34;</span> <span style="color:#19177c">err</span><span style="color:#666">=</span>null <span style="color:#19177c">took</span><span style="color:#666">=</span>15.596µs
+</code></pre></div><h2 id="三服务注册与发现">三，服务注册与发现</h2>
+<h3 id="1基本原理">1，基本原理</h3>
+<ul>
+<li>服务注册：服务实例启动时，将自身信息注册到服务注册与发现中心，并在运行时通过心跳等方式向服务注册与发现中心汇报自身服务状态</li>
+<li>服务发现：服务实例向服务注册与发现中心获取其他服务实例信息，用于进行随后的远程调用</li>
+<li>服务注册与发现中心，管理当前注册到该中心的微服务实例元数据信息，包括服务名、IP地址、端口号、服务状态等等</li>
+</ul>
+<h3 id="2常用服务注册与发现框架">2，常用服务注册与发现框架</h3>
+<ul>
+<li>
+<p>Consul：采用go语言编写，分布式、高可用、可横向扩展的开源框架</p>
+<p><img src="image-20210708142747821.png" alt="image-20210708142747821"></p>
+</li>
+<li>
+<p>Etcd：采用go语言编写，分布式、高可用的KV存储系统，支持消息发布与订阅。相对于其他类似组件，Etcd更为轻量级，部署简单，且支持HTTP接口。</p>
+</li>
+<li>
+<p>Zookeeper：采用Java语言编写，重量级开源分布式应用协调服务。</p>
+<p><img src="image-20210708143404336.png" alt="image-20210708143404336"></p>
+</li>
+</ul>
+<h3 id="3使用consul">3，使用Consul</h3>
+<ul>
+<li>安装consul</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository <span style="color:#ba2121">&#34;deb [arch=amd64] https://apt.releases.hashicorp.com </span><span style="color:#008000;font-weight:bold">$(</span>lsb_release -cs<span style="color:#008000;font-weight:bold">)</span><span style="color:#ba2121"> main&#34;</span>
+sudo apt-get update <span style="color:#666">&amp;&amp;</span> sudo apt-get install consul
+
+hanks@vm:~$ consul version
+Consul v1.10.0
+Revision 27de64da7
+Protocol <span style="color:#666">2</span> spoken by default, understands <span style="color:#666">2</span> to <span style="color:#666">3</span> <span style="color:#666">(</span>agent will automatically use protocol &gt;2 when speaking to compatible agents<span style="color:#666">)</span>
+</code></pre></div><ul>
+<li>启动 consul</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">consul agent -dev
+
+<span style="color:#408080;font-style:italic"># 或</span>
+
+consul agent -server
+</code></pre></div><p><img src="image-20210708144505458.png" alt="image-20210708144505458"></p>
+<h3 id="4consul-api">4，Consul API</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> DiscoveryClient <span style="color:#008000;font-weight:bold">interface</span> {
+
+	<span style="color:#408080;font-style:italic">/**
+</span><span style="color:#408080;font-style:italic">	 * 服务注册接口
+</span><span style="color:#408080;font-style:italic">	 * @param serviceName 服务名
+</span><span style="color:#408080;font-style:italic">	 * @param instanceId 服务实例Id
+</span><span style="color:#408080;font-style:italic">	 * @param instancePort 服务实例端口
+</span><span style="color:#408080;font-style:italic">	 * @param healthCheckUrl 健康检查地址
+</span><span style="color:#408080;font-style:italic">	 * @param instanceHost 服务实例地址
+</span><span style="color:#408080;font-style:italic">	 * @param meta 服务实例元数据
+</span><span style="color:#408080;font-style:italic">	 */</span>
+	<span style="color:#00f">Register</span>(serviceName, instanceId, healthCheckUrl <span style="color:#b00040">string</span>, instanceHost <span style="color:#b00040">string</span>, instancePort <span style="color:#b00040">int</span>, meta <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>log.Logger) <span style="color:#b00040">bool</span>
+
+	<span style="color:#408080;font-style:italic">/**
+</span><span style="color:#408080;font-style:italic">	 * 服务注销接口
+</span><span style="color:#408080;font-style:italic">	 * @param instanceId 服务实例Id
+</span><span style="color:#408080;font-style:italic">	 */</span>
+	<span style="color:#00f">DeRegister</span>(instanceId <span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>log.Logger) <span style="color:#b00040">bool</span>
+
+	<span style="color:#408080;font-style:italic">/**
+</span><span style="color:#408080;font-style:italic">	 * 发现服务实例接口
+</span><span style="color:#408080;font-style:italic">	 * @param serviceName 服务名
+</span><span style="color:#408080;font-style:italic">	 */</span>
+	<span style="color:#00f">DiscoverServices</span>(serviceName <span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>log.Logger) []<span style="color:#008000;font-weight:bold">interface</span>{}
+}
+</code></pre></div><h3 id="5gokit-consul-插件">5，Gokit Consul 插件</h3>
+<blockquote>
+<p>在gokit中默认提供了对consul, etcd, zookeeper等常用注册中心的支持，可以轻松地实现服务注册与发现</p>
+</blockquote>
+<ul>
+<li>引入包</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;github.com/go-kit/kit/sd/consul&#34;</span>
+	<span style="color:#ba2121">&#34;github.com/hashicorp/consul/api&#34;</span>
+	<span style="color:#ba2121">&#34;github.com/hashicorp/consul/api/watch&#34;</span>
+)
+</code></pre></div><ul>
+<li>定义DiscoveryClient实现对象</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> KitDiscoverClient <span style="color:#008000;font-weight:bold">struct</span> {
+	Host   <span style="color:#b00040">string</span> <span style="color:#408080;font-style:italic">// Consul Host
+</span><span style="color:#408080;font-style:italic"></span>	Port   <span style="color:#b00040">int</span>    <span style="color:#408080;font-style:italic">// Consul Port
+</span><span style="color:#408080;font-style:italic"></span>	client consul.Client
+	<span style="color:#408080;font-style:italic">// 连接 consul 的配置
+</span><span style="color:#408080;font-style:italic"></span>	config <span style="color:#666">*</span>api.Config
+	mutex sync.Mutex
+	<span style="color:#408080;font-style:italic">// 服务实例缓存字段
+</span><span style="color:#408080;font-style:italic"></span>	instancesMap sync.Map
+}
+</code></pre></div><ul>
+<li>创建 consul 客户端</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">NewKitDiscoverClient</span>(consulHost <span style="color:#b00040">string</span>, consulPort <span style="color:#b00040">int</span>) (DiscoveryClient, <span style="color:#b00040">error</span>) {
+	<span style="color:#408080;font-style:italic">// 通过 Consul Host 和 Consul Port 创建一个 consul.Client
+</span><span style="color:#408080;font-style:italic"></span>	consulConfig <span style="color:#666">:=</span> api.<span style="color:#00f">DefaultConfig</span>()
+	consulConfig.Address = consulHost <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> strconv.<span style="color:#00f">Itoa</span>(consulPort)
+	apiClient, err <span style="color:#666">:=</span> api.<span style="color:#00f">NewClient</span>(consulConfig)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+	}
+	client <span style="color:#666">:=</span> consul.<span style="color:#00f">NewClient</span>(apiClient)
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>KitDiscoverClient{
+		Host:   consulHost,
+		Port:   consulPort,
+		config:consulConfig,
+		client: client,
+	}, err
+}
+</code></pre></div><ul>
+<li>服务注册</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (consulClient <span style="color:#666">*</span>KitDiscoverClient) <span style="color:#00f">Register</span>(serviceName, instanceId, healthCheckUrl <span style="color:#b00040">string</span>, instanceHost <span style="color:#b00040">string</span>, instancePort <span style="color:#b00040">int</span>, meta <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>log.Logger) <span style="color:#b00040">bool</span> {
+
+	<span style="color:#408080;font-style:italic">// 1. 构建服务实例元数据
+</span><span style="color:#408080;font-style:italic"></span>	serviceRegistration <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>api.AgentServiceRegistration{
+		ID:      instanceId,
+		Name:    serviceName,
+		Address: instanceHost,
+		Port:    instancePort,
+		Meta:    meta,
+		Check: <span style="color:#666">&amp;</span>api.AgentServiceCheck{
+			DeregisterCriticalServiceAfter: <span style="color:#ba2121">&#34;30s&#34;</span>,
+			HTTP:                           <span style="color:#ba2121">&#34;http://&#34;</span> <span style="color:#666">+</span> instanceHost <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> strconv.<span style="color:#00f">Itoa</span>(instancePort) <span style="color:#666">+</span> healthCheckUrl,
+			Interval:                       <span style="color:#ba2121">&#34;15s&#34;</span>,
+		},
+	}
+
+	<span style="color:#408080;font-style:italic">// 2. 发送服务注册到 Consul 中
+</span><span style="color:#408080;font-style:italic"></span>	err <span style="color:#666">:=</span> consulClient.client.<span style="color:#00f">Register</span>(serviceRegistration)
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Register Service Error!&#34;</span>)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>
+	}
+	log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Register Service Success!&#34;</span>)
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">true</span>
+}
+</code></pre></div><ul>
+<li>服务注销</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (consulClient <span style="color:#666">*</span>KitDiscoverClient) <span style="color:#00f">DeRegister</span>(instanceId <span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>log.Logger) <span style="color:#b00040">bool</span> {
+
+	<span style="color:#408080;font-style:italic">// 构建包含服务实例 ID 的元数据结构体
+</span><span style="color:#408080;font-style:italic"></span>	serviceRegistration <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>api.AgentServiceRegistration{
+		ID: instanceId,
+	}
+	<span style="color:#408080;font-style:italic">// 发送服务注销请求
+</span><span style="color:#408080;font-style:italic"></span>	err <span style="color:#666">:=</span> consulClient.client.<span style="color:#00f">Deregister</span>(serviceRegistration)
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		logger.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Deregister Service Error!&#34;</span>)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>
+	}
+	log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Deregister Service Success!&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">true</span>
+}
+</code></pre></div><ul>
+<li>服务发现</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (consulClient <span style="color:#666">*</span>KitDiscoverClient) <span style="color:#00f">DiscoverServices</span>(serviceName <span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>log.Logger) []<span style="color:#008000;font-weight:bold">interface</span>{} {
+
+	<span style="color:#408080;font-style:italic">// 根据服务名请求服务实例列表
+</span><span style="color:#408080;font-style:italic"></span>	entries, _, err <span style="color:#666">:=</span> consulClient.client.<span style="color:#00f">Service</span>(serviceName, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#008000;font-weight:bold">false</span>, <span style="color:#008000;font-weight:bold">nil</span>)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		consulClient.instancesMap.<span style="color:#00f">Store</span>(serviceName, []<span style="color:#008000;font-weight:bold">interface</span>{}{})
+		logger.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Discover Service Error!&#34;</span>)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+	}
+	instances <span style="color:#666">:=</span> <span style="color:#008000">make</span>([]<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#008000">len</span>(entries))
+	<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i &lt; <span style="color:#008000">len</span>(instances); i<span style="color:#666">++</span> {
+		instances[i] = entries[i].Service
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> instances
+}
+</code></pre></div><h2 id="四stringsvc3api-gateway">四，StringSvc3（API Gateway）</h2>
+<p>The official hello-world tutorial <a href="https://gokit.io/examples/stringsvc.html">stringsvc</a> really confused me when I tried to implement <a href="https://github.com/go-kit/kit/tree/master/examples/stringsvc3">stringsvc3</a>. After some struggles, I realized that all this example wanted to do was to &ldquo;simulate&rdquo; an <a href="https://microservices.io/patterns/apigateway.html">API gateway</a>, which was kinda impractical in the real world. Therefore, I combined stringsvc3 with <a href="https://github.com/go-kit/kit/tree/master/examples/apigateway">apigateway</a> to create a more practical microservices application. <strong>Gokit 官方的StringSVC3示例用于演示一个模拟的API 网关的实现，我们希望实现一个真实的API Gateway。因此，对StringSvc3示例进行了改造</strong>。基本思路如下：</p>
+<h3 id="1修改stringsvc3使其支持服务注册">1，修改StringSvc3，使其支持服务注册</h3>
+<ul>
+<li>下载 stringsvc3</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/maxwellhertz/Gokit-stringsvc.git
+</code></pre></div><ul>
+<li>删除原有的 proxying.go 文件</li>
+<li>支持链式嵌套（service.go）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// ServiceMiddleware is a chainable behavior modifier for StringService.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> ServiceMiddleware <span style="color:#008000;font-weight:bold">func</span>(StringService) StringService
+</code></pre></div><ul>
+<li>日志处理（logging.go）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;time&#34;</span>
+
+	<span style="color:#ba2121">&#34;github.com/go-kit/kit/log&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">loggingMiddleware</span>(logger log.Logger) ServiceMiddleware {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(next StringService) StringService {
+		<span style="color:#008000;font-weight:bold">return</span> logmw{logger, next}
+	}
+}
+
+<span style="color:#008000;font-weight:bold">type</span> logmw <span style="color:#008000;font-weight:bold">struct</span> {
+	logger log.Logger
+	StringService
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (mw logmw) <span style="color:#00f">Uppercase</span>(s <span style="color:#b00040">string</span>) (output <span style="color:#b00040">string</span>, err <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>(begin time.Time) {
+		_ = mw.logger.<span style="color:#00f">Log</span>(
+			<span style="color:#ba2121">&#34;method&#34;</span>, <span style="color:#ba2121">&#34;uppercase&#34;</span>,
+			<span style="color:#ba2121">&#34;input&#34;</span>, s,
+			<span style="color:#ba2121">&#34;output&#34;</span>, output,
+			<span style="color:#ba2121">&#34;err&#34;</span>, err,
+			<span style="color:#ba2121">&#34;took&#34;</span>, time.<span style="color:#00f">Since</span>(begin),
+		)
+	}(time.<span style="color:#00f">Now</span>())
+
+	output, err = mw.StringService.<span style="color:#00f">Uppercase</span>(s)
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+</code></pre></div><ul>
+<li>度量处理（instrumenting.go）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;fmt&#34;</span>
+	<span style="color:#ba2121">&#34;time&#34;</span>
+
+	<span style="color:#ba2121">&#34;github.com/go-kit/kit/metrics&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">instrumentingMiddleware</span>(
+	requestCount metrics.Counter,
+	requestLatency metrics.Histogram,
+) ServiceMiddleware {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(next StringService) StringService {
+		<span style="color:#008000;font-weight:bold">return</span> instrmw{requestCount, requestLatency, countResult, next}
+	}
+}
+
+<span style="color:#008000;font-weight:bold">type</span> instrmw <span style="color:#008000;font-weight:bold">struct</span> {
+	requestCount   metrics.Counter
+	requestLatency metrics.Histogram
+	StringService
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (mw instrmw) <span style="color:#00f">Uppercase</span>(s <span style="color:#b00040">string</span>) (output <span style="color:#b00040">string</span>, err <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>(begin time.Time) {
+		lvs <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{<span style="color:#ba2121">&#34;method&#34;</span>, <span style="color:#ba2121">&#34;uppercase&#34;</span>, <span style="color:#ba2121">&#34;error&#34;</span>, fmt.<span style="color:#00f">Sprint</span>(err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span>)}
+		mw.requestCount.<span style="color:#00f">With</span>(lvs<span style="color:#666">...</span>).<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		mw.requestLatency.<span style="color:#00f">With</span>(lvs<span style="color:#666">...</span>).<span style="color:#00f">Observe</span>(time.<span style="color:#00f">Since</span>(begin).<span style="color:#00f">Seconds</span>())
+	}(time.<span style="color:#00f">Now</span>())
+
+	output, err = mw.StringService.<span style="color:#00f">Uppercase</span>(s)
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+</code></pre></div><ul>
+<li>端点封装（transport.go）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">makeUppercaseEndpoint</span>(svc StringService) endpoint.Endpoint {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(ctx context.Context, request <span style="color:#008000;font-weight:bold">interface</span>{}) (<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#b00040">error</span>) {
+		req <span style="color:#666">:=</span> request.(uppercaseRequest)
+		v, err <span style="color:#666">:=</span> svc.<span style="color:#00f">Uppercase</span>(req.S)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span> uppercaseResponse{v, err.<span style="color:#00f">Error</span>()}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+		<span style="color:#008000;font-weight:bold">return</span> uppercaseResponse{v, <span style="color:#ba2121">&#34;&#34;</span>}, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+
+</code></pre></div><ul>
+<li>设置日志与度量（main.go）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">fieldKeys <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{<span style="color:#ba2121">&#34;method&#34;</span>, <span style="color:#ba2121">&#34;error&#34;</span>}
+	requestCount <span style="color:#666">:=</span> kitprometheus.<span style="color:#00f">NewCounterFrom</span>(stdprometheus.CounterOpts{
+		Namespace: <span style="color:#ba2121">&#34;my_group&#34;</span>,
+		Subsystem: <span style="color:#ba2121">&#34;string_service&#34;</span>,
+		Name:      <span style="color:#ba2121">&#34;request_count&#34;</span>,
+		Help:      <span style="color:#ba2121">&#34;Number of requests received.&#34;</span>,
+	}, fieldKeys)
+	requestLatency <span style="color:#666">:=</span> kitprometheus.<span style="color:#00f">NewSummaryFrom</span>(stdprometheus.SummaryOpts{
+		Namespace: <span style="color:#ba2121">&#34;my_group&#34;</span>,
+		Subsystem: <span style="color:#ba2121">&#34;string_service&#34;</span>,
+		Name:      <span style="color:#ba2121">&#34;request_latency_microseconds&#34;</span>,
+		Help:      <span style="color:#ba2121">&#34;Total duration of requests in microseconds.&#34;</span>,
+	}, fieldKeys)
+
+	<span style="color:#008000;font-weight:bold">var</span> svc StringService
+	svc = stringService{}
+	svc = <span style="color:#00f">loggingMiddleware</span>(logger)(svc)
+	svc = <span style="color:#00f">instrumentingMiddleware</span>(requestCount, requestLatency, countResult)(svc)
+</code></pre></div><ul>
+<li>设置端点处理器</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">	<span style="color:#408080;font-style:italic">// Now run services
+</span><span style="color:#408080;font-style:italic"></span>	uppercaseHandler <span style="color:#666">:=</span> httptransport.<span style="color:#00f">NewServer</span>(
+		<span style="color:#00f">makeUppercaseEndpoint</span>(svc),
+		decodeUppercaseRequest,
+		encodeResponse,
+	)
+
+	http.<span style="color:#00f">Handle</span>(prefix<span style="color:#666">+</span><span style="color:#ba2121">&#34;/uppercase&#34;</span>, uppercaseHandler)
+	http.<span style="color:#00f">Handle</span>(prefix<span style="color:#666">+</span><span style="color:#ba2121">&#34;/count&#34;</span>, countHandler)
+	http.<span style="color:#00f">Handle</span>(prefix<span style="color:#666">+</span><span style="color:#ba2121">&#34;/metrics&#34;</span>, promhttp.<span style="color:#00f">Handler</span>())
+</code></pre></div><ul>
+<li>支持服务注册</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// Specify the information of an instance.
+</span><span style="color:#408080;font-style:italic"></span>	asr <span style="color:#666">:=</span> api.AgentServiceRegistration{
+		<span style="color:#408080;font-style:italic">// Every service instance must have an unique ID.
+</span><span style="color:#408080;font-style:italic"></span>		ID:      fmt.<span style="color:#00f">Sprintf</span>(<span style="color:#ba2121">&#34;%v%v/%v&#34;</span>, host, listen, prefix),
+		Name:    serviceName,
+		<span style="color:#408080;font-style:italic">// These two values are the location of an instance.
+</span><span style="color:#408080;font-style:italic"></span>		Address: host,
+		Port:    port,
+	}
+	consulConfig <span style="color:#666">:=</span> api.<span style="color:#00f">DefaultConfig</span>()
+	<span style="color:#408080;font-style:italic">// We can get the address of consul server from environment variale or a config file.
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">len</span>(consulServer) &gt; <span style="color:#666">0</span> {
+		consulConfig.Address = consulServer
+	}
+	consulClient, err <span style="color:#666">:=</span> api.<span style="color:#00f">NewClient</span>(consulConfig)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		logger.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;err&#34;</span>, err)
+		os.<span style="color:#00f">Exit</span>(<span style="color:#666">1</span>)
+	}
+	sdClient <span style="color:#666">:=</span> consul.<span style="color:#00f">NewClient</span>(consulClient)
+	registar <span style="color:#666">:=</span> consul.<span style="color:#00f">NewRegistrar</span>(sdClient, <span style="color:#666">&amp;</span>asr, logger)
+	registar.<span style="color:#00f">Register</span>()
+	<span style="color:#408080;font-style:italic">// According to the official doc of Go kit, 
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// it&#39;s important to call registar.Deregister() before the program exits.
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">defer</span> registar.<span style="color:#00f">Deregister</span>()
+</code></pre></div><h3 id="2网关实现">2，网关实现</h3>
+<ul>
+<li>创建一个新项目（stringclient），作为API gateway。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">module stringclient
+
+<span style="color:#008000;font-weight:bold">go</span> <span style="color:#666">1.13</span>
+
+<span style="color:#00f">require</span> (
+	github.com<span style="color:#666">/</span><span style="color:#008000;font-weight:bold">go</span><span style="color:#666">-</span>kit<span style="color:#666">/</span>kit v0<span style="color:#666">.9.0</span>
+	github.com<span style="color:#666">/</span>hashicorp<span style="color:#666">/</span>consul<span style="color:#666">/</span>api v1<span style="color:#666">.3.0</span>
+)
+</code></pre></div><ul>
+<li>建立consul客户端，创建服务实例（instancer）</li>
+</ul>
+<blockquote>
+<p>The instancer can retrieve healthy instances from Consul.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">	<span style="color:#008000;font-weight:bold">var</span>(
+		consulServer = <span style="color:#ba2121">&#34;172.16.170.128:8500&#34;</span>
+		listen       = <span style="color:#ba2121">&#34;:8080&#34;</span>
+		serviceName  = <span style="color:#ba2121">&#34;stringsvc&#34;</span>
+		prefix       = <span style="color:#ba2121">&#34;/stringsvc&#34;</span>
+	)
+
+	<span style="color:#408080;font-style:italic">// ......
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#408080;font-style:italic">// Build instancer.
+</span><span style="color:#408080;font-style:italic"></span>	consulConfig <span style="color:#666">:=</span> api.<span style="color:#00f">DefaultConfig</span>()
+	<span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">len</span>(consulServer) &gt; <span style="color:#666">0</span> {
+		consulConfig.Address = consulServer
+	}
+	consulClient, err <span style="color:#666">:=</span> api.<span style="color:#00f">NewClient</span>(consulConfig)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		logger.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;err&#34;</span>, err)
+		os.<span style="color:#00f">Exit</span>(<span style="color:#666">1</span>)
+	}
+	client <span style="color:#666">:=</span> consul.<span style="color:#00f">NewClient</span>(consulClient)
+
+	instancer <span style="color:#666">:=</span> consul.<span style="color:#00f">NewInstancer</span>(client, logger, serviceName, []<span style="color:#b00040">string</span>{}, <span style="color:#008000;font-weight:bold">true</span>)
+</code></pre></div><ul>
+<li>创建客户端endpoint适配器</li>
+</ul>
+<blockquote>
+<p>Go kit offers adapters to different service discovery systems, to get up-to-date sets of instances, exposed as individual endpoints. Those adapters are called subscribers. (Gokit 提供了许多适配器，又称订阅器。该适配器会从consul中返回多个同类服务的实例对象，基于这些实例对象可以进一步引入负载均衡机制）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Subscriber <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Endpoints</span>() ([]endpoint.Endpoint, <span style="color:#b00040">error</span>)
+}
+</code></pre></div><blockquote>
+<p>Internally, subscribers use a provided factory function to convert each discovered instance string (typically host:port) to a usable endpoint.（订阅器内部需要使用一个工厂函数，来将发现的服务实例连接串转变成一个可用的端点）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Factory <span style="color:#008000;font-weight:bold">func</span>(instance <span style="color:#b00040">string</span>) (endpoint.Endpoint, <span style="color:#b00040">error</span>)
+</code></pre></div><blockquote>
+<p>What the endpointer（适配器） do is to fetching an instance from the &ldquo;instance pool&rdquo; created by the instancer and use a factory function to convert it to a client endpoint.  I define a factory builder function to ocnstruct factory function based on some parameters like relative path, HTTP method, etc. 我们定义的工厂函数如下：</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">serviceFactoryBuilder</span>(path <span style="color:#b00040">string</span>, method <span style="color:#b00040">string</span>, enc httptransport.EncodeRequestFunc, dec httptransport.DecodeResponseFunc) sd.Factory {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(instance <span style="color:#b00040">string</span>) (e endpoint.Endpoint, closer io.Closer, err <span style="color:#b00040">error</span>) {
+		httpPrefix <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;http://&#34;</span>
+		<span style="color:#008000;font-weight:bold">if</span> !strings.<span style="color:#00f">HasPrefix</span>(instance, httpPrefix) {
+			instance = httpPrefix <span style="color:#666">+</span> instance
+		}
+
+		tgt, err <span style="color:#666">:=</span> url.<span style="color:#00f">Parse</span>(instance)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, <span style="color:#008000;font-weight:bold">nil</span>, err
+		}
+		tgt.Path = path
+
+		<span style="color:#008000;font-weight:bold">return</span> httptransport.<span style="color:#00f">NewClient</span>(method, tgt, enc, dec).<span style="color:#00f">Endpoint</span>(), <span style="color:#008000;font-weight:bold">nil</span>, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+</code></pre></div><blockquote>
+<p>针对每个endpoint创建适配器对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">	<span style="color:#408080;font-style:italic">// uppercase endpoint
+</span><span style="color:#408080;font-style:italic"></span>	uppercasePath <span style="color:#666">:=</span> prefix <span style="color:#666">+</span> <span style="color:#ba2121">&#34;/uppercase&#34;</span>
+	<span style="color:#408080;font-style:italic">// Create an endpointer that subscibes to the instancer.
+</span><span style="color:#408080;font-style:italic"></span>	uppercaseEndpointer <span style="color:#666">:=</span> sd.<span style="color:#00f">NewEndpointer</span>(instancer, <span style="color:#00f">serviceFactoryBuilder</span>(uppercasePath, <span style="color:#ba2121">&#34;POST&#34;</span>, encodeRequest, <span style="color:#00f">decodeResponseFuncBuilder</span>(uppercaseResponse{})), logger)
+    <span style="color:#408080;font-style:italic">// Use round-robin load balancing.
+</span></code></pre></div><ul>
+<li>实现负载均衡</li>
+</ul>
+<blockquote>
+<p>Now that we’ve got a set of endpoints, we need to choose one. Load balancers wrap subscribers, and select one endpoint from many. Go kit provides a couple of basic load balancers, and it’s easy to write your own if you want more advanced heuristics.通过端点适配器，我们可以获得一组endpoints，我们可以引入”负载均衡“中间件对该适配器进行封装。Gokit提供了一组基本的”负载均衡“器，我们采用consul的”负载均衡器“包进行实现：</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// Use round-robin load balancing.
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// Set retry policy.
+</span><span style="color:#408080;font-style:italic"></span>	uppercaseEndpoint <span style="color:#666">:=</span> lb.<span style="color:#00f">Retry</span>(<span style="color:#666">3</span>, <span style="color:#666">3</span><span style="color:#666">*</span>time.Second, lb.<span style="color:#00f">NewRoundRobin</span>(uppercaseEndpointer))
+</code></pre></div><blockquote>
+<p>Now we have the ability to choose endpoints according to some heuristic. We can use that to provide a single, logical, robust endpoint to consumers. A retry strategy wraps a load balancer, and returns a usable endpoint. The retry strategy will retry failed requests until either the max attempts or timeout has been reached. 通过”负载均衡“器可以根据启发式信息选择一个合适的端点。同时，我们可以进一步引入”重试机制中间件“对endpoint进行封装。Gokit提供的重试中间件定义如下：</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Retry</span>(max <span style="color:#b00040">int</span>, timeout time.Duration, lb Balancer) endpoint.Endpoint
+</code></pre></div><ul>
+<li>启动中间件</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+  <span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>  
+  	http.<span style="color:#00f">Handle</span>(uppercasePath, httptransport.<span style="color:#00f">NewServer</span>(
+		uppercaseEndpoint,
+		<span style="color:#00f">decodeRequestFuncBuilder</span>(uppercaseRequest{}),
+		encodeResponse,
+	))
+  
+  	logger.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;err&#34;</span>, http.<span style="color:#00f">ListenAndServe</span>(listen, <span style="color:#008000;font-weight:bold">nil</span>))
+}
+</code></pre></div><h3 id="3测试">3，测试</h3>
+<ul>
+<li>启动server</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#408080;font-style:italic"># 启动 consul</span>
+consul agent -dev -bootstrap -ui -client<span style="color:#666">=</span>0.0.0.0
+
+<span style="color:#408080;font-style:italic"># 启动 server（stringsvc3)</span>
+<span style="color:#008000">cd</span> service
+go run main.go
+<span style="color:#408080;font-style:italic"># 输出如下</span>
+<span style="color:#19177c">listen</span><span style="color:#666">=</span>:8080 <span style="color:#19177c">caller</span><span style="color:#666">=</span>registrar.go:33 <span style="color:#19177c">service</span><span style="color:#666">=</span>stringsvc <span style="color:#19177c">tags</span><span style="color:#666">=[]</span> <span style="color:#19177c">address</span><span style="color:#666">=</span>127.0.0.1 <span style="color:#19177c">action</span><span style="color:#666">=</span>register
+<span style="color:#19177c">listen</span><span style="color:#666">=</span>:8080 <span style="color:#19177c">caller</span><span style="color:#666">=</span>main.go:115 <span style="color:#19177c">msg</span><span style="color:#666">=</span>HTTP <span style="color:#19177c">addr</span><span style="color:#666">=</span>:8080
+</code></pre></div><p><img src="image-20210708192415171.png" alt="image-20210708192415171"></p>
+<p><img src="image-20210708192444795.png" alt="image-20210708192444795"></p>
+<ul>
+<li>启动网关</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> client
+go run main.go
+
+<span style="color:#408080;font-style:italic"># 输出</span>
+<span style="color:#19177c">ts</span><span style="color:#666">=</span>2021-07-08T12:22:02.106255Z <span style="color:#19177c">caller</span><span style="color:#666">=</span>instancer.go:48 <span style="color:#19177c">service</span><span style="color:#666">=</span>stringsvc <span style="color:#19177c">tags</span><span style="color:#666">=[]</span> <span style="color:#19177c">instances</span><span style="color:#666">=</span><span style="color:#666">1</span>
+</code></pre></div><ul>
+<li>测试网关</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -d <span style="color:#ba2121">&#39;{&#34;s&#34;: &#34;foo&#34;}&#39;</span> http://127.0.0.1:8090/stringsvc/uppercase                                          <span style="color:#666">(</span>base<span style="color:#666">)</span>
+<span style="color:#666">{</span><span style="color:#ba2121">&#34;v&#34;</span>:<span style="color:#ba2121">&#34;FOO&#34;</span><span style="color:#666">}</span>
+
+<span style="color:#408080;font-style:italic"># stringsvc3 server 输出如下</span>
+<span style="color:#19177c">listen</span><span style="color:#666">=</span>:8080 <span style="color:#19177c">caller</span><span style="color:#666">=</span>logging.go:22 <span style="color:#19177c">method</span><span style="color:#666">=</span>uppercase <span style="color:#19177c">input</span><span style="color:#666">=</span>foo <span style="color:#19177c">output</span><span style="color:#666">=</span>FOO <span style="color:#19177c">err</span><span style="color:#666">=</span>null <span style="color:#19177c">took</span><span style="color:#666">=</span>851ns
+</code></pre></div><h2 id="五关于context">五，关于context</h2>
+<p>The context object is used to carry information across conceptual boundaries in the scope of a single request. In our example, we haven’t yet threaded the context through our business logic. But that’s almost always a good idea. It allows you to pass request-scoped information between business logic and middlewares, and is necessary for more sophisticated tasks like granular distributed tracing annotations. Concretely, this means your business logic interfaces will look like:  <strong>我们针对服务接口的定义中，应该使用正确的形式（第一个参数总是 context</strong>）</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> MyService <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Foo</span>(context.Context, <span style="color:#b00040">string</span>, <span style="color:#b00040">int</span>) (<span style="color:#b00040">string</span>, <span style="color:#b00040">error</span>)
+	<span style="color:#00f">Bar</span>(context.Context, <span style="color:#b00040">string</span>) <span style="color:#b00040">error</span>
+	<span style="color:#00f">Baz</span>(context.Context) (<span style="color:#b00040">int</span>, <span style="color:#b00040">error</span>)
+}
+</code></pre></div><h2 id="六stringsvc4nats">六，StringSvc4（NATS）</h2>
+<p><strong>TODO</strong></p>
+<h2 id="七stringsvc5websocket">七，StringSvc5（websocket）</h2>
+<p><strong>TODO</strong></p>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="https://gokit.io/examples/stringsvc.html">https://gokit.io/examples/stringsvc.html</a></li>
+<li><a href="https://dev.to/maxwellhertz/a-go-microservices-demo-using-go-kit-and-api-gateway-pattern-2321">https://dev.to/maxwellhertz/a-go-microservices-demo-using-go-kit-and-api-gateway-pattern-2321</a></li>
+<li>《go语言高并发与微服务实战》</li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/crdt-5-1/" class="card blog-card" rel="bookmark" >
+  
+  <article class="card-body">
+    <h2 class="card-title">CRDT协议基础知识(5) - 安全隐私处理</h2>
+    <p class="card-text">Privacy focused means the application developers never get to see the content their users are creating - your data is yours only. Powerful means real-time collaboration between multiple users, search, notifications. User friendly means it’s easy to access or recover your data on a new device and easy to invite collaborators.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-02-03 23:00">Feb 3, 2021</time></p>
+      <p>#CRDT </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>golang - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/golang/</link>
+    <description>Recent content in golang on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 16 Dec 2021 12:34:57 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>NATs 技术学习及其开发模式</title>
+      <link>https://taodanfang.github.io/posts/nats-study-1/</link>
+      <pubDate>Wed, 04 Aug 2021 18:04:14 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/nats-study-1/</guid>
+      <description>&lt;p&gt;NATs 是一个开源的、轻量级的高性能消息分发系统。NATs 的消息基于主题进行分发，不依赖于网络位置。&lt;/p&gt;
+&lt;p&gt;NATS的协议是一个简单的、基于文本的发布/订阅风格的协议。客户端连接到 gnatsd（NATS服务器），并与 gnatsd 进行通信，通信基于普通的 TCP/IP 套接字，并定义了很小的操作集，换行表示终止。与传统的、使用了二进制消息格式的消息通信系统不同，使用了基于文本的 NATS 协议，使得客户端实现很简单，可以方便地选择多种编程语言或脚本语言来实现。&lt;/p&gt;</description>
+    </item><item>
+      <title>基于Go语言开发物联网项目(数传网关)相关基础</title>
+      <link>https://taodanfang.github.io/posts/iot-study-1/</link>
+      <pubDate>Mon, 02 Aug 2021 16:59:28 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/iot-study-1/</guid>
+      <description>&lt;p&gt;本文介绍了基于go开发物联网相关项目过程中涉及到的基本技术，包括：数据编解码，基础通信协议设计与运行等等。在物联网项目开发过程中，一般均涉及到定制协议的设计与开发，同时一般均以二进制数据进行传送，根据一般的需求，本文提供了相应的软件模板。&lt;/p&gt;</description>
+    </item><item>
+      <title>基于Go-kit 框架定制微服务应用的开发流程</title>
+      <link>https://taodanfang.github.io/posts/go-kit-microservice-1/</link>
+      <pubDate>Tue, 27 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-kit-microservice-1/</guid>
+      <description>&lt;p&gt;本文总结了基于go-kit定制微服务框架的基本方法和开发流程。&lt;/p&gt;</description>
+    </item><item>
+      <title>Go Kit 官方示例学习及其 API Gateway 实现</title>
+      <link>https://taodanfang.github.io/posts/go-kit-example-study-1/</link>
+      <pubDate>Wed, 07 Jul 2021 16:09:28 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-kit-example-study-1/</guid>
+      <description>&lt;p&gt;该文是Go kit 官方示例的学习笔记，并总结了结合stringsvc实现 API Gateway 的方法&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

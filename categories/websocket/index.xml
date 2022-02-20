@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>websocket - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/websocket/</link>
+    <description>Recent content in websocket on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 09 Aug 2021 18:05:04 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/websocket/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>基于GOSF的Websocket微服务框架开发方法</title>
+      <link>https://taodanfang.github.io/posts/gosf-study-1/</link>
+      <pubDate>Mon, 09 Aug 2021 18:05:04 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/gosf-study-1/</guid>
+      <description>&lt;p&gt;Go Socket.IO Framework or GOSF is an easy-to-use framework for developing Socket.IO APIs in Google&amp;rsquo;s Go programming language (GoLang). GOSF 对Websocket进行了封装，实现了一个websocket服务器，并提供了一个Socket.io风格的前端接口，同时也可以基于websocket风格的前端接口进行连接和操作。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>前端拖拽（DnD）交互技术原理分析与实践 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  前端拖拽（DnD）交互技术原理分析与实践</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >前端拖拽（DnD）交互技术原理分析与实践</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-08-18">Aug 18, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/web-dnd-study-1/j15_hu21b0e4acf3bb8ac6270f41d9ff8ea8e0_328204_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/web-dnd-study-1/j15_hu21b0e4acf3bb8ac6270f41d9ff8ea8e0_328204_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/web-dnd-study-1/j15_hu21b0e4acf3bb8ac6270f41d9ff8ea8e0_328204_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/web-dnd-study-1/j15_hu21b0e4acf3bb8ac6270f41d9ff8ea8e0_328204_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#原生dnd">原生DnD</a>
+      <ul>
+        <li><a href="#事件检测">事件检测</a></li>
+        <li><a href="#拖拽生命周期">拖拽生命周期</a></li>
+        <li><a href="#启用拖拽效果">启用拖拽效果</a></li>
+        <li><a href="#数据传输对象">数据传输对象</a></li>
+        <li><a href="#基本使用过程">基本使用过程</a></li>
+      </ul>
+    </li>
+    <li><a href="#封装组件">封装组件</a>
+      <ul>
+        <li><a href="#vuedraggable">VueDraggable</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/mongodb-pagination-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">大规模数据集分页处理的相关问题及其解决方案</h2>
+    <p class="card-text">随着物联网，大数据业务的白热化，一般企业级系统的数据量也会呈现出快速的增长。而传统的数据库分页方案在海量数据场景下很难满足性能的要求。分页在大数据集场景下，是一个务必需要重视的性能优化问题。分页是极为常见的数据展现方式，一般在数据集较大而无法在单个页面中呈现时会采用分页的方法。各种前端UI组件在实现上也都会支持分页的功能，而数据交互呈现所相应的后端系统、数据库都对数据查询的分页提供了良好的支持。本文结合mongodb数据库和Vuex技术，尝试给出一般的大数据分页处理解决方案。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-11 811:00">Aug 11, 2021</time></p>
+      <p>#page #mongodb </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>协作式系统中引入”拖拽“交互功能是非常必要的技术措施，HTML 5 已经把 DnD 标准化，现在我们能“轻易”地为几乎任意元素实现拖放功能。只是它的难度取决于你对 API 的理解程度，而<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API">官方文档</a>并不好懂。本文介绍Drag&amp;Drop技术的相关基础知识和开发实践方法。</p>
+<h2 id="原生dnd">原生DnD</h2>
+<p>原生 API 允许我们给元素添加 <code>draggable=&quot;true&quot;</code> 属性来定义元素可被拖放。也有一些元素被默认为可拖放的，无需再添加属性（比如 images 或 text）。默认情况下，当可拖动元素被拖动时，只有 <code>form</code>类元素，如<code>input</code>，才能作为接受它们放入的容器。原生 API 也能接受从 OS 中浏览器的外部区域，拖入文件到你的置入区域。几乎所有优秀的内容管理系统都能提供内容的拖拽上传。目前原生 API 并不支持移动设备。</p>
+<h3 id="事件检测">事件检测</h3>
+<blockquote>
+<p><a href="https://baurine.github.io/html5-dnd-summary/">https://baurine.github.io/html5-dnd-summary/</a></p>
+</blockquote>
+<p><img src="image-20210818150638325.png" alt="image-20210818150638325"></p>
+<p><img src="image-20210818150727916.png" alt="image-20210818150727916"></p>
+<p><img src="image-20210818151656581.png" alt="image-20210818151656581"></p>
+<h3 id="拖拽生命周期">拖拽生命周期</h3>
+<p>拖动 Source Element，途中经过 Intermediate Element，最终进入 Target Element 并松开鼠标，则路径上会触发的事件如下图所示：</p>
+<p><img src="image-20210818131829430.png" alt="image-20210818131829430"></p>
+<p>Drag and drop 的整个生命周期如上所示，在整个周期中，有 drag source 和 drop target 两类 component，需要将 drag source 的 draggable 属性置为 true，才能被拖动 (对 drop target 没有要求)，两者之间通过 event.dataTransfer (后面会详细讲一下 dataTransfer 的使用) 或者全局变量传递数据。</p>
+<blockquote>
+<p>整体生命周期序列如下</p>
+</blockquote>
+<p>dragstart -&gt; drag -&gt; dragenter -&gt; dragover -&gt; dragleave -&gt; drop -&gt; dragend</p>
+<blockquote>
+<p>相关事件说明</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>元素对象</th>
+<th>事件</th>
+<th>说明</th>
+<th>备注</th>
+<th>使用方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td></td>
+<td></td>
+<td>被拖拽元素</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>dragstart</td>
+<td>当被拖拽元素开始被拖拽时触发。</td>
+<td>[a]. event.dataTransfer的大部分设置均在这里配置<!-- raw HTML omitted --> [b]. 若调用event.preventDefault()则会阻止拖拽行为，导致后续的拖拽事件不被触发<!-- raw HTML omitted --> [c]. 触发dragstart事件后，其他元素的mousemove, mouseover, mouseenter, mouseleave, mouseout 事件均不会被触发了</td>
+<td>该事件在拖动一发生立即被触发。应该在该事件被触发时告诉 API 我们想要拖动的元素，以及设置其他值。使用 <code>setData()</code> 方法来设置你要保存的数据，为 draggable 元素设置<code>effectAllowed</code> 属性，以及用 <code>setDragImage()</code> 来定义 draggable helper</td>
+</tr>
+<tr>
+<td></td>
+<td>drag</td>
+<td>当被拖拽元素被拖拽时触发</td>
+<td></td>
+<td>该事件将在拖动过程中持续被触发。触发次数和浏览器有关。它在准确定位被拖动元素的位置时将非常有用。一般情况下我们不关心</td>
+</tr>
+<tr>
+<td></td>
+<td>dragend</td>
+<td>当拖拽行为结束后触发</td>
+<td></td>
+<td>该事件在 draggable 对象被 drop 时即刻触发（无论被 drop 在哪里），而且往往紧随在 drop 区域的 <code>drop</code> 事件之后被触发。你可以利用该方法来重置之前给拖动中状态设置的样式，或者执行其他的清除工作。<code>dragend</code> 事件能够获取被draggable 对象，所以你可以在拖动结束之后执行运算（比如查询新加入的元素来判断 <code>drop</code> 事件是否成功，然后移除之前的 draggable 对象）。</td>
+</tr>
+<tr>
+<td>intermediate</td>
+<td></td>
+<td></td>
+<td>经过的中间元素（含起始元素和目标元素）</td>
+<td>此类事件只能在你指定为 drop target 的对象上被触发（或者本身即为 drop target 的对象，如 form 对象）</td>
+</tr>
+<tr>
+<td></td>
+<td>dragenter</td>
+<td>当被拖拽元素经过中间元素时触发</td>
+<td>该事件仅在 draggable 对象进入 droppable 区域时被触发一次。只有当50%以上的 draggable 对象进入 drop 区域中才会被触发。</td>
+<td>之前在 <code>dragstart</code> 事件中设置的数据，可以用 <code>types</code> 属性来获取其数据类型的列表。但你只能得到数据类型，无法获得数据值。此时你可以调用 <code>contains</code> 方法来查看某一特定类型的数据是否被创建。具体通过 <code>event. dataTransfer. types.contains(type)</code> 方法实现。例如，你可以用它来确保某些数据已经被设置为<code>text/html</code>类型。<!-- raw HTML omitted -->通过设置 classes 或者触发行为，你可以得知 draggable 对象进入了 drop 区域（一种常用做法是给drop 区域激发前后设置不同的样式）。</td>
+</tr>
+<tr>
+<td></td>
+<td>dragover</td>
+<td>当被拖拽元素在中间元素上移动时触发</td>
+<td>[a]. 可以在这里设置dropEffect的值，事件的默认行为是将dropEffect设置为none    <!-- raw HTML omitted -->[b]. 该事件是被拖拽元素在目标元素上移动一段时间后才触发    [c]. 事件的默认行为是不允许被拖拽元素在其他元素上释放或放置（即无法触发 drop 事件），需要通过 event.preventDefault() 来阻止默认行为才能触发后续的 drop 事件。</td>
+<td>该事件基本上与 <code>dragenter</code> 相同，但是他在 draggable 对象位于 drop 区域中时仍会被持续触发。当你想确定 draggable 的具体位置时，该事件是最好的选择（因为它会持续被更新）</td>
+</tr>
+<tr>
+<td></td>
+<td>dragleave</td>
+<td>当被拖拽元素离开中间元素时触发</td>
+<td></td>
+<td>常用于移除在 <code>dragenter</code> 和 <code>dragover</code> 事件发生时添加的样式，当 draggable 对象不与 drop 区域重叠时，就会触发该事件。</td>
+</tr>
+<tr>
+<td>target</td>
+<td></td>
+<td></td>
+<td>目标元素</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>drop</td>
+<td>当被拖拽元素在目标元素上，而且释放鼠标左键时触发</td>
+<td>[a]. 对于外来的被拖拽元素（超链接、文件、图片源）， drop 事件的默认行为是浏览器将当前页面重定向到被拖拽元素所指向的资源上   <!-- raw HTML omitted -->[b]. 对文档内部的被拖拽元素，IE10+和Chrome下的默认行为是不作为，而FF得默认行为是新打开一个文档用于访问被拖拽元素所指向的资源</td>
+<td>在该事件中，你可能会需要用 <code>getData()</code> 方法来获取信息。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="启用拖拽效果">启用拖拽效果</h3>
+<p>当某一事件被触发后，我们可以捕获一个对象（我们称之为 <code>event</code>）。这个对象包含了更多关于该事件本身的信息，同时使你能获取 <code>dataTransfer</code> 对象，用来设置大部分方法和属性。</p>
+<blockquote>
+<p>html</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#008000;font-weight:bold">div</span> <span style="color:#7d9029">id</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;drag&#34;</span> <span style="color:#7d9029">draggable</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;true&#34;</span> <span style="color:#7d9029">style</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;width:100px;height:50px;background-color:red;&#34;</span>&gt;
+test
+&lt;/<span style="color:#008000;font-weight:bold">div</span>&gt;
+</code></pre></div><blockquote>
+<p>js</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">var</span> drag <span style="color:#666">=</span> <span style="color:#008000">document</span>.getElementById(<span style="color:#ba2121">&#39;drag&#39;</span>);
+drag.onselectstart <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">function</span>(){<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>;};
+<span style="color:#408080;font-style:italic">// FF下拖拽时，默认不会生成一个被拖拽元素的阴影并跟随鼠标移动
+</span><span style="color:#408080;font-style:italic">// 需通过e.dataTransfer.setData来启动该效果
+</span><span style="color:#408080;font-style:italic"></span>drag.ondragstart <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">function</span>(e){
+    e.dataTransfer.setData(<span style="color:#ba2121">&#39;text&#39;</span>, e.target.innerHTML);
+};
+</code></pre></div><blockquote>
+<p>要点说明：</p>
+</blockquote>
+<ol>
+<li>
+<p>为触发拖拽的元素添加 draggable=&ldquo;true&rdquo; 特性，用于启动HTML5的DnD功能（即元素的 dragstart 事件可被触发）；</p>
+</li>
+<li>
+<p>在FF下即使添加 draggable=&ldquo;true&rdquo; 特性，但仅仅会触发 dragstart 事件，但DnD功能并没有被完全打开（拖拽元素时没有任何视觉效果），需要调用 event.dataTransfer.setData(&lsquo;Text&rsquo;,'') 彻底开启DnD功能。</p>
+</li>
+<li>
+<p>在Safari4下则需要借助CSS规则来启动DnD功能， [draggable=true]{ -webkit-user-drag: element; }</p>
+</li>
+</ol>
+<blockquote>
+<p>draggable属性说明</p>
+</blockquote>
+<p><strong>作用</strong>：用于指定标签是否可被拖拽</p>
+<p><strong>属性值范围如下：</strong></p>
+<ol>
+<li>
+<p>true ，表示可被拖拽</p>
+</li>
+<li>
+<p>false ，表示不可被拖拽</p>
+</li>
+<li>
+<p>auto ，默认值，img和带href属性的a标签则表示可拖拽，其他标签表示不可被拖拽</p>
+</li>
+<li>
+<p>其他值，表示不可被拖拽</p>
+</li>
+</ol>
+<h3 id="数据传输对象">数据传输对象</h3>
+<p>event.DataTransfer 对象用于在配置拖拽行为效果，并且在拖拽过程的各事件间传递数据信息。它存储在事件对象当中。数据信息的数据类型被限定为<strong>字符串</strong>和<strong>文件</strong>类型</p>
+<blockquote>
+<p>属性</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>取值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>effectAllowed</td>
+<td></td>
+<td>用于配置拖拽操作过程中鼠标指针的类型以便提示用户后续可执行怎样的操作</td>
+</tr>
+<tr>
+<td></td>
+<td>copy</td>
+<td>限定dropEffect的属性值为copy，否则会鼠标指针为禁止样式</td>
+</tr>
+<tr>
+<td></td>
+<td>link</td>
+<td>限定dropEffect的属性值为link，否则会鼠标指针为禁止样式</td>
+</tr>
+<tr>
+<td></td>
+<td>move</td>
+<td>限定dropEffect的属性值为move，否则会鼠标指针为禁止样式</td>
+</tr>
+<tr>
+<td></td>
+<td>copyLink</td>
+<td>限定dropEffect的属性值为copy和link，否则会鼠标指针为禁止样式</td>
+</tr>
+<tr>
+<td></td>
+<td>copyMove</td>
+<td>限定dropEffect的属性值为copy和move，否则会鼠标指针为禁止样式</td>
+</tr>
+<tr>
+<td></td>
+<td>linkMove</td>
+<td>限定dropEffect的属性值为link和move，否则会鼠标指针为禁止样式</td>
+</tr>
+<tr>
+<td></td>
+<td>all</td>
+<td>允许dropEffect的属性值为任意值</td>
+</tr>
+<tr>
+<td></td>
+<td>none</td>
+<td>鼠标指针一直为禁止样式，不管dropEffect的属性值是什么</td>
+</tr>
+<tr>
+<td></td>
+<td>uninitialized</td>
+<td>没有限定dropEffect属性的值，效果和 all 一样</td>
+</tr>
+<tr>
+<td>dropEffect</td>
+<td></td>
+<td>用于设置目标元素将执行的操作，若属性值属于 effectAllowed 范围内，则鼠标指针将显示对应的指针样式，否则则显示禁止的指针样式</td>
+</tr>
+<tr>
+<td></td>
+<td>copy</td>
+<td>被拖拽元素将被复制到目标元素内，若属于 effectAllowed 范围内时，则鼠标指针显示复制的样式，否则则显示禁止的指针样式</td>
+</tr>
+<tr>
+<td></td>
+<td>link</td>
+<td>被拖拽元素将以超链接的形式打开资源，若属于 effectAllowed 范围内时，则鼠标指针显示超链接的样式，否则则显示禁止的指针样式</td>
+</tr>
+<tr>
+<td></td>
+<td>move</td>
+<td>被拖拽元素将被移动到目标元素内，若属于 effectAllowed  范围内时，则鼠标指针显示移动的样式，否则则显示禁止的指针样式</td>
+</tr>
+<tr>
+<td></td>
+<td>none</td>
+<td>被拖拽元素不能在目标元素上作任何操作，一直显示禁止的指针样式。除了文本框外其他元素的默认值均为none</td>
+</tr>
+<tr>
+<td>items</td>
+<td></td>
+<td>数据类型为DataTransferItemList，存储DataTransfer对象中所有的数据项</td>
+</tr>
+<tr>
+<td>files</td>
+<td></td>
+<td>数据类型为FileList。该属性包含了已经被设置的本地文件的列表。</td>
+</tr>
+<tr>
+<td>types</td>
+<td></td>
+<td>数据类型为DOMStringList，存储DataTransfer对象中所有数据项的数据类型</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>方法</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+<th>备注</th>
+<th>使用方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>setData(format, data)</td>
+<td>用于添加数据，一般 format 对应于 MIME 类型字符串，常见的有 <code>text/plain</code>、<code>text/html</code> 及 <code>text/uri-list</code>等，但同时也可以是任意自定义的类型</td>
+<td>data 只能是 <code>string</code> 或 <code>file</code></td>
+<td>在拖放过程中你将会需要传递数据类型和数据本身，但是这些需要在 <code>dragstart</code> 事件触发时就被设置，否则将会失败，并且只有在之后的 <code>drop</code> 事件期间这些值才能被获取到。</td>
+</tr>
+<tr>
+<td>getData(format)</td>
+<td>用于获取数据</td>
+<td></td>
+<td>该方法只能用于 <code>drop</code> 事件</td>
+</tr>
+<tr>
+<td>clearData(format)</td>
+<td>用来清除使用 <code>setData</code> 设置的所有数据</td>
+<td>只能用于 <code>dragstart</code> 事件中</td>
+<td>你需要制定需要清除的数据类型（例如 <code>text/html</code> 或 <code>URL</code>）</td>
+</tr>
+<tr>
+<td>setDragImage</td>
+<td>可以设置 dragging 开始时呈现的图像</td>
+<td></td>
+<td>默认情况下，当你进行拖动时，用户将会看到一个被拖动对象的半透明图像。使用该方法，你可以自己定义此时显示的图像</td>
+</tr>
+</tbody>
+</table>
+<h3 id="基本使用过程">基本使用过程</h3>
+<blockquote>
+<p>目标效果</p>
+</blockquote>
+<p><img src="image-20210818142619703.png" alt="image-20210818142619703"></p>
+<blockquote>
+<p>基本过程</p>
+</blockquote>
+<p><img src="image-20210818151016646.png" alt="image-20210818151016646"></p>
+<blockquote>
+<p>加上 <code>draggable=&quot;true&quot;</code> 属性</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#008000;font-weight:bold">div</span> <span style="color:#7d9029">id</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;drag-container&#34;</span>&gt;
+  &lt;<span style="color:#008000;font-weight:bold">div</span> <span style="color:#7d9029">class</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;dropzone&#34;</span>&gt;
+    &lt;<span style="color:#008000;font-weight:bold">div</span> <span style="color:#7d9029">id</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;draggable&#34;</span> <span style="color:#7d9029">draggable</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;true&#34;</span>&gt;
+      Drag Me
+    &lt;/<span style="color:#008000;font-weight:bold">div</span>&gt;
+  &lt;/<span style="color:#008000;font-weight:bold">div</span>&gt;
+  &lt;<span style="color:#008000;font-weight:bold">div</span> <span style="color:#7d9029">class</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;dropzone&#34;</span>&gt;&lt;/<span style="color:#008000;font-weight:bold">div</span>&gt;
+  &lt;<span style="color:#008000;font-weight:bold">div</span> <span style="color:#7d9029">class</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;dropzone&#34;</span>&gt;&lt;/<span style="color:#008000;font-weight:bold">div</span>&gt;
+&lt;/<span style="color:#008000;font-weight:bold">div</span>&gt;
+</code></pre></div><blockquote>
+<p>监听dragstart，在拖起元素让原始的元素变成半透明</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">draggable.addEventListener(<span style="color:#ba2121">&#34;dragstart&#34;</span>, (ev) =&gt; {
+ ev.target.style.opacity <span style="color:#666">=</span> <span style="color:#ba2121">&#34;.5&#34;</span>;
+});
+</code></pre></div><blockquote>
+<p>监听 <code>dragend</code>,  在拖动结束后还原透明度</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">draggable.addEventListener(<span style="color:#ba2121">&#34;dragend&#34;</span>, (ev) =&gt; {
+  ev.target.style.opacity <span style="color:#666">=</span> <span style="color:#ba2121">&#34;&#34;</span>;
+});
+</code></pre></div><blockquote>
+<p>监听目标对象的事件，使目标区域边框变成虚线，以示意我们可以放入元素</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">let</span> dropzones <span style="color:#666">=</span> <span style="color:#008000">document</span>.querySelectorAll(<span style="color:#ba2121">&#39;.dropzone&#39;</span>);
+dropzones.forEach((dropzone) =&gt; {
+
+  dropzone.addEventListener(<span style="color:#ba2121">&#39;dragenter&#39;</span>, (ev) =&gt; {
+    ev.preventDefault();
+    dropzone.style.borderStyle <span style="color:#666">=</span> <span style="color:#ba2121">&#39;dashed&#39;</span>;
+    <span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>;
+  });
+
+  dropzone.addEventListener(<span style="color:#ba2121">&#39;dragover&#39;</span>, (ev) =&gt; {
+    ev.preventDefault();
+    <span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>;
+  });
+
+  dropzone.addEventListener(<span style="color:#ba2121">&#39;dragleave&#39;</span>, (ev) =&gt; {
+    dropzone.style.borderStyle <span style="color:#666">=</span> <span style="color:#ba2121">&#39;solid&#39;</span>;
+  });
+});
+</code></pre></div><blockquote>
+<p>说明：</p>
+<ul>
+<li>在 <code>dragenter</code> 与 <code>dragover</code> 里我们调用了 <code>ev.preventDefault()</code>，事实上几乎所有元素默认都是不允许 drop 发生的，这里调用<code>ev.preventDefault()</code> 可以阻止默认行为。</li>
+<li>在 <code>dragenter</code> 中我们通过 <code>dropzone</code> 变量来修改样式而不是 <code>ev.target</code>，你可能觉得 <code>ev.target</code> 指向的是目标 B 元素，然而它指向的是源元素 A。</li>
+<li>我们在 <code>dragenter</code> 而不是 <code>dragover</code> 中修改样式，是因为 <code>dragover</code> 会触发太频繁了</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>初始化传输对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">draggable.addEventListener(<span style="color:#ba2121">&#39;dragstart&#39;</span>, (ev) =&gt; {
+  ev.target.style.opacity <span style="color:#666">=</span> <span style="color:#ba2121">&#34;.5&#34;</span>;
+
+  <span style="color:#408080;font-style:italic">// 设置 ID
+</span><span style="color:#408080;font-style:italic"></span>  ev.dataTransfer.setData(<span style="color:#ba2121">&#39;text/plain&#39;</span>, ev.target.id);
+});
+</code></pre></div><blockquote>
+<p>监听 drop，获取数据</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">dropzones.forEach((dropzone) =&gt; {
+  dropzone.addEventListener(<span style="color:#ba2121">&#39;drop&#39;</span>, (ev) =&gt; {
+    ev.preventDefault()
+    ev.target.style.borderStyle <span style="color:#666">=</span> <span style="color:#ba2121">&#39;solid&#39;</span>;
+
+    <span style="color:#408080;font-style:italic">// 获取 ID
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#008000;font-weight:bold">const</span> sourceId <span style="color:#666">=</span> ev.dataTransfer.getData(<span style="color:#ba2121">&#39;text/plain&#39;</span>)
+    ev.target.appendChild(<span style="color:#008000">document</span>.getElementById(sourceId))
+  })
+});
+</code></pre></div><blockquote>
+<p>重要说明：</p>
+<ul>
+<li><code>dataTransfer</code> 的内容只在 <code>drop</code> 里可读，所以如果你想在 <code>dragEnter</code> 或 <code>dragOver</code> 中通过 <code>dataTransfer.getData()</code> 返回的内容来决定一个目标元素是否允许放置是不可行的。其它的事件里只能通过一个个检查 <code>dataTransfer.items</code> 里的 type 来获取已经设置的 <code>format</code> 而无法获取 <code>data</code>。</li>
+<li><code>drop</code> 与 <code>dragend</code> 事件是顺序触发的，但在 <code>dragend</code> 里没有办法知道 <code>drop</code> 事件是否已经触发</li>
+</ul>
+</blockquote>
+<h2 id="封装组件">封装组件</h2>
+<blockquote>
+<p>常见封装组件(Vue)</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>地址</th>
+<th>star</th>
+<th>update</th>
+<th>备注</th>
+<th>推荐度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vue.Draggable</td>
+<td><a href="https://github.com/SortableJS/Vue.Draggable">https://github.com/SortableJS/Vue.Draggable</a></td>
+<td>15.8k</td>
+<td>3m/5y</td>
+<td>Vue component (Vue.js 2.0) or directive (Vue.js 1.0) allowing drag-and-drop and synchronization with view model array.<!-- raw HTML omitted --><!-- raw HTML omitted -->Based on and offering all features of Sortable.js</td>
+<td>v</td>
+</tr>
+<tr>
+<td>Vue-smooth-dnd</td>
+<td><a href="https://github.com/kutlugsahin/vue-smooth-dnd">https://github.com/kutlugsahin/vue-smooth-dnd</a></td>
+<td>1.2k</td>
+<td>2y/3y</td>
+<td>fast and lightweight drag&amp;drop, sortable library for Vue.js with many configuration options covering many d&amp;d scenarios.<!-- raw HTML omitted --><!-- raw HTML omitted -->This library consists wrapper Vue.js components over smooth-dnd library.</td>
+<td></td>
+</tr>
+<tr>
+<td>Vue-grid-layout</td>
+<td><a href="https://github.com/jbaysolutions/vue-grid-layout">https://github.com/jbaysolutions/vue-grid-layout</a></td>
+<td>4.9k</td>
+<td>7m/5y</td>
+<td>vue-grid-layout is a grid layout system, like Gridster, for Vue.js. Heavily inspired by React-Grid-Layout</td>
+<td></td>
+</tr>
+<tr>
+<td>Easy-DnD</td>
+<td><a href="https://github.com/rlemaigre/Easy-DnD">https://github.com/rlemaigre/Easy-DnD</a></td>
+<td>242</td>
+<td>7d/2y</td>
+<td>Easy-DnD is a drag and drop implementation for Vue.js 2 that uses only standard mouse events instead of the HTML5 drag and drop API, which is impossible to work with. Think of it as a way to transfer data from some components to others using the mouse or support for a mouse assisted copy/cut - paste. It also allows for lists to be reordered by drag and drop.</td>
+<td>v</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>经过试用前两个，发现vue.draggable更加灵活，尤其是嵌套结构可以通过数据层次来定义深度。同时，easy-dnd似乎设计了更多的特殊场景，也值得参考。vue-smooth-dnd的强项是提供了更好的演示系统。</p>
+</blockquote>
+<h3 id="vuedraggable">VueDraggable</h3>
+<p>Vue.Draggable是一款基于Sortable.js实现的vue拖拽插件。支持移动设备、拖拽和选择文本、智能滚动，可以在不同列表间拖拽、不依赖jQuery为基础、vue 2过渡动画兼容、支持撤销操作。其底层的Sortable.js基于H5 原生 DnD实现。</p>
+<blockquote>
+<p>基本用法示例</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#008000;font-weight:bold">draggable</span> <span style="color:#7d9029">v-model</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;list&#34;</span>&gt;
+    &lt;<span style="color:#008000;font-weight:bold">transition-group</span>&gt;
+        &lt;<span style="color:#008000;font-weight:bold">div</span> <span style="color:#7d9029">v-for</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;element in list&#34;</span> <span style="color:#7d9029">:key</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;element.id&#34;</span>&gt;
+            {{element.name}}
+        &lt;/<span style="color:#008000;font-weight:bold">div</span>&gt;
+    &lt;/<span style="color:#008000;font-weight:bold">transition-group</span>&gt;
+&lt;/<span style="color:#008000;font-weight:bold">draggable</span>&gt;
+</code></pre></div><blockquote>
+<p>属性</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>类型</th>
+<th>默认值</th>
+<th>作用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>Array</td>
+<td>null</td>
+<td>用于实现拖拽的list，通常和内部v-for循环的数组为同一数组</td>
+<td></td>
+</tr>
+<tr>
+<td>list</td>
+<td>Array</td>
+<td>null</td>
+<td>效果同value的。和v-model不能共用</td>
+<td></td>
+</tr>
+<tr>
+<td>tag</td>
+<td>String</td>
+<td>div</td>
+<td>draggable 标签在渲染后展现出来的标签类型</td>
+<td></td>
+</tr>
+<tr>
+<td>emptyInsertThreshold</td>
+<td>Number</td>
+<td>5</td>
+<td>拖动时，鼠标必须与空的可排序对象之间的距离</td>
+<td></td>
+</tr>
+<tr>
+<td>clone</td>
+<td>Function</td>
+<td>null</td>
+<td>返回值为true时克隆，可以理解为正常的拖拽变成了复制。当pull:&lsquo;clone时的拖拽的回调函数’</td>
+<td></td>
+</tr>
+<tr>
+<td>move</td>
+<td>Function</td>
+<td>null</td>
+<td>如果不为空，这个函数将以类似于Sortable onMove回调的方式调用。返回false将取消拖动操作。</td>
+<td></td>
+</tr>
+<tr>
+<td>componentData</td>
+<td>Object</td>
+<td>null</td>
+<td>用来结合UI组件的，可以理解为代理了UI组件的定制信息</td>
+<td></td>
+</tr>
+<tr>
+<td>options</td>
+<td>Object</td>
+<td>null</td>
+<td>draggable 列表配置项（参考sortable.js配置）</td>
+<td>建议使用v-bind属性进行配置</td>
+</tr>
+<tr>
+<td>group</td>
+<td>String/Array</td>
+<td></td>
+<td>用于分组，同一组的不同list可以相互拖动</td>
+<td></td>
+</tr>
+<tr>
+<td>sort</td>
+<td>boolean</td>
+<td></td>
+<td>定义是否可以拖拽</td>
+<td></td>
+</tr>
+<tr>
+<td>delay</td>
+<td>number</td>
+<td></td>
+<td>定义鼠标选中列表单元可以开始拖动的延迟时间</td>
+<td></td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>boolean</td>
+<td></td>
+<td>定义是否此sortable对象是否可用</td>
+<td></td>
+</tr>
+<tr>
+<td>animation</td>
+<td>number</td>
+<td></td>
+<td>动画时间 单位:ms</td>
+<td></td>
+</tr>
+<tr>
+<td>handle</td>
+<td>selector</td>
+<td></td>
+<td>使列表单元中符合选择器的元素成为拖动的手柄，只有按住拖动手柄才能使列表单元进行拖动</td>
+<td></td>
+</tr>
+<tr>
+<td>filter</td>
+<td>selector</td>
+<td></td>
+<td>定义哪些列表单元不能进行拖放，可设置为多个选择器，中间用“，”分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>preventOnFilter</td>
+<td>boolean</td>
+<td></td>
+<td>当拖动filter时是否触发event.preventDefault() 默认触发</td>
+<td></td>
+</tr>
+<tr>
+<td>draggable</td>
+<td>selector</td>
+<td></td>
+<td>定义哪些列表单元可以进行拖放</td>
+<td></td>
+</tr>
+<tr>
+<td>ghostClass</td>
+<td>selector</td>
+<td></td>
+<td>当拖动列表单元时会生成一个副本作为影子单元来模拟被拖动单元排序的情况，此配置项就是来给这个影子单元添加一个class</td>
+<td></td>
+</tr>
+<tr>
+<td>chosenClass</td>
+<td>selector</td>
+<td></td>
+<td>目标被选中时添加</td>
+<td></td>
+</tr>
+<tr>
+<td>dragClass</td>
+<td>selector</td>
+<td></td>
+<td>目标拖动过程中添加</td>
+<td></td>
+</tr>
+<tr>
+<td>forceFallback</td>
+<td>boolean</td>
+<td></td>
+<td>如果设置为true时，将不使用原生的html5的拖放，可以修改一些拖放中元素的样式等</td>
+<td></td>
+</tr>
+<tr>
+<td>fallbackClass</td>
+<td>string</td>
+<td></td>
+<td>当forceFallback设置为true时，拖放过程中鼠标附着单元的样式</td>
+<td></td>
+</tr>
+<tr>
+<td>dataIdAttr</td>
+<td>selector</td>
+<td></td>
+<td>data-id</td>
+<td></td>
+</tr>
+<tr>
+<td>scroll</td>
+<td>boolean</td>
+<td></td>
+<td>当排序的容器是个可滚动的区域，拖放可以引起区域滚动</td>
+<td></td>
+</tr>
+<tr>
+<td>scrollFn</td>
+<td>function</td>
+<td></td>
+<td>用于自定义滚动条的适配</td>
+<td></td>
+</tr>
+<tr>
+<td>scrollSensitivity</td>
+<td>number</td>
+<td></td>
+<td>就是鼠标靠近边缘多远开始滚动默认30</td>
+<td></td>
+</tr>
+<tr>
+<td>scrollSpeed</td>
+<td>Number</td>
+<td></td>
+<td>滚动速度</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>事件</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>事件名称</th>
+<th>参数</th>
+<th>说明</th>
+<th>绑定方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>add(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>remove(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>update(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>end(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>choose(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>sort(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>filter(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>clone(e)</td>
+<td>function（{to,from,item,clone,oldIndex,newIndex})</td>
+<td></td>
+<td>@</td>
+</tr>
+<tr>
+<td>move(e, originalEvent)</td>
+<td>e.draggedContext, e.relatedContext</td>
+<td>//e对象结构 draggedContext: 被拖拽的元素      index: 被拖拽的元素的序号      element: 被拖拽的元素对应的对象      futureIndex: 预期位置、目标位置 relatedContext: 将停靠的对象      index: 目标停靠对象的序号      element: 目标的元素对应的对象      list:  目标数组      component: 将停靠的vue组件对象</td>
+<td>:move=</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>主要问题：空列表无法拖入项目的解决方案</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  <span style="color:#666">&lt;</span>draggable
+    <span style="color:#666">:</span>list<span style="color:#666">=</span><span style="color:#ba2121">&#34;questions&#34;</span>
+    <span style="color:#008000;font-weight:bold">class</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;list-group&#34;</span>
+  <span style="color:#666">&gt;&lt;</span><span style="">/draggable&gt;</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css"><span style="color:#666">&lt;</span><span style="color:#008000;font-weight:bold">style</span><span style="color:#666">&gt;</span>
+
+.<span style="color:#00f;font-weight:bold">list-group</span>:<span style="color:#a2f">empty</span> {
+  <span style="color:#008000;font-weight:bold">padding</span>:<span style="color:#666">1</span><span style="color:#b00040">rem</span>;
+  <span style="color:#008000;font-weight:bold">text-align</span>:<span style="color:#008000;font-weight:bold">center</span>;
+  <span style="color:#008000;font-weight:bold">background-color</span>: <span style="color:#008000;font-weight:bold">lightgray</span>;
+}
+
+<span style="color:#666">&lt;/</span><span style="color:#008000;font-weight:bold">style</span><span style="color:#666">&gt;</span>
+</code></pre></div><blockquote>
+<p>实例效果图</p>
+</blockquote>
+<p><img src="image-20210819135251517.png" alt="image-20210819135251517"></p>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="https://cloud.tencent.com/developer/article/1023252">https://cloud.tencent.com/developer/article/1023252</a></li>
+<li><a href="https://lotabout.me/2018/HTML-5-Drag-and-Drop/">https://lotabout.me/2018/HTML-5-Drag-and-Drop/</a></li>
+<li><a href="https://www.sitepoint.com/html5-native-drag-and-drop-api/">https://www.sitepoint.com/html5-native-drag-and-drop-api/</a></li>
+<li><a href="https://juejin.cn/post/6844903687588954119">https://juejin.cn/post/6844903687588954119</a></li>
+<li><a href="https://www.itxst.com/vue-draggable/tutorial.html">https://www.itxst.com/vue-draggable/tutorial.html</a></li>
+<li><a href="https://juejin.cn/post/6844904150350692366">https://juejin.cn/post/6844904150350692366</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/mongodb-pagination-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/mongodb-pagination-1/j8_huf5ad6a8f920dc01634837444885e1a8f_347688_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/mongodb-pagination-1/j8_huf5ad6a8f920dc01634837444885e1a8f_347688_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/mongodb-pagination-1/j8_huf5ad6a8f920dc01634837444885e1a8f_347688_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/mongodb-pagination-1/j8_huf5ad6a8f920dc01634837444885e1a8f_347688_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">大规模数据集分页处理的相关问题及其解决方案</h2>
+    <p class="card-text">随着物联网，大数据业务的白热化，一般企业级系统的数据量也会呈现出快速的增长。而传统的数据库分页方案在海量数据场景下很难满足性能的要求。分页在大数据集场景下，是一个务必需要重视的性能优化问题。分页是极为常见的数据展现方式，一般在数据集较大而无法在单个页面中呈现时会采用分页的方法。各种前端UI组件在实现上也都会支持分页的功能，而数据交互呈现所相应的后端系统、数据库都对数据查询的分页提供了良好的支持。本文结合mongodb数据库和Vuex技术，尝试给出一般的大数据分页处理解决方案。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-11 811:00">Aug 11, 2021</time></p>
+      <p>#page #mongodb </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

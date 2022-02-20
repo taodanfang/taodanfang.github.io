@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>deployment - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/deployment/</link>
+    <description>Recent content in deployment on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 24 Aug 2021 11:20:46 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/deployment/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>微服务系统的部署方法（Golang命令行处理）</title>
+      <link>https://taodanfang.github.io/posts/go-command-line-1/</link>
+      <pubDate>Tue, 24 Aug 2021 11:20:46 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-command-line-1/</guid>
+      <description>&lt;p&gt;微服务架构日益被普遍采用，该类应用中往往包含一些固定模式的代码，为了方便服务扩展，我们将探讨一下服务的配置、部署和启动方面的代码样板，为此，我们首先需要介绍Flag，cobra，viper，os/exec等工具库的使用方法，然后给出部署微服务系统的基本框架代码。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

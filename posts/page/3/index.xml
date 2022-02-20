@@ -1,0 +1,48 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/posts/</link>
+    <description>Recent content in Posts on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Golang 并发开发实践（3）- 详解</title>
+      <link>https://taodanfang.github.io/posts/golang-channel-study-3-1/</link>
+      <pubDate>Thu, 25 Nov 2021 21:26:25 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/golang-channel-study-3-1/</guid>
+      <description>&lt;p&gt;掌握channel的关键是，时刻把握操作的阻塞情况，协程一旦阻塞，将会让出执行，系统会选择其他协程投入运行。系统一旦发现所有协程都处于阻塞状态，则抛出“死锁”异常！因此，这种基于channel的消息通信机制，完全在用户的控制之下实现了安全的程序逻辑（从而尽量避免了传统基于锁的安全保护机制）。&lt;/p&gt;</description>
+    </item><item>
+      <title>Golang 并发开发实践（2）- 用户并发注册开发实践</title>
+      <link>https://taodanfang.github.io/posts/golang-channel-study-2-1/</link>
+      <pubDate>Tue, 23 Nov 2021 23:55:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/golang-channel-study-2-1/</guid>
+      <description>&lt;p&gt;In this post, we&amp;rsquo;ll use goroutines, channels and WaitGroups to process a &amp;ldquo;bulk user registration&amp;rdquo; request.&lt;/p&gt;</description>
+    </item><item>
+      <title>Golang 并发开发实践（1）- 入门与规则</title>
+      <link>https://taodanfang.github.io/posts/golang-channel-study-1/</link>
+      <pubDate>Tue, 23 Nov 2021 20:23:42 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/golang-channel-study-1/</guid>
+      <description>&lt;p&gt;Go语言设计团队的首任负责人Rob Pike对并发编程的一个建议是不要让计算通过共享内存来通讯，而应该让它们通过通讯来共享内存。 通道机制就是这种哲学的一个设计结果。（在Go编程中，我们可以认为一个计算就是一个协程。）&lt;/p&gt;</description>
+    </item><item>
+      <title>微服务系统的部署方法（Golang命令行处理）</title>
+      <link>https://taodanfang.github.io/posts/go-command-line-1/</link>
+      <pubDate>Tue, 24 Aug 2021 11:20:46 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-command-line-1/</guid>
+      <description>&lt;p&gt;微服务架构日益被普遍采用，该类应用中往往包含一些固定模式的代码，为了方便服务扩展，我们将探讨一下服务的配置、部署和启动方面的代码样板，为此，我们首先需要介绍Flag，cobra，viper，os/exec等工具库的使用方法，然后给出部署微服务系统的基本框架代码。&lt;/p&gt;</description>
+    </item><item>
+      <title>缓存技术学习与实践：前端与后端</title>
+      <link>https://taodanfang.github.io/posts/go-cache-study-1/</link>
+      <pubDate>Sun, 22 Aug 2021 13:10:51 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-cache-study-1/</guid>
+      <description>&lt;p&gt;Caching has an important role to play in a system design. It is primarily used to speed up information retrieval from a service and reduce the load on a database engine, the primary source of truth for a service. Data that is frequently requested by users are stored in a in-memory key-value store, like &lt;a href=&#34;https://redis.io/&#34;&gt;Redis&lt;/a&gt;, to speed up subsequent look up of the same data.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

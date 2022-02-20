@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Golang 并发开发实践（3）- 详解 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  Golang 并发开发实践（3）- 详解</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >Golang 并发开发实践（3）- 详解</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-11-25">Nov 25, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/golang-channel-study-3-1/image-9_huf5ca031357abdcbad10ff55b08cff391_140754_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/golang-channel-study-3-1/image-9_huf5ca031357abdcbad10ff55b08cff391_140754_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/golang-channel-study-3-1/image-9_huf5ca031357abdcbad10ff55b08cff391_140754_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/golang-channel-study-3-1/image-9_huf5ca031357abdcbad10ff55b08cff391_140754_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基本操作单个子协程情况">基本操作（单个子协程情况）</a></li>
+    <li><a href="#基本操作多个子协程情况">基本操作（多个子协程情况）</a></li>
+    <li><a href="#复杂操作多通道检测-select">复杂操作（多通道检测 select）</a></li>
+    <li><a href="#辅助工具">辅助工具</a></li>
+    <li><a href="#并发模式">并发模式</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-2-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（2）- 用户并发注册开发实践</h2>
+    <p class="card-text">In this post, we’ll use goroutines, channels and WaitGroups to process a “bulk user registration” request.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-23 1123:00">Nov 23, 2021</time></p>
+      <p>#golang #channel #practice </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>掌握channel的关键是，时刻把握操作的阻塞情况，协程一旦阻塞，将会让出执行，系统会选择其他协程投入运行。系统一旦发现所有协程都处于阻塞状态，则抛出“死锁”异常！因此，这种基于channel的消息通信机制，完全在用户的控制之下实现了安全的程序逻辑（从而尽量避免了传统基于锁的安全保护机制）。</p>
+<p>What are the channels?
+A channel is a communication object using which goroutines can communicate with each other. Technically, a channel is a data transfer pipe where data can be passed into or read from. Hence one goroutine can send data into a channel, while other goroutines can read that data from the same channel.</p>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E5%8D%95%E4%B8%AA%E5%AD%90%E5%8D%8F%E7%A8%8B%E6%83%85%E5%86%B5%EF%BC%89">基本操作（单个子协程情况）</a></li>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E5%A4%9A%E4%B8%AA%E5%AD%90%E5%8D%8F%E7%A8%8B%E6%83%85%E5%86%B5%EF%BC%89">基本操作（多个子协程情况）</a></li>
+<li><a href="#%E5%A4%8D%E6%9D%82%E6%93%8D%E4%BD%9C%EF%BC%88%E5%A4%9A%E9%80%9A%E9%81%93%E6%A3%80%E6%B5%8Bselect%EF%BC%89">复杂操作（多通道检测 select）</a></li>
+<li><a href="#%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7">辅助工具</a></li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%BC%8F">并发模式</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</a></li>
+</ul>
+<h2 id="基本操作单个子协程情况">基本操作（单个子协程情况）</h2>
+<blockquote>
+<p>Declaring a channel</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> c1 <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;c1: %v\n&#34;</span>, c1)
+
+	c2 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>)
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;type  of c2 is %T\n&#34;</span>, c2)
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;value of c2 is %v\n&#34;</span>, c2)
+}
+
+</code></pre></div><p><img src="media/16378488830221.jpg" alt=""></p>
+<ul>
+<li>一般情况下，我们采用第二种定义形式；</li>
+<li>通道默认是指针类型的</li>
+<li>通道默认是阻塞类型的</li>
+</ul>
+<blockquote>
+<p>通道读写</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">greet</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Hello &#34;</span> <span style="color:#666">+</span> <span style="color:#666">&lt;-</span> c <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!&#34;</span>) <span style="color:#408080;font-style:italic">// 阻塞，直到main发送为止
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">greet</span>(c)
+
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;John&#34;</span> <span style="color:#408080;font-style:italic">// 阻塞，直到greet读取为止
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16378495222929.jpg" alt=""></p>
+<blockquote>
+<p>死锁现象</p>
+</blockquote>
+<p>when we write or read data from a channel, that goroutine is blocked and control is passed to available goroutines. What if there are no other goroutines available, imagine all of them are sleeping. That’s where deadlock error occurs crashing the whole program.</p>
+<p>通道操作可能会导致协程阻塞。当一个协程由于操作通道而阻塞后，系统会继续寻找其他可以运行的协程调度运行，若发现没有可以运行的协程（也就是所有的协程都睡着了），则出现“死锁”现象。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span> () {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;John&#34;</span>
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16378501098494.jpg" alt=""></p>
+<blockquote>
+<p>关闭通道</p>
+</blockquote>
+<p>请注意以下程序的运行（调度）顺序</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">greet</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	<span style="color:#666">&lt;-</span> c                           <span style="color:#408080;font-style:italic">// (3)  阻塞，调度main()     (5) 运行
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#666">&lt;-</span> c                           <span style="color:#408080;font-style:italic">// (6)  阻塞，调度main()    
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)  <span style="color:#408080;font-style:italic">// (1)
+</span><span style="color:#408080;font-style:italic"></span>
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)         <span style="color:#408080;font-style:italic">// (2)
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">greet_1</span>(c)                  
+
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;John&#34;</span>                    <span style="color:#408080;font-style:italic">// (4) 阻塞，调度greet()     (7) 运行
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000">close</span>(c)                       <span style="color:#408080;font-style:italic">// (8)
+</span><span style="color:#408080;font-style:italic"></span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;Mike&#34;</span>                    <span style="color:#408080;font-style:italic">// (9): 异常（不允许向已关闭的通道写入数据），系统panic，退出
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16378510298045.jpg" alt=""></p>
+<blockquote>
+<p>连续操作(读取、写入）通道</p>
+</blockquote>
+<ul>
+<li>手动结束循环</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">squares</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i <span style="color:#666">&lt;=</span> <span style="color:#666">9</span>; i<span style="color:#666">++</span> {
+		c <span style="color:#666">&lt;-</span> i <span style="color:#666">*</span> i
+	}
+
+	<span style="color:#008000">close</span>(c)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">squares</span>(c)
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		v, openning <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c       <span style="color:#408080;font-style:italic">// 不断检查通道是否关闭
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#008000;font-weight:bold">if</span> openning <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">false</span> {
+			fmt.<span style="color:#00f">Println</span>(v, openning, <span style="color:#ba2121">&#34;&lt;-- look broke!&#34;</span>)
+			<span style="color:#008000;font-weight:bold">break</span>
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			fmt.<span style="color:#00f">Println</span>(v, openning)
+		}
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16378520758882.jpg" alt=""></p>
+<p>关闭通道，不会引起协程阻塞；读取关闭后的通道，会返回零值</p>
+<ul>
+<li>自动结束循环</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">squares</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i <span style="color:#666">&lt;=</span> <span style="color:#666">5</span>; i<span style="color:#666">++</span> {
+		c <span style="color:#666">&lt;-</span> i <span style="color:#666">*</span> i
+	}
+
+	<span style="color:#008000">close</span>(c)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">squares</span>(c)
+
+	<span style="color:#008000;font-weight:bold">for</span> val <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> c {
+		fmt.<span style="color:#00f">Println</span>(val)
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+</code></pre></div><p><strong>range will read the value from the channel one at a time until it is closed.
+If you don’t close the channel in for range loop, program will throw deadlock fatal error in runtime.</strong></p>
+<p><img src="media/16378524876242.jpg" alt=""></p>
+<blockquote>
+<p>缓冲通道</p>
+</blockquote>
+<p>When the buffer size is non-zero n, goroutine is not blocked until after buffer is full. Goroutine that reads buffer channel will not block until the buffer is empty.</p>
+<p>一个协程向缓冲通道写入时，只要通道没有溢出（未满），该协程不会阻塞。
+一个协程从缓冲通道读取时，只要通道不空，该协程将不会阻塞，直到将缓冲通道中的内容全部取出为止。</p>
+<ul>
+<li>情形一</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">squares</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>) {           <span style="color:#408080;font-style:italic">// 由于main已经结束，导致squares()协程不会执行
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i <span style="color:#666">&lt;=</span> <span style="color:#666">3</span>; i<span style="color:#666">++</span> {
+		num <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c
+		fmt.<span style="color:#00f">Println</span>(num <span style="color:#666">*</span> num)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, <span style="color:#666">3</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">squares</span>(c)
+
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">1</span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">2</span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">3</span>
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)      <span style="color:#408080;font-style:italic">// 由于通道未溢出，会一直运行到此行，从而结束程序。
+</span><span style="color:#408080;font-style:italic"></span>}
+
+</code></pre></div><p><img src="media/16378541716244.jpg" alt=""></p>
+<ul>
+<li>情形二</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">squares</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i <span style="color:#666">&lt;=</span> <span style="color:#666">3</span>; i<span style="color:#666">++</span> {          <span style="color:#408080;font-style:italic">// (2) 获得调度之后，会一直阻塞到缓冲通道变为空为止
+</span><span style="color:#408080;font-style:italic"></span>		num <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c
+		fmt.<span style="color:#00f">Println</span>(num <span style="color:#666">*</span> num)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, <span style="color:#666">3</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">squares</span>(c)
+
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">1</span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">2</span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">3</span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">4</span>                             <span style="color:#408080;font-style:italic">// （1） 通道溢出，在此行阻塞，转而调度执行squares（）
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)      <span style="color:#408080;font-style:italic">// (3) 退出
+</span><span style="color:#408080;font-style:italic"></span>}
+
+</code></pre></div><p><img src="media/16378543650735.jpg" alt=""></p>
+<blockquote>
+<p>缓冲通道的容量</p>
+</blockquote>
+<p>Length of a channel is the number of values queued (unread) in channel buffer while the capacity of a channel is the buffer size. To calculate length, we use len function while to find out capacity, we use cap function, just like a slice.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, <span style="color:#666">3</span>)
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">1</span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">2</span>
+
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Length of c is %v, and capacity of c is %v\n&#34;</span>, <span style="color:#008000">len</span>(c), <span style="color:#008000">cap</span>(c))
+}
+
+
+</code></pre></div><p><img src="media/16378550698823.jpg" alt=""></p>
+<blockquote>
+<p>读取已关闭的通道</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, <span style="color:#666">3</span>)
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">1</span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">2</span>
+	c <span style="color:#666">&lt;-</span> <span style="color:#666">3</span>
+	<span style="color:#008000">close</span>(c)
+
+	<span style="color:#008000;font-weight:bold">for</span> e <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> c {
+		fmt.<span style="color:#00f">Println</span>(e)
+	}
+}
+
+</code></pre></div><p><img src="media/16378559385119.jpg" alt=""></p>
+<h2 id="基本操作多个子协程情况">基本操作（多个子协程情况）</h2>
+<blockquote>
+<p>多通道读取（注意执行顺序）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">square</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[square] reading&#34;</span>)            <span style="color:#408080;font-style:italic">// （4）
+</span><span style="color:#408080;font-style:italic"></span>	num <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c
+	c <span style="color:#666">&lt;-</span> num <span style="color:#666">*</span> num                             <span style="color:#408080;font-style:italic">//  (5) 阻塞      (13) 唤醒
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">cube</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[cube] reading&#34;</span>)              <span style="color:#408080;font-style:italic">// （4）
+</span><span style="color:#408080;font-style:italic"></span>	num <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c                                <span style="color:#408080;font-style:italic">//  (3) 阻塞      （9）唤醒
+</span><span style="color:#408080;font-style:italic"></span>	c <span style="color:#666">&lt;-</span> num <span style="color:#666">*</span> num <span style="color:#666">*</span> num                       <span style="color:#408080;font-style:italic">//  (10) 阻塞     （14）唤醒
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] started&#34;</span>)              <span style="color:#408080;font-style:italic">// (1)
+</span><span style="color:#408080;font-style:italic"></span>
+	sc <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>)
+	cc <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">square</span>(sc)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">cube</span>(cc)
+
+	test_num <span style="color:#666">:=</span> <span style="color:#666">3</span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] sent test_num to sc&#34;</span>)  <span style="color:#408080;font-style:italic">// (2)
+</span><span style="color:#408080;font-style:italic"></span>
+	sc <span style="color:#666">&lt;-</span> test_num                             <span style="color:#408080;font-style:italic">// (3) 阻塞
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] resuming&#34;</span>)             <span style="color:#408080;font-style:italic">// (5) 
+</span><span style="color:#408080;font-style:italic"></span>	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] sent test_num to cc&#34;</span>)  <span style="color:#408080;font-style:italic">// (6)
+</span><span style="color:#408080;font-style:italic"></span>
+	cc <span style="color:#666">&lt;-</span> test_num                             <span style="color:#408080;font-style:italic">// (7) 阻塞
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] resuming&#34;</span>)             <span style="color:#408080;font-style:italic">// (11) 唤醒
+</span><span style="color:#408080;font-style:italic"></span>	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] reading from channels&#34;</span>)
+
+	sv, cv <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> sc, <span style="color:#666">&lt;-</span> cc                     <span style="color:#408080;font-style:italic">// (12) 阻塞      （15）唤醒
+</span><span style="color:#408080;font-style:italic"></span>	sum <span style="color:#666">:=</span> sv <span style="color:#666">+</span> cv                             <span style="color:#408080;font-style:italic">// (16)
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] sum of sv and cv of &#34;</span>, test_num, <span style="color:#ba2121">&#34; is &#34;</span>, sum)  <span style="color:#408080;font-style:italic">// (17)
+</span><span style="color:#408080;font-style:italic"></span>	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16378565941765.jpg" alt=""></p>
+<blockquote>
+<p>单向通道（定义方法）</p>
+</blockquote>
+<p>Using unidirectional channels increases the type-safety of a program.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+    roc <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>)     <span style="color:#408080;font-style:italic">// 只读通道
+</span><span style="color:#408080;font-style:italic"></span>    soc <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#b00040">int</span>)     <span style="color:#408080;font-style:italic">// 只写通道
+</span><span style="color:#408080;font-style:italic"></span>    
+    fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Data type of roc is %T\n&#34;</span>, roc)
+    fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Data type of soc is %T\n&#34;</span>, soc)
+    
+}
+
+</code></pre></div><p><img src="media/16378967919448.jpg" alt=""></p>
+<blockquote>
+<p>匿名协程</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>(c <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Hello &#34;</span> <span style="color:#666">+</span> <span style="color:#666">&lt;-</span> c <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!&#34;</span>)
+	}(c)
+
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;John&#34;</span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16378971710629.jpg" alt=""></p>
+<blockquote>
+<p>嵌套通道</p>
+</blockquote>
+<p>注意执行顺序的分析</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">small_channel</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;(5.1) small() started&#34;</span>)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Hello &#34;</span> <span style="color:#666">+</span> <span style="color:#666">&lt;-</span>c <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!&#34;</span>)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;(5.2) small() stopped&#34;</span>)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">big_channel</span>(cc <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;(2.1) big() started&#34;</span>)
+	cc <span style="color:#666">&lt;-</span> c
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;(2.2) big() stopped&#34;</span>)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+
+	big <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">big_channel</span>(big)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;(1) main() blocked on big&#34;</span>)
+	small <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>big
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;(3) main() wake up on big&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">small_channel</span>(small)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;(4) main() blocked on small&#34;</span>)
+	small <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;John&#34;</span>
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;(6) main() wake up on small&#34;</span>)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+</code></pre></div><p><img src="media/16378983997417.jpg" alt=""></p>
+<h2 id="复杂操作多通道检测-select">复杂操作（多通道检测 select）</h2>
+<blockquote>
+<p>select 基本语义</p>
+</blockquote>
+<p>select is just like switch without any input argument but it only used for channel operations. The select statement is used to perform an operation on only one channel out of many, conditionally selected by case block.</p>
+<p>select 一次（没有包含在for循环中）从多个case中选择一个通道进行一次操作，如果所有case都不可用（阻塞），则select阻塞。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">var</span> start time.Time
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">init</span>() {
+	start = time.<span style="color:#00f">Now</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service_1</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	time.<span style="color:#00f">Sleep</span>(<span style="color:#666">5</span> <span style="color:#666">*</span> time.Second)
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;[Hello from service 1]&#34;</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service_2</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	time.<span style="color:#00f">Sleep</span>(<span style="color:#666">3</span> <span style="color:#666">*</span> time.Second)
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;[Hello from service 2]&#34;</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+
+	c1 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	c2 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_1</span>(c1)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_2</span>(c2)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() blocked on select&#34;</span>)
+	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>c1:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from service 1&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+	<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>c2:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from service 2&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+	}
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() wake up on select&#34;</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+}
+
+</code></pre></div><p>Above program simulates real world web service where a load balancer gets millions of requests and it has to return a response from one of the services available. Using goroutines, channels and select, we can ask multiple services for a response, and one which responds quickly can be used.</p>
+<p><img src="media/16378996623250.jpg" alt=""></p>
+<blockquote>
+<p>有缓冲 select</p>
+</blockquote>
+<p>select 如果同时有多个 case 满足了条件(非阻塞），会使用伪随机选择一个 case 来执行</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">var</span> start time.Time
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">init</span>() {
+	start = time.<span style="color:#00f">Now</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+
+	c1 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>, <span style="color:#666">2</span>)
+	c2 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>, <span style="color:#666">2</span>)
+
+	c1 <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;v1&#34;</span>
+	c1 <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;v2&#34;</span>
+
+	c2 <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;v1&#34;</span>
+	c2 <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;v2&#34;</span>
+
+	<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c1:
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from c1&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+		<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c2:
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from c2&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+}
+
+</code></pre></div><p><img src="media/16379025449041.jpg" alt=""></p>
+<blockquote>
+<p>default 语义</p>
+</blockquote>
+<p>If a value is available on any channel then select will execute that case. If not then it will immediately execute the default case. To avoid deadlock, we can use default case.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">var</span> start time.Time
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">init</span>() {
+	start = time.<span style="color:#00f">Now</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service_1</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;service_1 started&#34;</span>)
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;[Hello from service 1]&#34;</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service_2</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;service_2 started&#34;</span>)
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;[Hello from service 2]&#34;</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+
+	c1 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	c2 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_2</span>(c2)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_1</span>(c1)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() blocked on select&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>c1:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from service 1&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+	<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>c2:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from service 2&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+	<span style="color:#008000;font-weight:bold">default</span>:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;No response received&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() wake up on select&#34;</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+}
+
+
+</code></pre></div><p><img src="media/16379030218023.jpg" alt=""></p>
+<blockquote>
+<p>配合 sleep</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+
+	c1 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	c2 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_2</span>(c2)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_1</span>(c1)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() blocked on sleep&#34;</span>)
+
+	time.<span style="color:#00f">Sleep</span>(<span style="color:#666">3</span> <span style="color:#666">*</span> time.Second)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() wake up on sleep&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>c1:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from service 1&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+	<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>c2:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from service 2&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+	<span style="color:#008000;font-weight:bold">default</span>:
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;No response received&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+	}
+	
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+}
+
+
+</code></pre></div><p><img src="media/16379032128922.jpg" alt=""></p>
+<blockquote>
+<p>处理 nil 通道</p>
+</blockquote>
+<p>nil 的 channel，不管读写都会被阻塞</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;response&#34;</span>            <span style="color:#408080;font-style:italic">// blocked
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">var</span> c1 <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>         <span style="color:#408080;font-style:italic">// c1 = nil
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service</span>(c1)
+
+	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c1:          <span style="color:#408080;font-style:italic">// blocked
+</span><span style="color:#408080;font-style:italic"></span>		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from c1&#34;</span>, rs)
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16379044096697.jpg" alt=""></p>
+<blockquote>
+<p>基于 time 实现延时等待处理</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">var</span> start time.Time
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">init</span>() {
+	start = time.<span style="color:#00f">Now</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service_1</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	time.<span style="color:#00f">Sleep</span>(<span style="color:#666">5</span> <span style="color:#666">*</span> time.Second)
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;[Hello from service_1]&#34;</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service_2</span>(c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) {
+	time.<span style="color:#00f">Sleep</span>(<span style="color:#666">3</span> <span style="color:#666">*</span> time.Second)
+	c <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;[Hello from service_2]&#34;</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+
+	c1 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	c2 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_1</span>(c1)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_2</span>(c2)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() blocked on select&#34;</span>)
+	<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>c1:
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from service_1&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+		<span style="color:#008000;font-weight:bold">case</span> rs <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>c2:
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;response from service_2&#34;</span>, rs, time.<span style="color:#00f">Since</span>(start))
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>time.<span style="color:#00f">After</span>(<span style="color:#666">2</span><span style="color:#666">*</span>time.Second):
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;No response received&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+	}
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() wake up on select&#34;</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>, time.<span style="color:#00f">Since</span>(start))
+}
+
+</code></pre></div><p><img src="media/16379049523023.jpg" alt=""></p>
+<blockquote>
+<p>永远等待（空select）</p>
+</blockquote>
+<p>Like for{} empty loop, an empty select{} syntax is also valid but there is a gotcha. As we know, select statement is blocked until one of the cases unblocks, and since there are no case statements available to unblock it, the main goroutine will block forever resulting in a deadlock.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service_hello</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Hello from service&#34;</span>)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_hello</span>()
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() blocked on empty select for ever.&#34;</span>)
+	<span style="color:#008000;font-weight:bold">select</span> {}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16379053149089.jpg" alt=""></p>
+<h2 id="辅助工具">辅助工具</h2>
+<blockquote>
+<p>WaitGroup（监控集）</p>
+</blockquote>
+<p>WaitGroup is a struct with a counter value which tracks how many goroutines were spawned and how many have completed their job. This counter when reaches zero, means all goroutines have done their job.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">service_instance</span>(wg <span style="color:#666">*</span>sync.WaitGroup, instance <span style="color:#b00040">int</span>) {
+	time.<span style="color:#00f">Sleep</span>(<span style="color:#666">2</span> <span style="color:#666">*</span> time.Second)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;service called on instance&#34;</span>, instance)
+	wg.<span style="color:#00f">Done</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() started&#34;</span>)
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">1</span>; i <span style="color:#666">&lt;=</span> <span style="color:#666">4</span>; i<span style="color:#666">++</span> {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">service_instance</span>(<span style="color:#666">&amp;</span>wg, i)
+	}
+
+	wg.<span style="color:#00f">Wait</span>()
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main() stopped&#34;</span>)
+}
+
+
+</code></pre></div><p><img src="media/16379065419714.jpg" alt=""></p>
+<ul>
+<li>
+<p>WaitGroup 的方法</p>
+<ul>
+<li>Add()：When WaitGroup is created, its counter value is 0 and we can increment it by passing delta as parameter using Add method.</li>
+<li>Wait()：Wait method is used to block the current goroutine from where it was called. Once counter reaches 0, that goroutine will unblock.</li>
+<li>Done()：Done method decrements the counter. It does not accept any argument, hence it only decrements the counter by 1.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Worker pool (任务池）</p>
+</blockquote>
+<p>The concept behind worker pool is maintaining a pool of worker goroutines which receives some task and returns the result. Once they all done with their job, we collect the result. All of these goroutines use the same channel for individual purpose.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">worker</span>(tasks <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, results <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#b00040">int</span>, instance <span style="color:#b00040">int</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> num <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> tasks {
+		time.<span style="color:#00f">Sleep</span>(time.Millisecond)
+		fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;[worker %v] do task %v\n&#34;</span>, instance, instance)
+		results <span style="color:#666">&lt;-</span> num <span style="color:#666">*</span> num
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] started&#34;</span>)
+
+	tasks <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, <span style="color:#666">10</span>)
+	results <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, <span style="color:#666">10</span>)
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">5</span>; i<span style="color:#666">++</span> {
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">worker</span>(tasks, results, i)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">5</span>; i<span style="color:#666">++</span> {
+		tasks <span style="color:#666">&lt;-</span> i <span style="color:#666">*</span> <span style="color:#666">2</span>
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] sent 5 tasks&#34;</span>)
+
+	<span style="color:#008000">close</span>(tasks)   <span style="color:#408080;font-style:italic">// channel 的关闭最好在写入方处理，读的协程不要去关闭 channel
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">5</span>; i<span style="color:#666">++</span> {
+		result <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>results
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] got result&#34;</span>, i, <span style="color:#ba2121">&#34;:&#34;</span>, result)
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] stopped&#34;</span>)
+}
+
+</code></pre></div><p>You can get different result like in previous example depending on how fast your system is because if all worker gorutines are blocked even for micro-second, main goroutine will wake up as explained.</p>
+<p><img src="media/16379083055633.jpg" alt=""></p>
+<blockquote>
+<p>WaitGroup 与 WorkerPool 结合实现主从协程同步</p>
+</blockquote>
+<p>Using waitGroup, we can prevent lots of (unnecessary) context switching (scheduling)</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">worker_wg</span>(wg <span style="color:#666">*</span>sync.WaitGroup, tasks <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, results <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#b00040">int</span>, instance <span style="color:#b00040">int</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> num <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> tasks {
+		time.<span style="color:#00f">Sleep</span>(time.Second)
+		fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;[worker %v] do task %v\n&#34;</span>, instance, instance)
+		results <span style="color:#666">&lt;-</span> num <span style="color:#666">*</span> num
+	}
+
+	wg.<span style="color:#00f">Done</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] started&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	tasks <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, <span style="color:#666">10</span>)
+	results <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, <span style="color:#666">10</span>)
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">5</span>; i<span style="color:#666">++</span> {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">worker_wg</span>(<span style="color:#666">&amp;</span>wg, tasks, results, i)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">5</span>; i<span style="color:#666">++</span> {
+		tasks <span style="color:#666">&lt;-</span> i <span style="color:#666">*</span> <span style="color:#666">2</span>
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] sent 5 tasks&#34;</span>)
+
+	<span style="color:#008000">close</span>(tasks)
+
+	wg.<span style="color:#00f">Wait</span>()
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">5</span>; i<span style="color:#666">++</span> {
+		result <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>results
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] got result&#34;</span>, i, <span style="color:#ba2121">&#34;:&#34;</span>, result)
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] stopped&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16379090106132.jpg" alt=""></p>
+<blockquote>
+<p>Mutex（互斥锁）</p>
+</blockquote>
+<ul>
+<li>there might be conditions where some data in heap is shared between multiple goroutines. In that case, multiple goroutines are trying to manipulate data at the same memory location resulting in unexpected results. (共享变量的并发访问）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">var</span> share_var <span style="color:#b00040">int</span>
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">worker_async</span>(wg <span style="color:#666">*</span>sync.WaitGroup) {
+	share_var = share_var <span style="color:#666">+</span> <span style="color:#666">1</span>
+	wg.<span style="color:#00f">Done</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">1000</span>; i<span style="color:#666">++</span> {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">worker_async</span>(<span style="color:#666">&amp;</span>wg)
+	}
+
+	wg.<span style="color:#00f">Wait</span>()
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;final value of share_var after 1000 operations is &#34;</span>, share_var)
+}
+
+</code></pre></div><p><img src="media/16379095271408.jpg" alt=""></p>
+<p>Why we got less than 1000?
+<img src="media/16379099722069.jpg" alt=""></p>
+<p>In Go, the mutex data structure (a map) is provided by sync package. In Go, before performing any operation on a value which might cause race condition, we acquire a lock using mutex.Lock() method followed by code of operation. Once we are done with the operation, in above program share_var = share_var + 1, we unlock it using mutext.Unlock() method. When any other goroutine is trying to read or write value of share_var when the lock is present, that goroutine will block until the operation is unlocked from the first goroutine.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">var</span> share_var <span style="color:#b00040">int</span>
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">worker_async</span>(wg <span style="color:#666">*</span>sync.WaitGroup, mtx <span style="color:#666">*</span>sync.Mutex) {
+	mtx.<span style="color:#00f">Lock</span>()
+	share_var = share_var <span style="color:#666">+</span> <span style="color:#666">1</span>
+	mtx.<span style="color:#00f">Unlock</span>()
+	wg.<span style="color:#00f">Done</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> wg sync.WaitGroup
+	<span style="color:#008000;font-weight:bold">var</span> mtx sync.Mutex
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">1000</span>; i<span style="color:#666">++</span> {
+		wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">worker_async</span>(<span style="color:#666">&amp;</span>wg, <span style="color:#666">&amp;</span>mtx)
+	}
+
+	wg.<span style="color:#00f">Wait</span>()
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;final value of share_var after 1000 operations is &#34;</span>, share_var)
+}
+</code></pre></div><p><img src="media/16379098396417.jpg" alt=""></p>
+<h2 id="并发模式">并发模式</h2>
+<blockquote>
+<p>Generator</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">fib</span>(length <span style="color:#b00040">int</span>) <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span> {
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>, length)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">for</span> i,j<span style="color:#666">:=</span><span style="color:#666">0</span>,<span style="color:#666">1</span>; i&lt;length; i,j=i<span style="color:#666">+</span>j,i {
+			c <span style="color:#666">&lt;-</span> i
+		}
+		<span style="color:#008000">close</span>(c)
+	}()
+
+	<span style="color:#008000;font-weight:bold">return</span> c
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">for</span> fn <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> <span style="color:#00f">fib</span>(<span style="color:#666">100</span>) {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Current fibonacci number is &#34;</span>, fn)
+	}
+}
+
+</code></pre></div><p><img src="media/16379108153705.jpg" alt=""></p>
+<h2 id="总结">总结</h2>
+<p>掌握channel的关键是，时刻把握操作的阻塞情况，协程一旦阻塞，将会让出执行，系统会选择其他协程投入运行。系统一旦发现所有协程都处于阻塞状态，则抛出“死锁”异常！因此，这种基于channel的消息通信机制，完全在用户的控制之下实现了安全的程序逻辑（从而尽量避免了传统基于锁的安全保护机制）。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://medium.com/rungo/anatomy-of-channels-in-go-concurrency-in-go-1ec336086adb">https://medium.com/rungo/anatomy-of-channels-in-go-concurrency-in-go-1ec336086adb</a></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-2-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/golang-channel-study-2-1/image-7_hu7097fc17546f9bb13044ec2d4bcd6998_68742_400x0_resize_q75_lanczos.jpeg 1x, https://taodanfang.github.io/posts/golang-channel-study-2-1/image-7_hu7097fc17546f9bb13044ec2d4bcd6998_68742_800x0_resize_q75_lanczos.jpeg 2x, https://taodanfang.github.io/posts/golang-channel-study-2-1/image-7_hu7097fc17546f9bb13044ec2d4bcd6998_68742_1200x0_resize_q75_lanczos.jpeg 3x">
+      <img src="https://taodanfang.github.io/posts/golang-channel-study-2-1/image-7_hu7097fc17546f9bb13044ec2d4bcd6998_68742_400x0_resize_q75_lanczos.jpeg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（2）- 用户并发注册开发实践</h2>
+    <p class="card-text">In this post, we’ll use goroutines, channels and WaitGroups to process a “bulk user registration” request.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-23 1123:00">Nov 23, 2021</time></p>
+      <p>#golang #channel #practice </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

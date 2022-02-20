@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>基于Go语言开发物联网项目(数传网关)相关基础 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  基于Go语言开发物联网项目(数传网关)相关基础</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >基于Go语言开发物联网项目(数传网关)相关基础</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-08-02">Aug 2, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/iot-study-1/j7_hu3d03a01dcc18bc5be0e67db3d8d209a6_143645_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/iot-study-1/j7_hu3d03a01dcc18bc5be0e67db3d8d209a6_143645_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/iot-study-1/j7_hu3d03a01dcc18bc5be0e67db3d8d209a6_143645_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/iot-study-1/j7_hu3d03a01dcc18bc5be0e67db3d8d209a6_143645_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#数传模块">数传模块</a>
+      <ul>
+        <li><a href="#dtu-硬件功能接口">DTU 硬件功能（接口）</a></li>
+        <li><a href="#dtu-软件功能协议">DTU 软件功能（协议）</a></li>
+      </ul>
+    </li>
+    <li><a href="#数据编解码">数据编解码</a>
+      <ul>
+        <li><a href="#字节序">字节序</a></li>
+        <li><a href="#序列化">序列化</a></li>
+      </ul>
+    </li>
+    <li><a href="#协议设计">协议设计</a>
+      <ul>
+        <li><a href="#服务端模板">服务端（模板）</a></li>
+        <li><a href="#包处理">包处理</a></li>
+        <li><a href="#客户端模板">客户端（模板）</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/go-kit-microservice-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">基于Go-kit 框架定制微服务应用的开发流程</h2>
+    <p class="card-text">本文总结了基于go-kit定制微服务框架的基本方法和开发流程。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-07-27 727:00">Jul 27, 2021</time></p>
+      <p>#golang #kit #microservice </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>本文介绍了基于go开发物联网相关项目过程中涉及到的基本技术，包括：数据编解码，基础通信协议设计与运行等等。在物联网项目开发过程中，一般均涉及到定制协议的设计与开发，同时一般均以二进制数据进行传送，根据一般的需求，本文提供了相应的软件模板。</p>
+<p><img src="image-20210802180448930.png" alt="image-20210802180448930"></p>
+<h2 id="数传模块">数传模块</h2>
+<blockquote>
+<p>物联网项目中软硬件的边界是DTU，下面以wifi数传模块为例，介绍典型的DTU相关知识。</p>
+</blockquote>
+<h3 id="dtu-硬件功能接口">DTU 硬件功能（接口）</h3>
+<blockquote>
+<p>一个典型的DTU设备如下，包含四个外接端口：R485口（数据口）, R232口（调试口）, 电源口，无线口</p>
+</blockquote>
+<p><img src="image-20210802185000387.png" alt="image-20210802185000387"></p>
+<p><img src="image-20210802185032725.png" alt="image-20210802185032725"></p>
+<p><img src="image-20210802185429687.png" alt="image-20210802185429687"></p>
+<blockquote>
+<p>典型技术参数（举例）：</p>
+</blockquote>
+<p><img src="image-20210802185516985.png" alt="image-20210802185516985"></p>
+<h3 id="dtu-软件功能协议">DTU 软件功能（协议）</h3>
+<p><img src="image-20210802185210560.png" alt="image-20210802185210560"></p>
+<p><img src="image-20210802185231982.png" alt="image-20210802185231982"></p>
+<p><img src="image-20210802185255289.png" alt="image-20210802185255289"></p>
+<p><img src="image-20210802185320197.png" alt="image-20210802185320197"></p>
+<p><img src="image-20210802185339725.png" alt="image-20210802185339725"></p>
+<p><img src="image-20210802185359408.png" alt="image-20210802185359408"></p>
+<h2 id="数据编解码">数据编解码</h2>
+<blockquote>
+<p>物联网项目的软硬件对接的第一步是进行数据传输协议（数据包格式）的设计，传输方式可以采用很多种，包括TCP/UDP，或MQTT等常用技术。下面就数据包处理方面的基础知识予以介绍。</p>
+</blockquote>
+<h3 id="字节序">字节序</h3>
+<blockquote>
+<p>计算机硬件中的两种储存数据的方式：</p>
+<ul>
+<li>大端字节序（big endian）(反序，但与我们”从左到右“阅读习惯一致)
+<ul>
+<li>高位字节排放在内存的低地址端，低位字节排放在内存的高地址端</li>
+</ul>
+</li>
+<li>小端字节序（little endian）（正序，但与“机器”读取数据的顺序一致）
+<ul>
+<li>低位字节排放在内存的低地址端，高位字节排放在内存的高地址端</li>
+</ul>
+</li>
+</ul>
+<p>一个比较合理的解释：计算机中电路优先处理低位字节，效率比较高，因为计算机都是从低位开始的，所以计算机内部处理都是小端字节序。但是我们平常读写数值的方法，习惯用大端字节序，所以除了计算机的内部，其他场景大都是大端字节序，比如：网络传输和文件储存时都是用的大端字节序。</p>
+</blockquote>
+<blockquote>
+<p>(1) 判别大小端</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Is_little_endian</span>() <span style="color:#b00040">bool</span> {
+	<span style="color:#008000;font-weight:bold">var</span> value <span style="color:#b00040">int32</span> = <span style="color:#666">1</span>
+	pointer <span style="color:#666">:=</span> unsafe.<span style="color:#00f">Pointer</span>(<span style="color:#666">&amp;</span>value)
+	pv <span style="color:#666">:=</span> (<span style="color:#666">*</span><span style="color:#b00040">byte</span>)(pointer)
+	<span style="color:#008000;font-weight:bold">if</span> <span style="color:#666">*</span>pv <span style="color:#666">!=</span> <span style="color:#666">1</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>
+	}
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">true</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	ed <span style="color:#666">:=</span> <span style="color:#00f">Is_little_endian</span>()
+	<span style="color:#008000;font-weight:bold">if</span> ed {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;It is Little endian.&#34;</span>)
+	} <span style="color:#008000;font-weight:bold">else</span> {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;It is Big endian.&#34;</span>)
+	}
+}
+</code></pre></div><blockquote>
+<p>(2) 字节序转化：在涉及到网络传输、文件存储时，因为不同系统的大小端字节序不同，这是就需要大小端转化，才能保证读取到的数据是正确的。（例如ARM采用小端，DSP采用大端，对于TCP/IP网络传输的字节序则固定采用的是大端字节序）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">BtoL</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> value <span style="color:#b00040">uint32</span> = <span style="color:#666">10</span>
+	by <span style="color:#666">:=</span> <span style="color:#008000">make</span>([]<span style="color:#b00040">byte</span>, <span style="color:#666">4</span>)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Original value: &#34;</span>, value)
+	binary.BigEndian.<span style="color:#00f">PutUint32</span>(by, value)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;BigEnd value: &#34;</span>, binary.BigEndian.<span style="color:#00f">Uint32</span>(by))
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;LitEnd value: &#34;</span>, binary.LittleEndian.<span style="color:#00f">Uint32</span>(by))
+}
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">It is Little endian.
+Original value:  <span style="color:#666">10</span>
+BigEnd value:  <span style="color:#666">10</span>
+LitEnd value:  <span style="color:#666">167772160</span>
+</code></pre></div><h3 id="序列化">序列化</h3>
+<blockquote>
+<p>在用Go进行数据传输的场景下，例如文件传输或文件存储时，需要将Go的数据例如int转换为[]byte。 得到的<code>[]byte</code>可以进一步在网络上传输或写入到文件中。这个场景需要借助go标准库中的<a href="https://golang.org/pkg/encoding/binary/"><code>encoding/binary</code></a>包来实现。<code>encoding/binary</code>包实现了简单的数字与字节序列的转换以及变长值的编解码。 一个定长值是指要么是固定长度的数字类型（int8, uint8, int16, float32, complex64, …）或者只包含定长值的结构体或者数组。</p>
+</blockquote>
+<blockquote>
+<p>(1) 基本数据类型序列化</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">test_byte_order</span>() {
+
+	<span style="color:#008000;font-weight:bold">var</span> num <span style="color:#b00040">int64</span> = <span style="color:#666">15</span>
+	<span style="color:#008000;font-weight:bold">var</span> buf bytes.Buffer
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Test byte order(3) .................&#34;</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Original Value: &#34;</span>, num)
+	err <span style="color:#666">:=</span> binary.<span style="color:#00f">Write</span>(<span style="color:#666">&amp;</span>buf, binary.BigEndian, num)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+
+	byte_values <span style="color:#666">:=</span> buf.<span style="color:#00f">Bytes</span>()
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Encode BigEnd value: &#34;</span>, byte_values)
+
+	<span style="color:#008000;font-weight:bold">var</span> decoding_num <span style="color:#b00040">int64</span>
+	err = binary.<span style="color:#00f">Read</span>(<span style="color:#666">&amp;</span>buf, binary.BigEndian, <span style="color:#666">&amp;</span>decoding_num)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Decode BigEnd value: &#34;</span>, decoding_num)
+
+	buf.<span style="color:#00f">Reset</span>()
+	err = binary.<span style="color:#00f">Write</span>(<span style="color:#666">&amp;</span>buf, binary.LittleEndian, num)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+
+	byte_values = buf.<span style="color:#00f">Bytes</span>()
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Encode LitEnd value: &#34;</span>, byte_values)
+
+	err = binary.<span style="color:#00f">Read</span>(<span style="color:#666">&amp;</span>buf,binary.LittleEndian, <span style="color:#666">&amp;</span>decoding_num)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Decode LitEnd value: &#34;</span>, decoding_num)
+}
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Original Value:  <span style="color:#666">15</span>
+Encode BigEnd value:  <span style="color:#666">[</span><span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> 15<span style="color:#666">]</span>
+Decode BigEnd value:  <span style="color:#666">15</span>
+Encode LitEnd value:  <span style="color:#666">[</span><span style="color:#666">15</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> 0<span style="color:#666">]</span>
+Decode LitEnd value:  <span style="color:#666">15</span>
+</code></pre></div><blockquote>
+<p>基本使用方法：</p>
+<ul>
+<li>binary.Write：这个函数可以将数据序列化成字节流</li>
+<li>binary.Read：这个函数可以将字节流反序列化为数据结构</li>
+</ul>
+<p>注意事项：</p>
+<ul>
+<li>如果编码的结构中有不确定长度的类型，会报错</li>
+<li>如果是go语言之间的序列化和反序列化推荐使用<code>encoding/gob</code>包，跨语言的序列化和反序列化可以使用protobuf</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>(2) 结构体序列化</p>
+</blockquote>
+<blockquote>
+<p>在写网络程序的时候，我们经常需要将结构体或者整数等数据类型序列化成二进制的buffer串。或者从一个buffer中解析出来一个结构体出来，最典型的就是在协议的header部分表征head length 或者body length在拼包和拆包的过程中，需要按照规定的整数类型进行解析，且涉及到大小端序的问题。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">test_byte_struct_coding</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Test byte struct encoding...............&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">var</span> a = <span style="color:#008000;font-weight:bold">struct</span> {
+		One <span style="color:#b00040">int32</span>
+		Two <span style="color:#b00040">int32</span>
+	}{
+		<span style="color:#008000">int32</span>(<span style="color:#666">1</span>), <span style="color:#008000">int32</span>(<span style="color:#666">2</span>),
+	}
+
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;a&#39;s original value: %#v\n&#34;</span>, a)
+	buf <span style="color:#666">:=</span> <span style="color:#008000">new</span>(bytes.Buffer)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;a&#39;s size is: &#34;</span>, binary.<span style="color:#00f">Size</span>(a))
+
+	err <span style="color:#666">:=</span> binary.<span style="color:#00f">Write</span>(buf, binary.LittleEndian, a)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Encode with LitEnd, a: &#34;</span>, buf.<span style="color:#00f">Bytes</span>())
+
+	buf.<span style="color:#00f">Reset</span>()
+	err = binary.<span style="color:#00f">Write</span>(buf, binary.BigEndian, a)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Encode with BigEnd, a: &#34;</span>, buf.<span style="color:#00f">Bytes</span>())
+}
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">a<span style="color:#ba2121">&#39;s original value: struct { One int32; Two int32 }{One:1, Two:2}
+</span><span style="color:#ba2121">a&#39;</span>s size is:  <span style="color:#666">8</span>
+Encode with LitEnd, a:  <span style="color:#666">[</span><span style="color:#666">1</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">2</span> <span style="color:#666">0</span> <span style="color:#666">0</span> 0<span style="color:#666">]</span>
+Encode with BigEnd, a:  <span style="color:#666">[</span><span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">1</span> <span style="color:#666">0</span> <span style="color:#666">0</span> <span style="color:#666">0</span> 2<span style="color:#666">]</span>
+</code></pre></div><h2 id="协议设计">协议设计</h2>
+<blockquote>
+<p>需求如下：</p>
+<ul>
+<li>It can be anything, but for this example it will be the following. The <strong>header</strong> will always be <em>7 bytes long</em>. The <strong>first byte</strong>, that we call a <em>prefix</em> is always the same, say, <code>&amp;</code>. The <strong>next two bytes</strong> denote the <em>length of the</em> *<strong>data payload*</strong> <em>(without header!)</em>, as a <em>little endian integer</em>. The <strong>final four bytes</strong> are <em>unix time</em> when this data packet was created; again, as a <em>little-endian integer</em>. And then we have the data. If the packet does not start with <code>&amp;</code>, the server should close the connection with the client.</li>
+<li>一个数据包，包含两部分：
+<ul>
+<li>头部(7个字节)
+<ul>
+<li>第一个字节，称为前缀，是一个字符 &amp;</li>
+<li>第二三字节，记录负载长度（不包含头部）（小端序）</li>
+<li>后四个字节，包的创建时间(unix time)（小端序）</li>
+</ul>
+</li>
+<li>负载（变长）</li>
+</ul>
+</li>
+<li>TCP sockets provide integrity of data and preservance of order. Yet, there is no guarantee that the data block read by our server (in one <code>conn.Read()</code> call) from socket will be a <em>full</em> packet right away; nor can we be sure that only one packet comes at a time, as several packets may come “glued” together, so the server will have to cut them apart and process them separately. That’s what creates problems with some conventional approaches shown in most tutorials. We have to implement some kind of a buffer and an algorithm that will wait for more data if it <em>is too short</em>, and make several processing runs if the data received so far <em>accomodates several packets</em>.</li>
+<li>TCP socket本身提供了数据完整性和顺序性保证，但不保证服务端会立即收到整个数据包，也不能保证一次会只收到一个数据包（也许会一次收到多个连续的数据包，因此服务端需要对数据进行切割，然后对每个包进行分别处理）。因此，针对这些情况，服务端需要提供针对性的处理措施。</li>
+</ul>
+</blockquote>
+<h3 id="服务端模板">服务端（模板）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;bytes&#34;</span>
+	<span style="color:#ba2121">&#34;encoding/binary&#34;</span>
+	<span style="color:#ba2121">&#34;fmt&#34;</span>
+	<span style="color:#ba2121">&#34;io&#34;</span>
+	<span style="color:#ba2121">&#34;net&#34;</span>
+	<span style="color:#ba2121">&#34;sync/atomic&#34;</span>
+
+	<span style="color:#ba2121">&#34;github.com/pkg/profile&#34;</span>
+)
+
+<span style="color:#408080;font-style:italic">//&#39;&amp;&#39; prefix,
+</span><span style="color:#408080;font-style:italic">//two bytes for little-endian length of body (excluding header),
+</span><span style="color:#408080;font-style:italic">//four bytes for time of packet generation (as little-endian Unix timestamp)
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">const</span> headerSize = <span style="color:#666">7</span>
+<span style="color:#008000;font-weight:bold">const</span> packetPrefix <span style="color:#b00040">byte</span> = <span style="color:#ba2121">&#39;&amp;&#39;</span>
+
+<span style="color:#408080;font-style:italic">//simply for debug purposes
+</span><span style="color:#408080;font-style:italic">// 调试：记录已经收到的包的数量
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">var</span> counter <span style="color:#b00040">uint64</span>
+
+<span style="color:#408080;font-style:italic">//dummy function simulating packet processing
+</span><span style="color:#408080;font-style:italic">// 一个模拟处理包的函数
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">processPacket</span>(packet []<span style="color:#b00040">byte</span>) {
+	<span style="color:#408080;font-style:italic">//optional sleeping to simulate processing delay
+</span><span style="color:#408080;font-style:italic"></span>  <span style="color:#408080;font-style:italic">// 可以模拟处理包引入的延时
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">//time.Sleep(time.Millisecond * 3)
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#408080;font-style:italic">//just a debug counter to track the total number of processed packets
+</span><span style="color:#408080;font-style:italic"></span>	atomic.<span style="color:#00f">AddUint64</span>(<span style="color:#666">&amp;</span>counter, <span style="color:#666">1</span>)
+	count <span style="color:#666">:=</span> atomic.<span style="color:#00f">LoadUint64</span>(<span style="color:#666">&amp;</span>counter)
+	<span style="color:#008000;font-weight:bold">if</span> count<span style="color:#666">%</span><span style="color:#666">1000000</span> <span style="color:#666">==</span> <span style="color:#666">0</span> {
+    <span style="color:#408080;font-style:italic">// 可以根据情况调整显示包个数的阈值，例如10个
+</span><span style="color:#408080;font-style:italic"></span>		fmt.<span style="color:#00f">Println</span>(count)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	listener, err <span style="color:#666">:=</span> net.<span style="color:#00f">Listen</span>(<span style="color:#ba2121">&#34;tcp&#34;</span>, <span style="color:#ba2121">&#34;127.0.0.1:10002&#34;</span>)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+	<span style="color:#008000;font-weight:bold">defer</span> listener.<span style="color:#00f">Close</span>()
+
+	<span style="color:#408080;font-style:italic">//Main connection-managing loop
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">for</span> {
+		conn, err <span style="color:#666">:=</span> listener.<span style="color:#00f">Accept</span>()
+
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Could not connect&#34;</span>, err.<span style="color:#00f">Error</span>())
+      <span style="color:#408080;font-style:italic">// 注意：在连接出错时，不能调用 close 进行关闭连接
+</span><span style="color:#408080;font-style:italic"></span>			<span style="color:#408080;font-style:italic">//not calling `conn.Close()` because `conn` is `nil` in case of error.
+</span><span style="color:#408080;font-style:italic"></span>			<span style="color:#408080;font-style:italic">//See `AcceptTCP` source.
+</span><span style="color:#408080;font-style:italic"></span>			<span style="color:#008000;font-weight:bold">continue</span>
+		}
+
+    <span style="color:#408080;font-style:italic">// 对每一个连接，启动一个线程进行处理
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">processorRoutine</span>(conn)
+	}
+}
+</code></pre></div><h3 id="包处理">包处理</h3>
+<blockquote>
+<p>读取本次连接接收到达的所有数据</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// 每次读取最大长度（实际数据长度大于此长度时，会在下一次继续读取）
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">const</span> deviceReadBufferSize = <span style="color:#666">1024</span>
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">processorRoutine</span>(conn <span style="color:#666">*</span>net.TCPConn) {
+	<span style="color:#008000;font-weight:bold">defer</span> conn.<span style="color:#00f">Close</span>()
+
+	<span style="color:#408080;font-style:italic">// Convenient storage
+</span><span style="color:#408080;font-style:italic"></span>  <span style="color:#408080;font-style:italic">// 实际数据
+</span><span style="color:#408080;font-style:italic"></span>	localBuffer <span style="color:#666">:=</span> <span style="color:#008000">new</span>(bytes.Buffer)
+
+	<span style="color:#408080;font-style:italic">// Temporary storage for reading from socket.
+</span><span style="color:#408080;font-style:italic"></span>  <span style="color:#408080;font-style:italic">// 临时缓冲区
+</span><span style="color:#408080;font-style:italic"></span>	readBuf <span style="color:#666">:=</span> <span style="color:#008000">make</span>([]<span style="color:#b00040">byte</span>, deviceReadBufferSize)
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#408080;font-style:italic">// Get the data. There can be more than one packets glued together.
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// 读取收到的数据，放入临时缓冲区
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// As a side note, if the amount of data that came into the socket is larger than readBuf can store, more of it will simply be read on the next iteration.
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// 如果实际到达的数据长度大于临时缓冲区的大小，则处理已读出的部分，剩余的部分将会在下一个循环被读出，进行追加处理
+</span><span style="color:#408080;font-style:italic"></span>		dataLen, err <span style="color:#666">:=</span> conn.<span style="color:#00f">Read</span>(readBuf)
+
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">==</span> io.EOF {
+				fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Connection closed by client!&#34;</span>)
+				<span style="color:#008000;font-weight:bold">break</span>
+			}
+		}
+
+		<span style="color:#408080;font-style:italic">//dumping to buffer for further processing
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// 根据实际读取的数据长度，将本次实际读取的数据追加写入“实际数据缓冲区”中
+</span><span style="color:#408080;font-style:italic"></span>		localBuffer.<span style="color:#00f">Write</span>(readBuf[:dataLen])
+
+    <span style="color:#408080;font-style:italic">// 对已经收到的数据进行处理
+</span><span style="color:#408080;font-style:italic"></span>		terminateConnection <span style="color:#666">:=</span> <span style="color:#00f">processExistingData</span>(localBuffer)
+		<span style="color:#008000;font-weight:bold">if</span> terminateConnection {
+      <span style="color:#408080;font-style:italic">// 如果检测到收到的数据是非法包（不知如何处理），就跳出循环，终止本次连接
+</span><span style="color:#408080;font-style:italic"></span>			<span style="color:#008000;font-weight:bold">break</span>
+		}
+	}
+}
+</code></pre></div><blockquote>
+<p>对已经收到的数据，根据协议约定进行处理（例如：查找包头，提取包负载等等）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">processExistingData</span>(data <span style="color:#666">*</span>bytes.Buffer) (terminateConnection <span style="color:#b00040">bool</span>) {
+	terminateConnection = <span style="color:#008000;font-weight:bold">false</span>
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+
+		<span style="color:#408080;font-style:italic">// if the prefix is wrong - disconnect.
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// 查找包头前缀，如果第一个字节不是约定的包前缀，则判定为非法数据，直接返回，终止处理当前已经收到的数据（也就是接收本次连接）
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// 可以根据实际情况，约定多种前缀，表明可以处理多种协议包
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#008000;font-weight:bold">if</span> data.<span style="color:#00f">Bytes</span>()[<span style="color:#666">0</span>] <span style="color:#666">!=</span> packetPrefix {
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Wrong packet prefix! Disconnecting!&#34;</span>)
+			terminateConnection = <span style="color:#008000;font-weight:bold">true</span>
+			<span style="color:#008000;font-weight:bold">return</span>
+		}
+
+		<span style="color:#408080;font-style:italic">// if the header is fully loaded, get the packet length (without header)
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// 检查当前数据中是否包含完整的包头
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#008000;font-weight:bold">var</span> payloadSize <span style="color:#b00040">int</span>
+		<span style="color:#008000;font-weight:bold">if</span> data.<span style="color:#00f">Len</span>() &gt; headerSize {
+      <span style="color:#408080;font-style:italic">// 包含完整的包头，则提取负载长度
+</span><span style="color:#408080;font-style:italic"></span>			payloadSize = <span style="color:#008000">int</span>(binary.LittleEndian.<span style="color:#00f">Uint16</span>(data.<span style="color:#00f">Bytes</span>()[<span style="color:#666">1</span>:<span style="color:#666">3</span>]))
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			<span style="color:#408080;font-style:italic">// incomplete header
+</span><span style="color:#408080;font-style:italic"></span>      <span style="color:#408080;font-style:italic">// 不包含完整的包头，则返回，继续读取数据
+</span><span style="color:#408080;font-style:italic"></span>			<span style="color:#008000;font-weight:bold">return</span>
+		}
+
+    <span style="color:#408080;font-style:italic">// 检查已经收到的数据长度，是否已经包含了完整的数据包（含完整的包头和负载）
+</span><span style="color:#408080;font-style:italic"></span>		packetSize <span style="color:#666">:=</span> headerSize <span style="color:#666">+</span> payloadSize
+
+		<span style="color:#008000;font-weight:bold">if</span> data.<span style="color:#00f">Len</span>() &lt; packetSize {
+			<span style="color:#408080;font-style:italic">//incomplete packet
+</span><span style="color:#408080;font-style:italic"></span>      <span style="color:#408080;font-style:italic">// 负载数据不完整，则返回，继续读取数据
+</span><span style="color:#408080;font-style:italic"></span>			<span style="color:#008000;font-weight:bold">return</span>
+		}
+
+    <span style="color:#408080;font-style:italic">// 提取一个完整的数据包
+</span><span style="color:#408080;font-style:italic"></span>		packet <span style="color:#666">:=</span> data.<span style="color:#00f">Next</span>(packetSize)
+    <span style="color:#408080;font-style:italic">// 对该数据包进行处理（前面提到的一个模拟包处理函数）
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#00f">processPacket</span>(packet)
+
+    <span style="color:#408080;font-style:italic">// 检查缓冲区中是否含有未处理的数据
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#008000;font-weight:bold">if</span> data.<span style="color:#00f">Len</span>() <span style="color:#666">==</span> <span style="color:#666">0</span> {
+      <span style="color:#408080;font-style:italic">// 数据已经全部处理完成，返回，继续读取数据（可能包含下一个新的数据包）
+</span><span style="color:#408080;font-style:italic"></span>			<span style="color:#008000;font-weight:bold">return</span>
+		}
+
+	}
+}
+</code></pre></div><blockquote>
+<p>Bytes.Buffer 包的重要成员方法：</p>
+<ul>
+<li>new(bytes.Buffer)
+<ul>
+<li>创建一个Buffer对象</li>
+<li>Buffer缓冲区是一个可变大小的带有读和写方法的字节缓冲区。Buffer 的零值是一个准备使用的空缓冲区。Buffer不需要初始化。</li>
+</ul>
+</li>
+<li>Buffer.Bytes() []byte
+<ul>
+<li>返回一段长度 b.Len()的字节，其中包含缓冲区的未读部分。该切片仅在下一次缓冲区修改之前有效（即，直到下一次调用 Read，Write，Reset或Truncate 之类的方法）。</li>
+</ul>
+</li>
+<li>Buffer.Len() int
+<ul>
+<li>Len 返回缓冲区未读部分的字节数；b.Len() == len(b.Bytes()）</li>
+</ul>
+</li>
+<li>Buffer.Next(n int) []byte
+<ul>
+<li>返回包含来自缓冲区的下n个字节的切片。如果缓冲区中少于n个字节，则 Next 返回整个缓冲区</li>
+</ul>
+</li>
+<li>Buffer.Read(p []byte) (n int, err error)
+<ul>
+<li>从缓冲区中读取下一个 len(p) 字节，或者直到缓冲区被耗尽。</li>
+</ul>
+</li>
+<li>Buffer.Write(p []byte) (n int, err error)
+<ul>
+<li>将 p 的内容附加到缓冲区，根据需要增加缓冲区。返回值n是 p 的长度； err 总是零</li>
+</ul>
+</li>
+<li>Buffer.Reset()
+<ul>
+<li>Reset将缓冲区重置为空</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="客户端模板">客户端（模板）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Packet_head <span style="color:#008000;font-weight:bold">struct</span> {
+	Prefix    <span style="color:#b00040">byte</span>
+	Length    <span style="color:#b00040">uint16</span>
+	Create_at <span style="color:#b00040">uint32</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_packet</span>(text <span style="color:#b00040">string</span>) (header []<span style="color:#b00040">byte</span>, payload []<span style="color:#b00040">byte</span>) {
+
+	<span style="color:#008000;font-weight:bold">var</span> ph = Packet_head{}
+
+	ph.Prefix = <span style="color:#ba2121">&#39;&amp;&#39;</span>
+
+	pb <span style="color:#666">:=</span> <span style="color:#008000">new</span>(bytes.Buffer)
+	pb.<span style="color:#00f">WriteString</span>(text)
+
+	ph.Length = <span style="color:#008000">uint16</span>(pb.<span style="color:#00f">Len</span>())
+	ph.Create_at = <span style="color:#008000">uint32</span>(time.Time{}.<span style="color:#00f">Unix</span>())
+
+	hb <span style="color:#666">:=</span> <span style="color:#008000">new</span>(bytes.Buffer)
+	_ = binary.<span style="color:#00f">Write</span>(hb, binary.LittleEndian, ph)
+
+	<span style="color:#008000;font-weight:bold">return</span> hb.<span style="color:#00f">Bytes</span>(), pb.<span style="color:#00f">Bytes</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	conn, err <span style="color:#666">:=</span> net.<span style="color:#00f">Dial</span>(<span style="color:#ba2121">&#34;tcp&#34;</span>, <span style="color:#ba2121">&#34;127.0.0.1:10002&#34;</span>)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+	<span style="color:#008000;font-weight:bold">defer</span> conn.<span style="color:#00f">Close</span>()
+
+	pkt_head, pkt_payload <span style="color:#666">:=</span> <span style="color:#00f">New_packet</span>(strings.<span style="color:#00f">Repeat</span>(<span style="color:#ba2121">&#34;hello &#34;</span>, <span style="color:#666">5</span>))
+
+	packet <span style="color:#666">:=</span> <span style="color:#008000">new</span>(bytes.Buffer)
+	packet.<span style="color:#00f">Write</span>(pkt_head)
+	packet.<span style="color:#00f">Write</span>(pkt_payload)
+
+	<span style="color:#408080;font-style:italic">//tools.Log(&#34;packet: &#34;, packet)
+</span><span style="color:#408080;font-style:italic"></span>
+	n, err <span style="color:#666">:=</span> conn.<span style="color:#00f">Write</span>(packet.<span style="color:#00f">Bytes</span>())
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Send %d bytes: %#v\n&#34;</span>, n, packet.<span style="color:#00f">Bytes</span>())
+}
+
+</code></pre></div><blockquote>
+<p>注意：使用bytes.Write() 时，必须是固定长度的数据（例如结构体中不能包括interface成员），因此在客户端构造数据包时，需要分别构造固定长度的包头，和变长的负载。</p>
+</blockquote>
+<h3 id="测试">测试</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go run server.go                                                                                               
+
+Got packet.payload:  hello hello hello hello hello
+Connection closed by client!
+</code></pre></div><blockquote>
+<p>说明：本文提供的服务器模板，未支持keeplive，未向客户端返回响应数据。</p>
+</blockquote>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000039738719">https://segmentfault.com/a/1190000039738719</a></li>
+<li><a href="https://blog.frognew.com/2016/03/go-guide-encoding-binary.html">https://blog.frognew.com/2016/03/go-guide-encoding-binary.html</a></li>
+<li><a href="https://blog.51cto.com/gotaly/1539119">https://blog.51cto.com/gotaly/1539119</a></li>
+<li><a href="https://thenotexpert.com/simple-server-binary-protocol-golang/">https://thenotexpert.com/simple-server-binary-protocol-golang/</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/go-kit-microservice-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/go-kit-microservice-1/5_hu3d03a01dcc18bc5be0e67db3d8d209a6_949616_400x0_resize_lanczos_3.png 1x, https://taodanfang.github.io/posts/go-kit-microservice-1/5_hu3d03a01dcc18bc5be0e67db3d8d209a6_949616_800x0_resize_lanczos_3.png 2x, https://taodanfang.github.io/posts/go-kit-microservice-1/5_hu3d03a01dcc18bc5be0e67db3d8d209a6_949616_1200x0_resize_lanczos_3.png 3x">
+      <img src="https://taodanfang.github.io/posts/go-kit-microservice-1/5_hu3d03a01dcc18bc5be0e67db3d8d209a6_949616_400x0_resize_lanczos_3.png" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">基于Go-kit 框架定制微服务应用的开发流程</h2>
+    <p class="card-text">本文总结了基于go-kit定制微服务框架的基本方法和开发流程。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-07-27 727:00">Jul 27, 2021</time></p>
+      <p>#golang #kit #microservice </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/posts/</link>
+    <description>Recent content in Posts on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>NATS 开发文档摘录</title>
+      <link>https://taodanfang.github.io/posts/nats-io-2/</link>
+      <pubDate>Mon, 13 Dec 2021 17:55:24 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/nats-io-2/</guid>
+      <description>&lt;p&gt;本文摘录了NATS官方文档中的重要部分。包括：基本的nats使用，支持持久化的jetstream的使用方法。&lt;/p&gt;</description>
+    </item><item>
+      <title>协同计算之数学基础（1）- 偏序关系与逻辑时钟</title>
+      <link>https://taodanfang.github.io/posts/math-study-1-1/</link>
+      <pubDate>Mon, 29 Nov 2021 20:01:45 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/math-study-1-1/</guid>
+      <description>&lt;p&gt;在分布式协同计算系统中，认识到事件的发生顺序只是一个偏序关系是非常重要的。我们认为这个认知对于理解所有多进程系统非常有用。 本文介绍某些与协同计算有关的数学基础知识。&lt;/p&gt;</description>
+    </item><item>
+      <title>Golang 并发开发实践（6）- 微服务与Context</title>
+      <link>https://taodanfang.github.io/posts/golang-channel-study-6-1/</link>
+      <pubDate>Sun, 28 Nov 2021 00:50:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/golang-channel-study-6-1/</guid>
+      <description>&lt;p&gt;A Context carries a deadline, a cancelation signal, and other values across API boundaries. 一个上下文携带着一个到期时间，一个取消信号以及其它的值跨越 API 的界线。&lt;/p&gt;
+&lt;p&gt;Google 在内部要求 Go 开发者必须将 Context 作为 API 的第一个参数，无论是提供给别人还是自己调用。&lt;/p&gt;</description>
+    </item><item>
+      <title>Golang 并发开发实践（5）- Channel 原理与模式</title>
+      <link>https://taodanfang.github.io/posts/golang-channel-study-5-1/</link>
+      <pubDate>Sat, 27 Nov 2021 00:08:16 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/golang-channel-study-5-1/</guid>
+      <description>&lt;p&gt;本文是对Go 101中关于“并发开发”内容的梳理。请借鉴操作系统中的“管程”概念对channel的内部工作原理进行理解。&lt;/p&gt;</description>
+    </item><item>
+      <title>Golang 并发开发实践（4）- 爬虫服务的并发优化</title>
+      <link>https://taodanfang.github.io/posts/golang-channel-study-4-1/</link>
+      <pubDate>Fri, 26 Nov 2021 15:50:33 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/golang-channel-study-4-1/</guid>
+      <description>&lt;p&gt;In this post, we will look at a small I/O intensive problem and explore different ways of doing this operation concurrently using the Go programming language, as a practical way of using concurrency in practice.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

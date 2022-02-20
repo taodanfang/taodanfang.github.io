@@ -1,0 +1,51 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/posts/</link>
+    <description>Recent content in Posts on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CRDT协议基础知识(4) - 实例研究</title>
+      <link>https://taodanfang.github.io/posts/crdt-4-1/</link>
+      <pubDate>Tue, 02 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-4-1/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.conclave.tech/&#34;&gt;Conclave&lt;/a&gt; is a peer-to-peer, real-time, collaborative text editor built from scratch in JavaScript.&lt;/p&gt;</description>
+    </item><item>
+      <title>CRDT协议基础知识(3) - 通信实现框架</title>
+      <link>https://taodanfang.github.io/posts/crdt-3-1/</link>
+      <pubDate>Mon, 01 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-3-1/</guid>
+      <description>&lt;h2 id=&#34;cap-理论&#34;&gt;CAP 理论&lt;/h2&gt;
+&lt;p&gt;CAP 定理指出对于一个分布式计算系统来说，不可能同时满足以下三点：&lt;/p&gt;</description>
+    </item><item>
+      <title>Socket.io 技术及其微服务实现框架</title>
+      <link>https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/</link>
+      <pubDate>Fri, 29 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/</guid>
+      <description>&lt;p&gt;介绍Socket.io使用方法，高可用性解决思路，以及基于socket.io构建微服务的基本方法。&lt;/p&gt;</description>
+    </item><item>
+      <title>CRDT协议基础知识(2) - Logoot原理</title>
+      <link>https://taodanfang.github.io/posts/crdt-2-1/</link>
+      <pubDate>Thu, 28 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-2-1/</guid>
+      <description>&lt;p&gt;尝试将CRDT应用于基于块(block)的协同文档(xml)编辑场景，提供了一个详细的原型系统实现参考，原型系统基于Logoot项目扩展，提供了block操作。系统的客户端是Fonto，一款支持XML编辑的工具软件。&lt;/p&gt;</description>
+    </item><item>
+      <title>CRDT协议基础知识(1) - 基本实现框架</title>
+      <link>https://taodanfang.github.io/posts/crdt-1-1/</link>
+      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-1-1/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;2016年3月，Google上线的Google Docs，协同文档的诞生，无疑给基于互联网的沟通协作带来了一场革命。&lt;/p&gt;
+&lt;p&gt;1984 年，MIT 的科学家提出了计算机支持的协同工作（Computer Supported Cooperative Work，缩写为 CSCW），使得人们可以借助计算机和互联网去完成协同工作。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

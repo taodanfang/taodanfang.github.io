@@ -1,0 +1,49 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/posts/</link>
+    <description>Recent content in Posts on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>协同计算相关消息处理技术学习与实践</title>
+      <link>https://taodanfang.github.io/posts/pubsub-event-study/</link>
+      <pubDate>Mon, 14 Feb 2022 21:27:19 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/pubsub-event-study/</guid>
+      <description>&lt;p&gt;消息（事件）通信分为前端和后端两类，前端接收以WS、RPC-WEB、SSE技术为典型代表，后端分发存在的技术相对较多，例如NATS、Kafka等，而Watermill提供了一种以PubSub形式来统一各种消息分发接口的通用技术框架，极大的简化和屏蔽了其他各类相关技术的复杂性。本文介绍了“协同计算”相关的重要消息处理技术实践方法。&lt;/p&gt;</description>
+    </item><item>
+      <title>活动文档（任务进度、状态管理）技术开发实践</title>
+      <link>https://taodanfang.github.io/posts/agenda-study/</link>
+      <pubDate>Sun, 13 Feb 2022 01:56:58 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/agenda-study/</guid>
+      <description>&lt;p&gt;任务是将静态文档转变成一个活动文档的重要方法，在协作文档系统中，应当将任务作为文档的一个辅助对象，参考操作系统中“进程管理”的相关思想进行设计开发。任务管理侧重于“时间”管理，包括任务启动结束、任务进度、任务状态、事件通知等等内容。本文介绍go语言环境下，基于Gocraft/work技术实现任务管理的相关开发实践方法。&lt;/p&gt;</description>
+    </item><item>
+      <title>多租户权限管理技术实践</title>
+      <link>https://taodanfang.github.io/posts/casbin-study/</link>
+      <pubDate>Wed, 26 Jan 2022 22:22:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/casbin-study/</guid>
+      <description>&lt;p&gt;Casbin是一个强大的、高效的开源访问控制框架，其权限管理机制支持多种访问控制模型。Restrict is an authorization library that provides a hybrid of RBAC and ABAC models, allowing to define simple role-based policies while using more fine-grained control when needed. 本文总结了基于这两种技术实现角色授权管理的基本过程和相应实践方法。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;media/16432099894319.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item><item>
+      <title>熙熙表格-开发进展（2022.2.20）</title>
+      <link>https://taodanfang.github.io/posts/cc-table-progress-1/</link>
+      <pubDate>Thu, 20 Jan 2022 19:43:15 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/cc-table-progress-1/</guid>
+      <description>&lt;p&gt;熙熙表格（CC-Table）： 尝试将社交互动、协同文档、业务管理三者相结合， 提供更加自由、灵活、安全的线上办公与业务体验。我们将通过分享功能截图的方式，来记录CC-Table的开发进展。&lt;/p&gt;</description>
+    </item><item>
+      <title>全文搜索引擎库（Bleve）学习实践</title>
+      <link>https://taodanfang.github.io/posts/bleve-study-1/</link>
+      <pubDate>Thu, 16 Dec 2021 12:34:57 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/bleve-study-1/</guid>
+      <description>&lt;p&gt;Bleve is an open-sourced text indexing and search library implemented in Go, developed in-house at Couchbase.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>缓存技术学习与实践：前端与后端 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  缓存技术学习与实践：前端与后端</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >缓存技术学习与实践：前端与后端</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-08-22">Aug 22, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/go-cache-study-1/3_hu3d03a01dcc18bc5be0e67db3d8d209a6_1095739_711x0_resize_lanczos_3.png 1x, https://taodanfang.github.io/posts/go-cache-study-1/3_hu3d03a01dcc18bc5be0e67db3d8d209a6_1095739_1422x0_resize_lanczos_3.png 2x, https://taodanfang.github.io/posts/go-cache-study-1/3_hu3d03a01dcc18bc5be0e67db3d8d209a6_1095739_2133x0_resize_lanczos_3.png 3x">
+            <img src="https://taodanfang.github.io/posts/go-cache-study-1/3_hu3d03a01dcc18bc5be0e67db3d8d209a6_1095739_711x0_resize_lanczos_3.png" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前端数据管理">前端数据管理</a>
+      <ul>
+        <li><a href="#vuex">Vuex</a></li>
+        <li><a href="#pinia">Pinia</a></li>
+        <li><a href="#swrv">SWRV</a></li>
+        <li><a href="#normalizr">Normalizr</a></li>
+        <li><a href="#缓存生命周期">缓存生命周期</a></li>
+        <li><a href="#supervue">SuperVue</a></li>
+        <li><a href="#vuex-常用开发包">Vuex 常用开发包</a></li>
+      </ul>
+    </li>
+    <li><a href="#后端缓存管理">后端缓存管理</a>
+      <ul>
+        <li><a href="#ristretto">Ristretto</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/ties-tree-study-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">字典树数据结构技术原理与开发实践</h2>
+    <p class="card-text">协作式系统中对于支持”动态文档结构、嵌套式文档结构“等较为复杂的文档类型，需要引入树形数据结构，本文首先总结了”树形“数据结构的基本情况，然后针对”协作式系统“相关需求分析，着重对”字典树“数据结构的技术原理进行讲解，并给出相应的开发实践方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-19 819:00">Aug 19, 2021</time></p>
+      <p>#tree </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>Caching has an important role to play in a system design. It is primarily used to speed up information retrieval from a service and reduce the load on a database engine, the primary source of truth for a service. Data that is frequently requested by users are stored in a in-memory key-value store, like <a href="https://redis.io/">Redis</a>, to speed up subsequent look up of the same data.</p>
+<h2 id="前端数据管理">前端数据管理</h2>
+<p>前端数据管理涉及到以下几个方面内容：</p>
+<ul>
+<li>数据缓存</li>
+<li>数据共享</li>
+<li>数据操作模式</li>
+<li>数据结构转换</li>
+</ul>
+<p>以Vue前端开发为例，可以采用的技术选型流程，请参考下图：</p>
+<p><!-- raw HTML omitted --></p>
+<p>重要思路：以Vuex为中心，基于SuperVue，模拟后端数据管理模式</p>
+<h3 id="vuex">Vuex</h3>
+<p><img src="image-20210830001009418.png" alt="image-20210830001009418"></p>
+<blockquote>
+<p>Why should you use Vuex?</p>
+</blockquote>
+<ul>
+<li>The data must be accessible by multiple (independent) components</li>
+<li>Centralized API / data fetching logic</li>
+</ul>
+<p>Vuex 的内脏由五部分组成：State、Getter、Mutation、Action 和 Module。在实际应用中，这五个部分并不是必须的，你需要用到什么就添加什么。但是一般再怎么简单的 Vuex，也至少会由 State 和 Mutation 构成。</p>
+<blockquote>
+<p>State</p>
+</blockquote>
+<ul>
+<li>由于 Vuex 的状态存储是响应式的，从 store 实例中读取状态最简单的方法就是在计算属性中返回某个状态；</li>
+<li>需要注意的是，如果你把 <code>store.state.count</code> 放在 data 中， <code>store.state.count</code> 的变化是不会主动触发界面刷新的，当然，也不能直接这样：<code>&lt;div&gt;｛｛store.state.count ｝｝&lt;/div&gt;</code> ，因为在模板中是无法直接访问到 store 对象的，所以这样写无疑会报错。</li>
+<li>通过在根实例中注册 store 选项，该 store 实例会注入到根组件下的所有子组件中，且子组件能通过 this.$store 访问到。</li>
+<li>使用 Vuex 并不意味着你需要将所有的状态放入 Vuex。虽然将所有的状态放到 Vuex 会使状态变化更显式和易调试，但也会使代码变得冗长和不直观。如果有些状态严格属于单个组件，最好还是作为组件的局部状态。你应该根据你的应用开发需要进行权衡和确定。</li>
+<li>涉及到module重用的情况是，采用与 vue data的函数定义方式一致的形式，可以避免state污染</li>
+</ul>
+<blockquote>
+<p>Getter</p>
+</blockquote>
+<ul>
+<li>Getter 接受 state 作为其第一个参数</li>
+<li>Getter 还也可以接收 getters 作为第二个参数</li>
+<li>Getter 还会将 store.getters 对象暴露出去，你可以以属性的形式访问这些值</li>
+<li>Getter 返回一个函数，就可以传参了</li>
+<li><strong>Use getters to compute derived values of the state</strong></li>
+</ul>
+<blockquote>
+<p>Mutation</p>
+</blockquote>
+<ul>
+<li><strong>更改 Vuex 的 store 中的状态的唯一方法是提交 mutation</strong>。</li>
+<li>Vuex 中的 mutation 非常类似于事件：每个 mutation 都有一个字符串的 事件类型 (TYPE) 和 一个 回调函数 (handler)。这个回调函数就是我们实际进行状态更改的地方，并且它会接受 state 作为第一个参数</li>
+<li>我们不能直接 store.mutations.TYPE() 来调用，Vuex 规定必须使用 store.commit(&lsquo;TYPE&rsquo;)来触发对应 type 的方法</li>
+<li>可以向 store.commit 传入额外的参数（payload），大多数情况下，这个payload 是一个对象，调用方式如下（推荐第二种方式）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// 1、把载荷和type分开提交
+</span><span style="color:#408080;font-style:italic"></span>store.commit(<span style="color:#ba2121">&#39;increment&#39;</span>, {
+  amount<span style="color:#666">:</span> <span style="color:#666">10</span>
+})
+
+<span style="color:#408080;font-style:italic">// 2、整个对象都作为载荷传给 mutation 函数
+</span><span style="color:#408080;font-style:italic"></span>store.commit({
+  type<span style="color:#666">:</span> <span style="color:#ba2121">&#39;increment&#39;</span>,
+  amount<span style="color:#666">:</span> <span style="color:#666">10</span>
+})
+</code></pre></div><ul>
+<li>动态添加state的属性（例如，在已有的state.student对象中，动态添加一个属性 age）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">mutations<span style="color:#666">:</span> {
+  addAge (state) {
+    Vue.set(state.student, <span style="color:#ba2121">&#39;age&#39;</span>, <span style="color:#666">18</span>)
+    <span style="color:#408080;font-style:italic">// 或者：
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// state.student = { ...state.student, age: 18 }
+</span><span style="color:#408080;font-style:italic"></span>  }
+}
+</code></pre></div><ul>
+<li>统一定义 commit 的type值（适用于对于多人合作的大项目）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// mutation-types.js
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">const</span> SOME_MUTATION <span style="color:#666">=</span> <span style="color:#ba2121">&#39;SOME_MUTATION&#39;</span>
+
+<span style="color:#408080;font-style:italic">// store.js
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">import</span> Vuex from <span style="color:#ba2121">&#39;vuex&#39;</span>
+<span style="color:#008000;font-weight:bold">import</span> { SOME_MUTATION } from <span style="color:#ba2121">&#39;./mutation-types&#39;</span>
+
+<span style="color:#008000;font-weight:bold">const</span> store <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">new</span> Vuex.Store({
+  state<span style="color:#666">:</span> { ... },
+  mutations<span style="color:#666">:</span> {
+    <span style="color:#408080;font-style:italic">// 使用 ES2015 风格的计算属性命名功能来使用一个常量作为函数名
+</span><span style="color:#408080;font-style:italic"></span>    [SOME_MUTATION] (state) {
+      <span style="color:#408080;font-style:italic">// mutate state
+</span><span style="color:#408080;font-style:italic"></span>    }
+  }
+})
+</code></pre></div><blockquote>
+<p>Action</p>
+</blockquote>
+<ul>
+<li>Action 提交的是 mutation，而不是直接变更状态。</li>
+<li>Action 可以包含任意异步操作。</li>
+<li>Action 函数接受一个 <code>context</code> 参数，它与 store 实例有着相同的方法和属性，但是他们并不是同一个实例</li>
+<li>可以使用 <code>context.commit</code> 来提交一个 mutation，或者通过 <code>context.state</code> 和 <code>context.getters</code> 来获取 state 和 getters，通过context.dispatch调用其他action。（可以采用参数解析方法，进行调用，如下）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">actions<span style="color:#666">:</span> {
+  increment ({ commit, state, getters, dispatch }) {
+    commit(<span style="color:#ba2121">&#39;increment&#39;</span>)
+  }
+}
+</code></pre></div><ul>
+<li>Action 通过 store.dispatch 方法触发，调用方法如下（推荐第二种方式）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// 以载荷形式分发
+</span><span style="color:#408080;font-style:italic"></span>store.dispatch(<span style="color:#ba2121">&#39;incrementAsync&#39;</span>, {
+  amount<span style="color:#666">:</span> <span style="color:#666">10</span>
+})
+
+<span style="color:#408080;font-style:italic">// 以对象形式分发
+</span><span style="color:#408080;font-style:italic"></span>store.dispatch({
+  type<span style="color:#666">:</span> <span style="color:#ba2121">&#39;incrementAsync&#39;</span>,
+  amount<span style="color:#666">:</span> <span style="color:#666">10</span>
+})
+</code></pre></div><blockquote>
+<p>辅助函数</p>
+</blockquote>
+<ul>
+<li>mapState (四种方式)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">import</span> { mapState } from <span style="color:#ba2121">&#39;vuex&#39;</span>
+
+<span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> {
+  <span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>  computed<span style="color:#666">:</span> mapState({
+    <span style="color:#408080;font-style:italic">// 映射 this.a 为 store.state.a
+</span><span style="color:#408080;font-style:italic"></span>    [ <span style="color:#ba2121">&#39;a&#39;</span>, <span style="color:#ba2121">&#39;b&#39;</span>, <span style="color:#ba2121">&#39;c&#39;</span> ],
+    
+    <span style="color:#408080;font-style:italic">// 箭头函数可使代码更简练
+</span><span style="color:#408080;font-style:italic"></span>    a<span style="color:#666">:</span> state =&gt; state.a,
+    b<span style="color:#666">:</span> state =&gt; state.b,
+    c<span style="color:#666">:</span> state =&gt; state.c,
+
+    <span style="color:#408080;font-style:italic">// 传字符串参数 &#39;b&#39;
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// 等同于 `state =&gt; state.b`
+</span><span style="color:#408080;font-style:italic"></span>    bAlias<span style="color:#666">:</span> <span style="color:#ba2121">&#39;b&#39;</span>,
+
+    <span style="color:#408080;font-style:italic">// 为了能够使用 `this` 获取局部状态
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// 必须使用常规函数
+</span><span style="color:#408080;font-style:italic"></span>    cInfo (state) {
+      <span style="color:#008000;font-weight:bold">return</span> state.c <span style="color:#666">+</span> <span style="color:#008000;font-weight:bold">this</span>.info
+    }
+  })
+}
+</code></pre></div><ul>
+<li>
+<p>mapGetters，调用方式与 <code>mapState</code> 基本上没啥区别</p>
+</li>
+<li>
+<p>mapMutations，调用方式如下</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">import</span> { mapMutations } from <span style="color:#ba2121">&#39;vuex&#39;</span>
+
+<span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> {
+  <span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>  methods<span style="color:#666">:</span> {
+    ...mapMutations([
+      <span style="color:#408080;font-style:italic">// 将 `this.increment()` 映射为 
+</span><span style="color:#408080;font-style:italic"></span>      <span style="color:#408080;font-style:italic">// `this.$store.commit(&#39;increment&#39;)`
+</span><span style="color:#408080;font-style:italic"></span>      <span style="color:#ba2121">&#39;increment&#39;</span>, 
+      <span style="color:#408080;font-style:italic">// `mapMutations` 也支持载荷：
+</span><span style="color:#408080;font-style:italic"></span>      <span style="color:#408080;font-style:italic">// 将 `this.incrementBy(amount)` 映射为 
+</span><span style="color:#408080;font-style:italic"></span>      <span style="color:#408080;font-style:italic">// `this.$store.commit(&#39;incrementBy&#39;, amount)`
+</span><span style="color:#408080;font-style:italic"></span>      <span style="color:#ba2121">&#39;incrementBy&#39;</span> 
+    ]),
+    ...mapMutations({
+      <span style="color:#408080;font-style:italic">// 将 `this.add()` 映射为 
+</span><span style="color:#408080;font-style:italic"></span>      <span style="color:#408080;font-style:italic">// `this.$store.commit(&#39;increment&#39;)`
+</span><span style="color:#408080;font-style:italic"></span>      add<span style="color:#666">:</span> <span style="color:#ba2121">&#39;increment&#39;</span> 
+    })
+  }
+}
+</code></pre></div><ul>
+<li>mapActions，和 mapMutations 用法一模一样</li>
+</ul>
+<blockquote>
+<p>Module</p>
+</blockquote>
+<p>Vuex 允许我们将 store 分割成大大小小的对象，每个对象也都拥有自己的 state、getter、mutation、action，这个对象我们把它叫做 module（模块），在模块中还可以继续嵌套子模块。</p>
+<ul>
+<li>moduleA.js（子模块）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> {
+    state<span style="color:#666">:</span> {
+        text<span style="color:#666">:</span> <span style="color:#ba2121">&#39;moduleA&#39;</span>
+    },
+    getters<span style="color:#666">:</span> {},
+    mutations<span style="color:#666">:</span> {},
+    actions<span style="color:#666">:</span> {}
+}
+</code></pre></div><ul>
+<li>store.js（主模块）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">import</span> moduleA from <span style="color:#ba2121">&#39;./module/moduleA&#39;</span>;
+<span style="color:#008000;font-weight:bold">import</span> moduleB from <span style="color:#ba2121">&#39;./module/moduleB&#39;</span>;
+
+<span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> <span style="color:#008000;font-weight:bold">new</span> Vuex.Store({
+    modules<span style="color:#666">:</span> {
+        moduleA, moduleB,
+    },
+    <span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>}
+</code></pre></div><ul>
+<li>模块内部的 state 是局部的，只属于模块本身所有，所以外部必须通过对应的模块名进行访问</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">computed<span style="color:#666">:</span> {
+    ...mapState({
+        name<span style="color:#666">:</span> state =&gt; state.moduleA.text
+    }),
+},
+</code></pre></div><ul>
+<li>访问根节点</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> {
+    <span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>    getters<span style="color:#666">:</span> {
+        <span style="color:#408080;font-style:italic">// 注意:rootState必须是第三个参数
+</span><span style="color:#408080;font-style:italic"></span>        detail(state, getters, rootState, rootGetters) {
+            <span style="color:#008000;font-weight:bold">return</span> state.text <span style="color:#666">+</span> <span style="color:#ba2121">&#39;-&#39;</span> <span style="color:#666">+</span> rootState.name;
+        }
+    },
+    actions<span style="color:#666">:</span> {
+        callAction({state, rootState, rootGetters}) {
+            alert(state.text <span style="color:#666">+</span> <span style="color:#ba2121">&#39;-&#39;</span> <span style="color:#666">+</span> rootState.name);
+        }
+    }
+}
+</code></pre></div><ul>
+<li>模块内部的 action、mutation 和 getter 默认是注册在<strong>全局命名空间</strong>的，这样使得多个模块能够对同一 mutation 或 action 作出响应。通过添加 <code>namespaced: true</code> 的方式使子模块成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。</li>
+<li>如果一个模块启用了命名空间，那么它里面的 getter 和 action 中收到的 getter，dispatch 和 commit 也都是局部化的，不需要在同一模块内额外添加空间名前缀。也就是说，更改 <code>namespaced</code> 属性后不需要修改模块内的任何代码。</li>
+<li>如果想要在全局命名空间内分发 action 或提交 mutation 的话，那么我们只需要将 将 <code>{ root: true }</code> 作为第三参数传给 dispatch 或 commit 即可</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> {
+    namespaced<span style="color:#666">:</span> <span style="color:#008000;font-weight:bold">true</span>,
+    <span style="color:#408080;font-style:italic">// ...
+</span><span style="color:#408080;font-style:italic"></span>    actions<span style="color:#666">:</span> {
+        callAction({state, commit, rootState}) {
+            commit(<span style="color:#ba2121">&#39;setName&#39;</span>, <span style="color:#ba2121">&#39;改变&#39;</span>, {root<span style="color:#666">:</span> <span style="color:#008000;font-weight:bold">true</span>});
+            alert(state.text <span style="color:#666">+</span> <span style="color:#ba2121">&#39;-&#39;</span> <span style="color:#666">+</span> rootState.name);
+        }
+    }
+}
+</code></pre></div><ul>
+<li>辅助函数绑定带命名空间的模块</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="">#</span> 方法一
+computed<span style="color:#666">:</span> {
+    ...mapState(<span style="color:#ba2121">&#39;some/nested/module&#39;</span>, {
+        a<span style="color:#666">:</span> state =&gt; state.a,
+        b<span style="color:#666">:</span> state =&gt; state.b
+    })
+},
+methods<span style="color:#666">:</span> {
+    ...mapActions(<span style="color:#ba2121">&#39;some/nested/module&#39;</span>, [
+        <span style="color:#ba2121">&#39;foo&#39;</span>, <span style="color:#408080;font-style:italic">// -&gt; this.foo()
+</span><span style="color:#408080;font-style:italic"></span>        <span style="color:#ba2121">&#39;bar&#39;</span> <span style="color:#408080;font-style:italic">// -&gt; this.bar()
+</span><span style="color:#408080;font-style:italic"></span>    ])
+}
+
+<span style="">#</span> 方法二
+<span style="color:#008000;font-weight:bold">import</span> { createNamespacedHelpers } from <span style="color:#ba2121">&#39;vuex&#39;</span>
+
+<span style="color:#008000;font-weight:bold">const</span> { mapState, mapActions } <span style="color:#666">=</span> createNamespacedHelpers(<span style="color:#ba2121">&#39;some/nested/module&#39;</span>)
+
+<span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> {
+  computed<span style="color:#666">:</span> {
+    <span style="color:#408080;font-style:italic">// 在 `some/nested/module` 中查找
+</span><span style="color:#408080;font-style:italic"></span>    ...mapState({
+      a<span style="color:#666">:</span> state =&gt; state.a,
+      b<span style="color:#666">:</span> state =&gt; state.b
+    })
+  },
+  methods<span style="color:#666">:</span> {
+    <span style="color:#408080;font-style:italic">// 在 `some/nested/module` 中查找
+</span><span style="color:#408080;font-style:italic"></span>    ...mapActions([
+      <span style="color:#ba2121">&#39;foo&#39;</span>,
+      <span style="color:#ba2121">&#39;bar&#39;</span>
+    ])
+  }
+}
+</code></pre></div><blockquote>
+<p>大型VUE程序的Vuex管理</p>
+</blockquote>
+<ul>
+<li>管理初始状态</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">const</span> initialState <span style="color:#666">=</span> () =&gt; ({
+    variable1<span style="color:#666">:</span> value,
+    variable2<span style="color:#666">:</span> value,
+    variable3<span style="color:#666">:</span> value
+});
+
+<span style="color:#008000;font-weight:bold">const</span> state <span style="color:#666">=</span> initialState();
+
+<span style="color:#408080;font-style:italic">// Getters
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#408080;font-style:italic">// Mutations
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">const</span> mutations <span style="color:#666">=</span> {
+    RESET(state) {
+      <span style="color:#008000;font-weight:bold">const</span> newState <span style="color:#666">=</span> initialState();
+      <span style="color:#008000">Object</span>.keys(newState).forEach(key =&gt; {
+            state[key] <span style="color:#666">=</span> newState[key]
+      });
+    },
+    <span style="color:#408080;font-style:italic">// other mutations
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#408080;font-style:italic">// Actions
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">const</span> actions <span style="color:#666">=</span> {
+   reset({ commit }) {
+       commit(<span style="color:#ba2121">&#39;RESET&#39;</span>);
+   },
+}
+</code></pre></div><ul>
+<li>自动导入模块</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">store<span style="color:#666">/</span>
+   <span style="">├──</span> index.js    <span style="color:#666">---&gt;</span> Main Store file
+   <span style="">└──</span> modules<span style="color:#666">/</span>
+       <span style="">├──</span> index.js   <span style="color:#666">--&gt;</span> Auto exporter
+       <span style="">├──</span> module1.store.js
+       <span style="">└──</span> module2.store.js
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">/**
+</span><span style="color:#408080;font-style:italic"> * Automatically imports all the modules and exports as a single module object
+</span><span style="color:#408080;font-style:italic"> */</span>
+<span style="color:#008000;font-weight:bold">const</span> requireModule <span style="color:#666">=</span> require.context(<span style="color:#ba2121">&#39;.&#39;</span>, <span style="color:#008000;font-weight:bold">false</span>,  <span style="color:#b68">/\.store\.js$/</span>);
+<span style="color:#008000;font-weight:bold">const</span> modules <span style="color:#666">=</span> {};
+
+requireModule.keys().forEach(filename =&gt; {
+
+    <span style="color:#408080;font-style:italic">// create the module name from fileName
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// remove the store.js extension and capitalize
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#008000;font-weight:bold">const</span> moduleName <span style="color:#666">=</span> filename
+                   .replace(<span style="color:#b68">/(\.\/|\.store\.js)/g</span>, <span style="color:#ba2121">&#39;&#39;</span>)
+                   .replace(<span style="color:#b68">/^\w/</span>, c =&gt; c.toUpperCase())
+
+    modules[moduleName] <span style="color:#666">=</span> requireModule(filename).<span style="color:#008000;font-weight:bold">default</span> <span style="color:#666">||</span> requireModule(filename);
+});
+
+<span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> modules;
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">import</span> Vue from <span style="color:#ba2121">&#39;vue&#39;</span>
+<span style="color:#008000;font-weight:bold">import</span> Vuex from <span style="color:#ba2121">&#39;vuex&#39;</span>
+
+<span style="color:#408080;font-style:italic">// import the auto exporter
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">import</span> modules from <span style="color:#ba2121">&#39;./modules&#39;</span>;
+
+Vue.use(Vuex);
+
+<span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> <span style="color:#008000;font-weight:bold">new</span> Vuex.Store({
+  modules, <span style="color:#408080;font-style:italic">// all your modules automatically imported :)
+</span><span style="color:#408080;font-style:italic"></span>})
+</code></pre></div><h3 id="pinia">Pinia</h3>
+<p>If you feel the need to use a global state management solution in your application but think Vuex is too heavy for your use case, you might want to look at Pinia. Pinia is an extremely lightweight but capable Vuex alternative. Pinia started as an experiment to redesign what a Store for Vue could look like with the Composition API around November 2019. Since then, the initial principles are still the same, but Pinia works for both Vue 2 and Vue 3 and doesn&rsquo;t require you to use the composition API. 由于Pinea是轻量级的，体积很小，它适合于中小型应用。它也适用于低复杂度的Vue.js项目，因为一些调试功能，如时间旅行和编辑仍然不被支持。将 Vuex 用于中小型 Vue.js 项目是过度的，因为它重量级的，对性能降低有很大影响。因此，Vuex 适用于大规模、高复杂度的 Vue.js 项目</p>
+<h3 id="swrv">SWRV</h3>
+<p>If you want to cache server-side data and fetch data in another fashion, you can consider to make use of the SWRV cache pattern or Apollo. swrv uses the Stale-While-Revalidate cache pattern to ensure the user sees data as soon as possible and revalidates the data in the background, anytime a component requests fresh data.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#666">&lt;</span>template<span style="color:#666">&gt;</span>
+  <span style="color:#666">&lt;</span>div<span style="color:#666">&gt;</span>
+    <span style="color:#666">&lt;</span>div v<span style="color:#666">-</span><span style="color:#008000;font-weight:bold">if</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;error&#34;</span><span style="color:#666">&gt;</span>failed to load<span style="color:#666">&lt;</span><span style="">/div&gt;</span>
+    <span style="color:#666">&lt;</span>div v<span style="color:#666">-</span><span style="color:#008000;font-weight:bold">if</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;!data&#34;</span><span style="color:#666">&gt;</span>loading...<span style="color:#666">&lt;</span><span style="">/div&gt;</span>
+    <span style="color:#666">&lt;</span>div v<span style="color:#666">-</span><span style="color:#008000;font-weight:bold">else</span><span style="color:#666">&gt;</span>hello {{ data.name }}<span style="color:#666">&lt;</span><span style="">/div&gt;</span>
+  <span style="color:#666">&lt;</span><span style="">/div&gt;</span>
+<span style="color:#666">&lt;</span><span style="">/template&gt;</span>
+
+<span style="color:#666">&lt;</span>script<span style="color:#666">&gt;</span>
+<span style="color:#008000;font-weight:bold">import</span> useSwr from <span style="color:#ba2121">&#39;swrv&#39;</span>;
+
+<span style="color:#008000;font-weight:bold">export</span> <span style="color:#008000;font-weight:bold">default</span> {
+  name<span style="color:#666">:</span> <span style="color:#ba2121">&#39;Profile&#39;</span>,
+  setup() {
+    <span style="color:#008000;font-weight:bold">const</span> { data, error } <span style="color:#666">=</span> useSwr(<span style="color:#ba2121">&#39;/api/user&#39;</span>, fetcher);
+
+    <span style="color:#008000;font-weight:bold">return</span> {
+      data,
+      error,
+    };
+  },
+};
+<span style="color:#666">&lt;</span><span style="">/script&gt;</span>
+</code></pre></div><h3 id="normalizr">Normalizr</h3>
+<p>The important rule is to keep your global state tree flat. This means that you should not have nested entities like article data with the corresponding author information as nested objects in your state.</p>
+<h3 id="缓存生命周期">缓存生命周期</h3>
+<p>想要缓存VUE组件数据，首选是使用自带的keep-alive组件，使用了该组件后，被该组件包裹的组件数据都会被缓存，组件仅会在初始加载时触发一次mounted及其之前的所有生命周期，而之后则会在activated 和 deactivated这两种事件状态切换，对这样的组件来说重点是在什么时机进行数据重置，一般会把数据获取更新方法放在activated事件中。</p>
+<p>keep-alive有一个不方便的地方是，它的缓存是由VUE自动管理的，在需要的时候无法主动对缓存进行清除（在网上搜索过一些方法，主要是推荐用v-if进行组件重载，但测试后发现数据还是存在，而设置includes属性不够灵活）。</p>
+<p>在开发项目的过程中发现，当组件是重用的公共组件时，keep-alive就无法满足使用场景了，因为当在不同ID的重用组件间切换时，甚至连activated 和 deactivated这两种事件都不会触发，而仅仅是路由发生了变化，这时候组件的数据就无法响应这种变化，无论怎么切换都只会保持初始的数据，因此需要新的缓存策略。</p>
+<p>参考<a href="https://router.vuejs.org/zh/">Vue Router</a>文档的说明，在这种情况下，需要使用<strong>beforeRouteUpdate</strong>钩子来处理数据，基本策略如下图：</p>
+<p><img src="image-20210829160612920.png" alt="image-20210829160612920"></p>
+<h3 id="supervue">SuperVue</h3>
+<p>强大而简易的VUEX操作库，它帮助用户在使用vuex时，省去了繁琐的vuex结构定义等复杂繁琐的内容。使用super-vuex，只需定义好数据结构，剩下的一切它会自动帮你生成，它会给你提供简易的数据操作接口，使用方便，简化了使用vuex过程中繁琐的步骤。操作起来非常方便，不需要手动去定义module、mutation、state、getter和action，定义好数据结构后，通过数据驱动直接自动生成，并提供了调用方式简单的API接口功使用者使用。</p>
+<h3 id="vuex-常用开发包">Vuex 常用开发包</h3>
+<ul>
+<li>抽取繁重的action数据处理任务到web worker
+<ul>
+<li><a href="https://logaretm.com/blog/2019-12-21-vuex-off-mainthread">https://logaretm.com/blog/2019-12-21-vuex-off-mainthread</a></li>
+</ul>
+</li>
+<li>基于vuex和keep-alive实现页面缓存
+<ul>
+<li><a href="https://www.codetd.com/en/article/13099474">https://www.codetd.com/en/article/13099474</a></li>
+</ul>
+</li>
+<li>缓存action，防止重复连续调用
+<ul>
+<li>vue-cache</li>
+</ul>
+</li>
+<li>基于 vuex的分页处理
+<ul>
+<li><a href="https://github.com/cyon/vuex-pagination">https://github.com/cyon/vuex-pagination</a></li>
+</ul>
+</li>
+<li>基于 vuex 的加载效果处理
+<ul>
+<li><a href="https://github.com/f/vue-wait">https://github.com/f/vue-wait</a></li>
+</ul>
+</li>
+<li>基于 vuex 的通知
+<ul>
+<li><a href="https://github.com/ahmed-dinar/vuex-flash">https://github.com/ahmed-dinar/vuex-flash</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="后端缓存管理">后端缓存管理</h2>
+<h3 id="ristretto">Ristretto</h3>
+<p>Ristretto is a fast, concurrent cache library built with a focus on performance and correctness. I came across many embedded key-value store like <a href="https://github.com/golang/groupcache">groupcache</a>, <a href="https://github.com/VictoriaMetrics/fastcache">fastcache</a>, <a href="https://github.com/goburrow/cache">burrow cache</a> and Dgraph’s <a href="https://github.com/dgraph-io/ristretto">Ristretto</a>. Groupcache is an excellent distributed embedded caching library meant to replace a pool of independent Redis or Memcache nodes. Mailgun’s enhancement to <a href="https://github.com/mailgun/groupcache">groupcache</a> adds explicit key removal, key expiry and many more helpful features. I’d like to write an article about groupcache in the future, but for now I’ll settle for Ristretto. </p>
+<p>Ristretto is a high performance, concurrent, memory-bound Go cache. It is contention-proof, scales well and provides consistently high hit-ratios. It is really easy to use with very good documentation and a detailed <a href="https://dgraph.io/blog/post/introducing-ristretto-high-perf-go-cache/">blog post</a> about it’s architecture and benchmarks.</p>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="https://guuu.io/2020/data-fetching-vue-composition-api/">https://guuu.io/2020/data-fetching-vue-composition-api/</a></li>
+<li><a href="https://bigdata.bihell.com/language/javascript/vue/vuex.html#state">https://bigdata.bihell.com/language/javascript/vue/vuex.html#state</a></li>
+<li><a href="https://markus.oberlehner.net/blog/application-state-management-with-vue-3/#use-the-swr-cache-pattern">https://markus.oberlehner.net/blog/application-state-management-with-vue-3/#use-the-swr-cache-pattern</a></li>
+<li><a href="https://dev.to/localeai/architecting-vuex-store-for-large-scale-vue-js-applications-4f1f">https://dev.to/localeai/architecting-vuex-store-for-large-scale-vue-js-applications-4f1f</a></li>
+<li><a href="https://zendev.com/2018/05/21/vuex-perfect-interface-frontend-backend.html">https://zendev.com/2018/05/21/vuex-perfect-interface-frontend-backend.html</a></li>
+<li><a href="https://logaretm.com/blog/2019-12-21-vuex-off-mainthread">https://logaretm.com/blog/2019-12-21-vuex-off-mainthread</a></li>
+<li><a href="https://cevio.github.io/super-vuex/">https://cevio.github.io/super-vuex/</a></li>
+<li><a href="https://dgraph.io/blog/post/introducing-ristretto-high-perf-go-cache/">https://dgraph.io/blog/post/introducing-ristretto-high-perf-go-cache/</a></li>
+<li><a href="https://github.com/dgraph-io/ristretto">https://github.com/dgraph-io/ristretto</a></li>
+<li><a href="https://ayada.dev/posts/using-ristretto-to-cache-objects/">https://ayada.dev/posts/using-ristretto-to-cache-objects/</a></li>
+<li><a href="https://studygolang.com/articles/25283">https://studygolang.com/articles/25283</a></li>
+<li><a href="https://webdevstation.com/posts/ristretto-the-most-performant-concurrent-cache-library-for-go/">https://webdevstation.com/posts/ristretto-the-most-performant-concurrent-cache-library-for-go/</a></li>
+<li><a href="https://gist.github.com/zemirco/49e6bebd8f281bce349136931d939cad">https://gist.github.com/zemirco/49e6bebd8f281bce349136931d939cad</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/398693305">https://zhuanlan.zhihu.com/p/398693305</a></li>
+<li><a href="https://www.mailgun.com/blog/golangs-superior-cache-solution-memcached-redis/">https://www.mailgun.com/blog/golangs-superior-cache-solution-memcached-redis/</a></li>
+<li><a href="https://github.com/eko/gocache">https://github.com/eko/gocache</a></li>
+<li><a href="https://vincent.composieux.fr/article/i-wrote-gocache-a-complete-and-extensible-go-cache-library">https://vincent.composieux.fr/article/i-wrote-gocache-a-complete-and-extensible-go-cache-library</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/ties-tree-study-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/ties-tree-study-1/j14_hucf4fccc8725045bdd9bf2a07d48a0338_332216_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/ties-tree-study-1/j14_hucf4fccc8725045bdd9bf2a07d48a0338_332216_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/ties-tree-study-1/j14_hucf4fccc8725045bdd9bf2a07d48a0338_332216_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/ties-tree-study-1/j14_hucf4fccc8725045bdd9bf2a07d48a0338_332216_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">字典树数据结构技术原理与开发实践</h2>
+    <p class="card-text">协作式系统中对于支持”动态文档结构、嵌套式文档结构“等较为复杂的文档类型，需要引入树形数据结构，本文首先总结了”树形“数据结构的基本情况，然后针对”协作式系统“相关需求分析，着重对”字典树“数据结构的技术原理进行讲解，并给出相应的开发实践方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-19 819:00">Aug 19, 2021</time></p>
+      <p>#tree </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

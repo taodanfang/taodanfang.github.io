@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>字典树数据结构技术原理与开发实践 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  字典树数据结构技术原理与开发实践</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >字典树数据结构技术原理与开发实践</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-08-19">Aug 19, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/ties-tree-study-1/j14_hucf4fccc8725045bdd9bf2a07d48a0338_332216_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/ties-tree-study-1/j14_hucf4fccc8725045bdd9bf2a07d48a0338_332216_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/ties-tree-study-1/j14_hucf4fccc8725045bdd9bf2a07d48a0338_332216_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/ties-tree-study-1/j14_hucf4fccc8725045bdd9bf2a07d48a0338_332216_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#树">树</a>
+      <ul>
+        <li><a href="#体系图">体系图</a></li>
+        <li><a href="#基本概念">基本概念</a></li>
+      </ul>
+    </li>
+    <li><a href="#字典树">字典树</a>
+      <ul>
+        <li><a href="#定义">定义</a></li>
+        <li><a href="#性质">性质</a></li>
+        <li><a href="#基本操作">基本操作</a></li>
+        <li><a href="#评价">评价</a></li>
+        <li><a href="#简单实现">简单实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#嵌套结构">嵌套结构</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/web-dnd-study-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">前端拖拽（DnD）交互技术原理分析与实践</h2>
+    <p class="card-text">协作式系统中引入”拖拽“交互功能是非常必要的技术措施，HTML 5 已经把 DnD 标准化，现在我们能“轻易”地为几乎任意元素实现拖放功能。只是它的难度取决于你对 API 的理解程度，而官方文档并不好懂。本文介绍Drag&amp;Drop技术的相关基础知识和开发实践方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-18 818:00">Aug 18, 2021</time></p>
+      <p>#drag and drop </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>协作式系统中对于支持”动态文档结构、嵌套式文档结构“等较为复杂的文档类型，需要引入树形数据结构，本文首先总结了”树形“数据结构的基本情况，然后针对”协作式系统“相关需求分析，着重对”字典树“数据结构的技术原理进行讲解，并给出相应的开发实践方法。</p>
+<p><img src="image-20210819154038212.png" alt="image-20210819154038212"></p>
+<h2 id="树">树</h2>
+<h3 id="体系图">体系图</h3>
+<blockquote>
+<p>树型数据结构的体系</p>
+</blockquote>
+<p><img src="image-20210819155850145.png" alt="image-20210819155850145"></p>
+<blockquote>
+<p>各类树型数据结构总结</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>简称</th>
+<th>要点</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无序树</td>
+<td></td>
+<td>树的任意节点的子节点没有顺序关系。</td>
+<td></td>
+</tr>
+<tr>
+<td>有序树</td>
+<td></td>
+<td>树的任意节点的子节点有顺序关系</td>
+<td></td>
+</tr>
+<tr>
+<td>二叉树</td>
+<td></td>
+<td>树的任意节点至多包含两棵子树</td>
+<td>从二叉树的根结点出发，按照某种次序依次访问二叉树中的所有结点，使得每个结点被访问一次，且仅被访问一次。</td>
+</tr>
+<tr>
+<td>满二叉树</td>
+<td></td>
+<td>叶子节点都在同一层并且除叶子节点外的所有节点都有两个子节点</td>
+<td></td>
+</tr>
+<tr>
+<td>完全二叉树</td>
+<td></td>
+<td>对于一颗二叉树，假设其深度为d（d&gt;1）。除第d层外的所有节点构成满二叉树，且第d层所有节点从左向右连续地紧密排列</td>
+<td></td>
+</tr>
+<tr>
+<td>完满二叉树</td>
+<td></td>
+<td>除了叶子结点之外的每一个结点都有两个孩子结点</td>
+<td></td>
+</tr>
+<tr>
+<td>霍夫曼树</td>
+<td></td>
+<td>带权路径最短的二叉树称为哈夫曼树或最优二叉树</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>二叉查找树</strong></td>
+<td>BST</td>
+<td>若任意节点的左子树不空，则左子树上所有节点的值均小于它的根节点的值；<!-- raw HTML omitted -->若任意节点的右子树不空，则右子树上所有节点的值均大于它的根节点的值；<!-- raw HTML omitted -->任意节点的左、右子树也分别为二叉查找树；<!-- raw HTML omitted -->没有键值相等的节点</td>
+<td></td>
+</tr>
+<tr>
+<td>线索二叉树</td>
+<td></td>
+<td>在<a href="https://link.zhihu.com/?target=https%3A//baike.baidu.com/item/%E4%BA%8C%E5%8F%89%E6%A0%91/1602879">二叉树</a>的结点上加上线索的二叉树称为线索二叉树，对二叉树以某种遍历方式（如先序、中序、后序或层次等）进行遍历，使其变为线索二叉树的过程称为对二叉树进行线索化</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>平衡二叉树</strong></td>
+<td></td>
+<td>它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树，同时，平衡二叉树必定是二叉搜索树。</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>高度平衡树</strong></td>
+<td>AVL</td>
+<td>它的特点是：<!-- raw HTML omitted -->1.本身首先是一棵二叉搜索树。<!-- raw HTML omitted -->2.带有平衡条件：每个结点的左右子树的高度之差的绝对值（平衡因子）最多为1。</td>
+<td><strong>适合用于插入删除次数比较少，但查找多的情况</strong>，例如内存地址空间管理</td>
+</tr>
+<tr>
+<td>红黑树</td>
+<td>RBT</td>
+<td>每个节点都带有颜色属性的二叉查找树，颜色或红色或黑色。性质1. 节点是红色或黑色。<!-- raw HTML omitted -->性质2. 根节点是黑色。<!-- raw HTML omitted -->性质3. 每个红色节点的两个子节点都是黑色。(从每个叶子到根的所有路径上不能有两个连续的红色节点)<!-- raw HTML omitted -->性质4. 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。</td>
+<td><strong>用于搜索,插入,删除操作多的情况下</strong>，例如进程管理</td>
+</tr>
+<tr>
+<td>伸展树</td>
+<td>ST</td>
+<td>伸展树是一种自调整形式的二叉查找树，它会沿着从某个节点到树根之间的路径，通过一系列的旋转把这个节点搬移到树根去</td>
+<td>不需要记录用于平衡树的冗余信息</td>
+</tr>
+<tr>
+<td>替罪羊树</td>
+<td></td>
+<td>一种基于部分重建的自平衡二叉搜索树</td>
+<td></td>
+</tr>
+<tr>
+<td>多路搜索树</td>
+<td>BT</td>
+<td>一棵m阶B树(balanced tree of order m)是一棵平衡的m路搜索树。它或者是空树，或者是满足下列性质的树：<!-- raw HTML omitted -->1、根结点至少有两个子女；<!-- raw HTML omitted -->2、每个非根节点所包含的关键字个数 j 满足：┌m/2┐ - 1 &lt;= j &lt;= m - 1；<!-- raw HTML omitted -->3、除根结点以外的所有结点（不包括叶子结点）的度数正好是关键字总数加1，故<strong>内部子树</strong>个数 k 满足：┌m/2┐ &lt;= k &lt;= m ；<!-- raw HTML omitted -->4、所有的叶子结点都位于同一层。</td>
+<td>为大块数据的读写操作做了优化,同时它也可以用来描述外部存储(支持对保存在磁盘或者网络上的符号表进行外部查找)</td>
+</tr>
+<tr>
+<td>B+树</td>
+<td></td>
+<td>B+树是B树的一种变形形式，B+树上的叶子结点存储关键字以及相应记录的地址，叶子结点以上各层作为索引使用。</td>
+<td><strong>广泛用于文件系统及数据库中</strong></td>
+</tr>
+<tr>
+<td>B*树</td>
+<td></td>
+<td>在B+树的非根和非叶子结点再增加指向兄弟的指针</td>
+<td></td>
+</tr>
+<tr>
+<td>字典树</td>
+<td>TT</td>
+<td>又称单词查找树，<a href="https://link.zhihu.com/?target=https%3A//baike.baidu.com/item/Trie%E6%A0%91">Trie树</a>，是一种<a href="https://link.zhihu.com/?target=https%3A//baike.baidu.com/item/%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84/9663807">树形结构</a>，是一种哈希树的变种</td>
+<td>典型应用是用于统计，排序和保存大量的<a href="https://link.zhihu.com/?target=https%3A//baike.baidu.com/item/%E5%AD%97%E7%AC%A6">字符</a>串（但不仅限于字符串）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="基本概念">基本概念</h3>
+<p><img src="image-20210819174332379.png" alt="image-20210819174332379"></p>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>树</td>
+<td>是以边(edge)相连的结点(node)的集合，每个结点存储对应的值(value/data)，当存在子结点时与之相连</td>
+<td></td>
+</tr>
+<tr>
+<td>根结点</td>
+<td>树的首个结点</td>
+<td></td>
+</tr>
+<tr>
+<td>父节点</td>
+<td>若一个节点含有子节点，则这个节点称为其子节点的父节点</td>
+<td></td>
+</tr>
+<tr>
+<td>子节点</td>
+<td>一个节点含有的子树的根节点称为该节点的子节点</td>
+<td></td>
+</tr>
+<tr>
+<td>兄弟节点</td>
+<td>拥有共同父节点的节点互称为兄弟节点</td>
+<td></td>
+</tr>
+<tr>
+<td>祖先</td>
+<td>对任意节点x，从根节点到节点x的所有节点都是x的祖先</td>
+<td>节点x也是自己的祖先</td>
+</tr>
+<tr>
+<td>后代</td>
+<td>对任意节点x，从节点x到叶子节点的所有节点都是x的后代</td>
+<td>节点x也是自己的后代</td>
+</tr>
+<tr>
+<td>结点深度</td>
+<td>对任意节点x，x节点的深度表示为根节点到x节点的路径长度</td>
+<td>根节点深度为0，第二层节点深度为1，以此类推</td>
+</tr>
+<tr>
+<td>结点的度</td>
+<td>节点的子树数目就是节点的度</td>
+<td></td>
+</tr>
+<tr>
+<td>叶子节点</td>
+<td>度为零的节点就是叶子节点</td>
+<td></td>
+</tr>
+<tr>
+<td>树的深度</td>
+<td>一棵树中节点的最大深度就是树的深度，也称为高度</td>
+<td></td>
+</tr>
+<tr>
+<td>节点高度</td>
+<td>对任意节点x，叶子节点到x节点的路径长度就是节点x的高度</td>
+<td></td>
+</tr>
+<tr>
+<td>森林</td>
+<td>m颗互不相交的树构成的集合就是森林</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>树的遍历</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>遍历方法</th>
+<th>简称</th>
+<th>要点</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>深度优先遍历</strong></td>
+<td>DFS</td>
+<td>沿特定路径遍历到叶子结点再回溯 (<strong>backtracking)</strong> 进入临近路径继续遍历</td>
+<td>在输出遍历结果时，据父结点值相对子结点输出顺序的不同，深度优先遍历又可细分为<strong>先序、中序和后序</strong>遍历三种情况</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>先序遍历</strong></td>
+<td>直接按照我们对结点的访问顺序输出遍历结果即实现，父结点值被最先输出</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>中序遍历</strong></td>
+<td>左孩子值最先输出，然后是父结点，最后是右孩子</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>后序遍历</td>
+<td>左右孩子值依次输出，最后是父结点</td>
+</tr>
+<tr>
+<td><strong>广度优先搜索</strong></td>
+<td>BFS</td>
+<td>按照结点深度逐层遍历树结构</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>为什么这么多二叉树？</p>
+</blockquote>
+<p>核心是为了避免树型结构退化成线性结构</p>
+<h2 id="字典树">字典树</h2>
+<h3 id="定义">定义</h3>
+<p>又称单词查找树，Trie树，前缀树(prefix tree)，一种树形结构，是一种哈希树的变种。典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串），所以经常被搜索引擎系统用于文本词频统计。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较，查询效率比哈希树高。这种数据结构进阶路线为: 字典树-&gt; 后缀树-&gt;patricia tree-&gt; crit-bit tree。</p>
+<p>字典查找树，顾名思义，就是在查询目标时，像字典一样按照一定排列顺序标准和步骤访问树的节点，举一个简单例子，英文字典查单词&quot;He&quot;，那么第一步你肯定要按照a-z的顺序先找到h这个首字母，然后再按照相同顺序找到e。</p>
+<h3 id="性质">性质</h3>
+<p>有3个基本性质：</p>
+<ul>
+<li>根节点不包含字符，除根节点外每一个节点都只包含一个字符；</li>
+<li>从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串；</li>
+<li>每个节点的所有子节点包含的字符都不相同。</li>
+</ul>
+<h3 id="基本操作">基本操作</h3>
+<p>字典树的构造其实较为简单，和一般树的构造没有太大区别。</p>
+<blockquote>
+<p>插入（以插入hell为例）</p>
+</blockquote>
+<ol>
+<li>先检查根节点的子节点中是否存在&rsquo;h',没有则插入一个保存&rsquo;h&rsquo;的节点，有则继续访问到&rsquo;h&rsquo;节点</li>
+<li>继续到&rsquo;h&rsquo;节点，检查&rsquo;h&rsquo;节点是否是否存在&rsquo;e',没有则插入一个保存&rsquo;e&rsquo;的节点，以此类推</li>
+<li>直到需要插入的字符串中所有的字符都插入完，再最后一个节点处标记上单词标记，表示从根节点到达该点即为一个单词</li>
+</ol>
+<blockquote>
+<p>查询（查询&quot;hell&quot;为例）</p>
+</blockquote>
+<ol>
+<li>从根节点查询根节点的子节点找寻到&rsquo;h'</li>
+<li>从&rsquo;h&rsquo;的子节点中查询到&rsquo;e'</li>
+<li>从&rsquo;e&rsquo;的子节点中查询到&rsquo;l'</li>
+<li>从&rsquo;l&rsquo;的子节点中查询到&rsquo;l'，该节点有单词标记位，字符串匹配成功，返回</li>
+</ol>
+<blockquote>
+<p>删除，分为几种情况：<strong>删除的单词处于前缀</strong>，<strong>删除整个单词</strong>，<strong>删除分支上的单词</strong>，<strong>删除的单词包含了其他单词</strong>。总的标准是：</p>
+</blockquote>
+<ol>
+<li>如果单词最后字符是非叶子节点的单词，只清除单词标志位</li>
+<li>如果单词单独一枝，与其他单词都独立，那么整枝删除</li>
+<li>如果单词删除过程中遇到非叶子结点，那么删除操作结束（不能删除）</li>
+<li>如果单词删除过程中遇到其他单词的单词标志位，删除操作结束（不能删除）</li>
+</ol>
+<h3 id="评价">评价</h3>
+<p>字典树的构建，通过利用空间换时间的思想以及字符串的公共前缀减少无效的字符串比较操作从而使得插入和查找字符串变得高效．其插入或者查找的时间复杂度为<code>O(n)</code>，n为字符串长度。当然，字典树有着它的弊端，当所插入的单词没有很多公共前缀时，字典树的构建变得十分复杂和低效。</p>
+<h3 id="简单实现">简单实现</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">import</span> (
+ <span style="color:#ba2121">&#34;fmt&#34;</span>
+ )
+
+<span style="color:#008000;font-weight:bold">type</span> TrieNode <span style="color:#008000;font-weight:bold">struct</span> {
+ children []<span style="color:#666">*</span>TrieNode
+ count <span style="color:#b00040">int</span>
+ isWord <span style="color:#b00040">bool</span>
+}
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">createTrieNode</span>() <span style="color:#666">*</span>TrieNode{
+ <span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>TrieNode{
+  children: <span style="color:#008000">make</span>([]<span style="color:#666">*</span>TrieNode, <span style="color:#666">26</span>),
+  count:    <span style="color:#666">0</span>,
+  isWord:   <span style="color:#008000;font-weight:bold">false</span>,
+ }
+}
+<span style="color:#008000;font-weight:bold">type</span> TrieTree <span style="color:#008000;font-weight:bold">struct</span> {
+ root <span style="color:#666">*</span>TrieNode
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">createTrieTree</span>() <span style="color:#666">*</span>TrieTree{
+ root <span style="color:#666">:=</span> <span style="color:#00f">createTrieNode</span>()
+ <span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>TrieTree{
+  root: root,
+ }
+}
+
+<span style="color:#008000;font-weight:bold">type</span> method <span style="color:#008000;font-weight:bold">interface</span> {
+ <span style="color:#00f">search</span>(word <span style="color:#b00040">string</span>) <span style="color:#b00040">bool</span>
+ <span style="color:#00f">insert</span>(word <span style="color:#b00040">string</span>)
+ <span style="color:#008000">delete</span>(word <span style="color:#b00040">string</span>)
+}
+
+<span style="color:#008000;font-weight:bold">func</span>(tireTree <span style="color:#666">*</span>TrieTree) <span style="color:#00f">search</span>(word <span style="color:#b00040">string</span>) <span style="color:#b00040">bool</span>{
+ tmpNode <span style="color:#666">:=</span> tireTree.root
+ <span style="color:#008000;font-weight:bold">for</span> _,w <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> word {
+  index <span style="color:#666">:=</span> <span style="color:#008000">int</span>(w <span style="color:#666">-</span> <span style="color:#ba2121">&#39;a&#39;</span>)
+  <span style="color:#008000;font-weight:bold">if</span> tmpNode.children[index] <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span>{
+   tmpNode = tmpNode.children[index]
+  }<span style="color:#008000;font-weight:bold">else</span>{
+   <span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>
+  }
+ }
+ <span style="color:#008000;font-weight:bold">return</span> tmpNode.isWord
+}
+
+<span style="color:#008000;font-weight:bold">func</span>(tireTree <span style="color:#666">*</span>TrieTree) <span style="color:#00f">insert</span>(word <span style="color:#b00040">string</span>) {
+ <span style="color:#008000;font-weight:bold">if</span> tireTree.<span style="color:#00f">search</span>(word){
+  fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;The word already exists!&#34;</span>)
+ }
+ tmpNode <span style="color:#666">:=</span> tireTree.root
+ <span style="color:#008000;font-weight:bold">for</span> _,w <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> word {
+  index <span style="color:#666">:=</span> <span style="color:#008000">int</span>(w <span style="color:#666">-</span> <span style="color:#ba2121">&#39;a&#39;</span>)
+  <span style="color:#008000;font-weight:bold">if</span> tmpNode.children[index] <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">nil</span>{
+   tmpNode.children[index] = <span style="color:#00f">createTrieNode</span>()
+   tmpNode.count<span style="color:#666">++</span>
+  }
+  tmpNode = tmpNode.children[index]
+ }
+ tmpNode.isWord = <span style="color:#008000;font-weight:bold">true</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span>(tireTree <span style="color:#666">*</span>TrieTree) <span style="color:#008000">delete</span>(word <span style="color:#b00040">string</span>) {
+ <span style="color:#008000;font-weight:bold">if</span> !tireTree.<span style="color:#00f">search</span>(word){
+  fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;No such word&#34;</span>)
+ }
+ tmpNode <span style="color:#666">:=</span> tireTree.root
+ <span style="color:#008000;font-weight:bold">var</span> (
+  indexList []<span style="color:#b00040">int</span>
+  nodeList  []<span style="color:#666">*</span>TrieNode
+  )
+ <span style="color:#008000;font-weight:bold">for</span> _,w <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> word {
+  index <span style="color:#666">:=</span> <span style="color:#008000">int</span>(w <span style="color:#666">-</span> <span style="color:#ba2121">&#39;a&#39;</span>)
+  indexList = <span style="color:#008000">append</span>(indexList, index)
+  nodeList = <span style="color:#008000">append</span>(nodeList, tmpNode)
+  tmpNode = tmpNode.children[index]
+ }
+
+ <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#008000">len</span>(indexList)<span style="color:#666">-</span><span style="color:#666">1</span>; i <span style="color:#666">&gt;=</span><span style="color:#666">0</span>; i<span style="color:#666">++</span> {
+  index <span style="color:#666">:=</span> indexList[i]
+  tmpNode = nodeList[i]
+  <span style="color:#008000;font-weight:bold">if</span> tmpNode.children[index].children <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">nil</span>{
+   <span style="color:#008000;font-weight:bold">if</span> i <span style="color:#666">!=</span> <span style="color:#008000">len</span>(indexList) <span style="color:#666">-</span> <span style="color:#666">1</span> {
+    <span style="color:#008000;font-weight:bold">if</span> tmpNode.children[index].isWord {
+     <span style="color:#008000;font-weight:bold">return</span>
+    }
+   }
+   tmpNode.children[index] = <span style="color:#008000;font-weight:bold">nil</span>
+   tmpNode.count<span style="color:#666">--</span>
+  }
+  <span style="color:#008000;font-weight:bold">if</span> i <span style="color:#666">==</span> <span style="color:#008000">len</span>(indexList) <span style="color:#666">-</span> <span style="color:#666">1</span>{
+   <span style="color:#008000;font-weight:bold">if</span> tmpNode.children[index].children <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span>{
+    tmpNode.children[index].isWord = <span style="color:#008000;font-weight:bold">false</span>
+    <span style="color:#008000;font-weight:bold">return</span>
+   }
+  }
+ }
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>(){
+ words <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{<span style="color:#ba2121">&#34;hello&#34;</span>,<span style="color:#ba2121">&#34;face&#34;</span>,<span style="color:#ba2121">&#34;hi&#34;</span>,<span style="color:#ba2121">&#34;hell&#34;</span>,<span style="color:#ba2121">&#34;why&#34;</span>}
+ myTrieTree <span style="color:#666">:=</span> <span style="color:#00f">createTrieTree</span>()
+ <span style="color:#408080;font-style:italic">//插入字符串
+</span><span style="color:#408080;font-style:italic"></span> <span style="color:#008000;font-weight:bold">for</span> _, word <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> words {
+  myTrieTree.<span style="color:#00f">insert</span>(word)
+ }
+
+ <span style="color:#408080;font-style:italic">//插入重复字符串
+</span><span style="color:#408080;font-style:italic"></span> myTrieTree.<span style="color:#00f">insert</span>(<span style="color:#ba2121">&#34;hello&#34;</span>)
+ <span style="color:#408080;font-style:italic">//删除字符串
+</span><span style="color:#408080;font-style:italic"></span> myTrieTree.<span style="color:#008000">delete</span>(<span style="color:#ba2121">&#34;hell&#34;</span>)
+ <span style="color:#408080;font-style:italic">//重复删除字符串
+</span><span style="color:#408080;font-style:italic"></span> myTrieTree.<span style="color:#008000">delete</span>(<span style="color:#ba2121">&#34;hell&#34;</span>)
+ myTrieTree.<span style="color:#008000">delete</span>(<span style="color:#ba2121">&#34;hi&#34;</span>)
+ <span style="color:#408080;font-style:italic">//查询字符串，找到为true，未找到为false
+</span><span style="color:#408080;font-style:italic"></span> fmt.<span style="color:#00f">Println</span>(myTrieTree.<span style="color:#00f">search</span>(<span style="color:#ba2121">&#34;hello&#34;</span>))
+ fmt.<span style="color:#00f">Println</span>(myTrieTree.<span style="color:#00f">search</span>(<span style="color:#ba2121">&#34;hi&#34;</span>))
+ fmt.<span style="color:#00f">Println</span>(myTrieTree.<span style="color:#00f">search</span>(<span style="color:#ba2121">&#34;hell&#34;</span>))
+}
+</code></pre></div><h2 id="嵌套结构">嵌套结构</h2>
+<p>针对”嵌套数据“的字典树改造实践</p>
+<blockquote>
+<p>嵌套数据集（前端展示文档结构）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">   {
+      <span style="color:#008000">document</span><span style="color:#666">:</span> <span style="color:#ba2121">&#39;form&#39;</span>,
+      questions<span style="color:#666">:</span> [
+          {
+            name<span style="color:#666">:</span> <span style="color:#ba2121">&#34;group 1.1&#34;</span>,
+            type<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question_group&#34;</span>,
+            depth<span style="color:#666">:</span> <span style="color:#666">1</span>,
+            index<span style="color:#666">:</span> <span style="color:#666">0</span>,
+            questions<span style="color:#666">:</span> [
+              {
+                name<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question 1.1.1&#34;</span>,
+                type<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question&#34;</span>,
+                depth<span style="color:#666">:</span> <span style="color:#666">2</span>,
+                index<span style="color:#666">:</span> <span style="color:#666">0</span>,
+                questions<span style="color:#666">:</span> [],
+              },
+              {
+                name<span style="color:#666">:</span> <span style="color:#ba2121">&#34;group 1.1.2&#34;</span>,
+                type<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question_group&#34;</span>,
+                depth<span style="color:#666">:</span> <span style="color:#666">2</span>,
+                index<span style="color:#666">:</span> <span style="color:#666">1</span>,
+                questions<span style="color:#666">:</span> [
+                  {
+                    name<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question 1.1.2.1&#34;</span>,
+                    type<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question&#34;</span>,
+                    depth<span style="color:#666">:</span> <span style="color:#666">3</span>,
+                    index<span style="color:#666">:</span> <span style="color:#666">0</span>,
+                    questions<span style="color:#666">:</span> [],
+                  },
+                ],
+              }
+            ]
+          },
+          {
+            name<span style="color:#666">:</span> <span style="color:#ba2121">&#34;group 1.2&#34;</span>,
+            type<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question_group&#34;</span>,
+            depth<span style="color:#666">:</span> <span style="color:#666">1</span>,
+            index<span style="color:#666">:</span> <span style="color:#666">1</span>,            
+            questions<span style="color:#666">:</span> [
+                  {
+                    name<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question 1.2.1&#34;</span>,
+                    type<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question&#34;</span>,
+                    depth<span style="color:#666">:</span> <span style="color:#666">2</span>,
+                    index<span style="color:#666">:</span> <span style="color:#666">2</span>,
+                    questions<span style="color:#666">:</span> [],
+                  }
+            ]
+          },
+          {
+            name<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question 1.3&#34;</span>,
+            type<span style="color:#666">:</span> <span style="color:#ba2121">&#34;question&#34;</span>,
+            depth<span style="color:#666">:</span> <span style="color:#666">1</span>,
+            index<span style="color:#666">:</span> <span style="color:#666">2</span>,            
+            questions<span style="color:#666">:</span> []
+          },          
+        ]
+      }
+    }
+</code></pre></div><p>针对以上的”嵌套数据“，需要设计合理的基于”字典树“的后端数据结构，并同时支持”按深度展开“和”按题目分页处理“的功能。</p>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/90255760">https://zhuanlan.zhihu.com/p/90255760</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/30918614">https://zhuanlan.zhihu.com/p/30918614</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/346531424">https://zhuanlan.zhihu.com/p/346531424</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/web-dnd-study-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/web-dnd-study-1/j15_hu21b0e4acf3bb8ac6270f41d9ff8ea8e0_328204_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/web-dnd-study-1/j15_hu21b0e4acf3bb8ac6270f41d9ff8ea8e0_328204_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/web-dnd-study-1/j15_hu21b0e4acf3bb8ac6270f41d9ff8ea8e0_328204_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/web-dnd-study-1/j15_hu21b0e4acf3bb8ac6270f41d9ff8ea8e0_328204_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">前端拖拽（DnD）交互技术原理分析与实践</h2>
+    <p class="card-text">协作式系统中引入”拖拽“交互功能是非常必要的技术措施，HTML 5 已经把 DnD 标准化，现在我们能“轻易”地为几乎任意元素实现拖放功能。只是它的难度取决于你对 API 的理解程度，而官方文档并不好懂。本文介绍Drag&amp;Drop技术的相关基础知识和开发实践方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-18 818:00">Aug 18, 2021</time></p>
+      <p>#drag and drop </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

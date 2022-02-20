@@ -1,0 +1,49 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/posts/</link>
+    <description>Recent content in Posts on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>字典树数据结构技术原理与开发实践</title>
+      <link>https://taodanfang.github.io/posts/ties-tree-study-1/</link>
+      <pubDate>Thu, 19 Aug 2021 15:10:10 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/ties-tree-study-1/</guid>
+      <description>&lt;p&gt;协作式系统中对于支持”动态文档结构、嵌套式文档结构“等较为复杂的文档类型，需要引入树形数据结构，本文首先总结了”树形“数据结构的基本情况，然后针对”协作式系统“相关需求分析，着重对”字典树“数据结构的技术原理进行讲解，并给出相应的开发实践方法。&lt;/p&gt;</description>
+    </item><item>
+      <title>前端拖拽（DnD）交互技术原理分析与实践</title>
+      <link>https://taodanfang.github.io/posts/web-dnd-study-1/</link>
+      <pubDate>Wed, 18 Aug 2021 12:13:15 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/web-dnd-study-1/</guid>
+      <description>&lt;p&gt;协作式系统中引入”拖拽“交互功能是非常必要的技术措施，HTML 5 已经把 DnD 标准化，现在我们能“轻易”地为几乎任意元素实现拖放功能。只是它的难度取决于你对 API 的理解程度，而&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API&#34;&gt;官方文档&lt;/a&gt;并不好懂。本文介绍Drag&amp;amp;Drop技术的相关基础知识和开发实践方法。&lt;/p&gt;</description>
+    </item><item>
+      <title>大规模数据集分页处理的相关问题及其解决方案</title>
+      <link>https://taodanfang.github.io/posts/mongodb-pagination-1/</link>
+      <pubDate>Wed, 11 Aug 2021 18:32:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/mongodb-pagination-1/</guid>
+      <description>&lt;p&gt;随着物联网，大数据业务的白热化，一般企业级系统的数据量也会呈现出快速的增长。而传统的数据库分页方案在海量数据场景下很难满足性能的要求。分页在大数据集场景下，是一个务必需要重视的性能优化问题。分页是极为常见的数据展现方式，一般在数据集较大而无法在单个页面中呈现时会采用分页的方法。各种前端UI组件在实现上也都会支持分页的功能，而数据交互呈现所相应的后端系统、数据库都对数据查询的分页提供了良好的支持。本文结合mongodb数据库和Vuex技术，尝试给出一般的大数据分页处理解决方案。&lt;/p&gt;</description>
+    </item><item>
+      <title>基于GOSF的Websocket微服务框架开发方法</title>
+      <link>https://taodanfang.github.io/posts/gosf-study-1/</link>
+      <pubDate>Mon, 09 Aug 2021 18:05:04 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/gosf-study-1/</guid>
+      <description>&lt;p&gt;Go Socket.IO Framework or GOSF is an easy-to-use framework for developing Socket.IO APIs in Google&amp;rsquo;s Go programming language (GoLang). GOSF 对Websocket进行了封装，实现了一个websocket服务器，并提供了一个Socket.io风格的前端接口，同时也可以基于websocket风格的前端接口进行连接和操作。&lt;/p&gt;</description>
+    </item><item>
+      <title>NATs 技术学习及其开发模式</title>
+      <link>https://taodanfang.github.io/posts/nats-study-1/</link>
+      <pubDate>Wed, 04 Aug 2021 18:04:14 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/nats-study-1/</guid>
+      <description>&lt;p&gt;NATs 是一个开源的、轻量级的高性能消息分发系统。NATs 的消息基于主题进行分发，不依赖于网络位置。&lt;/p&gt;
+&lt;p&gt;NATS的协议是一个简单的、基于文本的发布/订阅风格的协议。客户端连接到 gnatsd（NATS服务器），并与 gnatsd 进行通信，通信基于普通的 TCP/IP 套接字，并定义了很小的操作集，换行表示终止。与传统的、使用了二进制消息格式的消息通信系统不同，使用了基于文本的 NATS 协议，使得客户端实现很简单，可以方便地选择多种编程语言或脚本语言来实现。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

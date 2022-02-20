@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>活动文档（任务进度、状态管理）技术开发实践 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  活动文档（任务进度、状态管理）技术开发实践</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >活动文档（任务进度、状态管理）技术开发实践</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2022-02-13">Feb 13, 2022</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/agenda-study/media/16449357226394_hubaae0ff782c8b75f8b806f4834290463_54294_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/agenda-study/media/16449357226394_hubaae0ff782c8b75f8b806f4834290463_54294_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/agenda-study/media/16449357226394_hubaae0ff782c8b75f8b806f4834290463_54294_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/agenda-study/media/16449357226394_hubaae0ff782c8b75f8b806f4834290463_54294_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基本思想">基本思想</a></li>
+    <li><a href="#其他需求">其他需求</a>
+      <ul>
+        <li><a href="#技术调研">技术调研</a></li>
+      </ul>
+    </li>
+    <li><a href="#任务管理gocraftwork">任务管理（Gocraft/Work）</a>
+      <ul>
+        <li><a href="#基本概念">基本概念</a></li>
+        <li><a href="#核心关系">核心关系</a></li>
+        <li><a href="#基本特性">基本特性</a></li>
+        <li><a href="#工作流程">工作流程</a></li>
+      </ul>
+    </li>
+    <li><a href="#特性说明">特性说明</a>
+      <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#进度检测check-ins">进度检测（check-ins）</a></li>
+        <li><a href="#计划任务未来运行的任务">计划任务（未来运行的任务）</a></li>
+        <li><a href="#任务唯一性任务参数动态更新">任务唯一性（任务参数动态更新）</a></li>
+        <li><a href="#周期任务cron">周期任务(Cron)</a></li>
+        <li><a href="#并发度控制">并发度控制</a></li>
+      </ul>
+    </li>
+    <li><a href="#工作原理">工作原理</a></li>
+    <li><a href="#健康检查基于轮训">健康检查（基于轮训）</a>
+      <ul>
+        <li><a href="#后端实现">后端实现</a></li>
+        <li><a href="#前端实现">前端实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#分布式任务管理">分布式任务管理</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/casbin-study/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">多租户权限管理技术实践</h2>
+    <p class="card-text">Casbin是一个强大的、高效的开源访问控制框架，其权限管理机制支持多种访问控制模型。Restrict is an authorization library that provides a hybrid of RBAC and ABAC models, allowing to define simple role-based policies while using more fine-grained control when needed. 本文总结了基于这两种技术实现角色授权管理的基本过程和相应实践方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2022-01-26 126:00">Jan 26, 2022</time></p>
+      <p>#casbin #go #rule #tenant </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>任务是将静态文档转变成一个活动文档的重要方法，在协作文档系统中，应当将任务作为文档的一个辅助对象，参考操作系统中“进程管理”的相关思想进行设计开发。任务管理侧重于“时间”管理，包括任务启动结束、任务进度、任务状态、事件通知等等内容。本文介绍go语言环境下，基于Gocraft/work技术实现任务管理的相关开发实践方法。</p>
+<h2 id="基本思想">基本思想</h2>
+<p>对于文档协作，可以看做在某个时间段内多人共同完成的一个任务。通过引入任务管理，以文档（做什么）为核心对象，以启动一个任务（什么时间做）的方式，来细粒度的控制协作过程。相关的技术有gocraft/work, watermill, NATS等。</p>
+<h2 id="其他需求">其他需求</h2>
+<p>Since this is a background job processing library, it&rsquo;s fairly common to have jobs that that take a long time to execute. Imagine you have a job that takes an hour to run. It can often be frustrating to know if it&rsquo;s hung, or about to finish, or if it has 30 more minutes to go.</p>
+<p>当后台运行一个时间相对较长的任务时（例如上传一个文档、导入数据等等耗时后台任务），需要及时的获知该任务的进度情况，甚至通过异步事件（消息）进行通知（例如通过watermill）。可以考虑这种场景下的相关解决方案。</p>
+<h3 id="技术调研">技术调研</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>特性</th>
+<th>star</th>
+<th>github</th>
+<th>采用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clockwerk</td>
+<td>简单</td>
+<td>81</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>clockwork</td>
+<td>简单</td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>go-cron</td>
+<td>9年前</td>
+<td>183</td>
+<td>rk/go-cron</td>
+<td></td>
+</tr>
+<tr>
+<td>gron</td>
+<td>4年前</td>
+<td>691</td>
+<td>Roylee0704/gron</td>
+<td></td>
+</tr>
+<tr>
+<td>jobrunner</td>
+<td>可集成到web框架，基于cron，支持在线监控（返回json状态），接口支持(Now, In, Every, Schedule)</td>
+<td>659</td>
+<td>bamzi/jobrunner</td>
+<td></td>
+</tr>
+<tr>
+<td>jobs</td>
+<td>5年前（停止开发）(redis)(类似agenda)</td>
+<td>466</td>
+<td>albrow/jobs</td>
+<td></td>
+</tr>
+<tr>
+<td>leprechaun</td>
+<td>不推荐</td>
+<td>61</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>scheduler</td>
+<td>简单</td>
+<td>319</td>
+<td>carlescere/scheduler</td>
+<td></td>
+</tr>
+<tr>
+<td>kala</td>
+<td>不推荐（非生产）（独立服务器）</td>
+<td>1.4k</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>kyoo</td>
+<td>任务队列（无限，后台服务）</td>
+<td>22</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>gocron</td>
+<td>停止维护（支持lock）</td>
+<td>1.9k</td>
+<td>Jasonlvhit/gocron</td>
+<td></td>
+</tr>
+<tr>
+<td>cron</td>
+<td>较底层（基础库）</td>
+<td>5.6k</td>
+<td>robfig/cron</td>
+<td></td>
+</tr>
+<tr>
+<td>gcron</td>
+<td>国产</td>
+<td></td>
+<td><a href="https://github.com/gogf/gf">https://github.com/gogf/gf</a></td>
+<td></td>
+</tr>
+<tr>
+<td>work</td>
+<td>高性能，高并发，大吞吐量</td>
+<td>1.3k</td>
+<td>gocraft/work</td>
+<td>v</td>
+</tr>
+</tbody>
+</table>
+<h2 id="任务管理gocraftwork">任务管理（Gocraft/Work）</h2>
+<h3 id="基本概念">基本概念</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>作用</th>
+<th>参数</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Client</td>
+<td>Work REST API</td>
+<td>namespace，redis.pool</td>
+<td></td>
+</tr>
+<tr>
+<td>Enqueuer</td>
+<td>任务队列容器（redis数据库）</td>
+<td>namespace，redis.pool</td>
+<td>redis</td>
+</tr>
+<tr>
+<td>Job</td>
+<td>代表一个任务</td>
+<td>Struct {name, id, args, enqueue_at, last_err}</td>
+<td>内部对象</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>初始化一个任务的参数对象</td>
+<td></td>
+<td>类似于iris.Map</td>
+</tr>
+<tr>
+<td>Queue</td>
+<td>代表一个任务所相关的队列</td>
+<td></td>
+<td>同名job_name的队列信息</td>
+</tr>
+<tr>
+<td>WorkerPool</td>
+<td>任务执行线程池</td>
+<td>ctx, concurrency, namespace, redis.pool</td>
+<td>主类</td>
+</tr>
+</tbody>
+</table>
+<h3 id="核心关系">核心关系</h3>
+<ul>
+<li>Gocraft-work概念：Job：一个具体的任务内容（工作状态），保存在Redis中</li>
+<li>Buffio概念：Work（或Worker）：一个具体的工作协程（工作者），处理一类Job，管理内存中的workpool</li>
+<li>业务系统（Service）、Buffio系统、Gocraft系统的对接方法：
+<ul>
+<li>Buffio概念：Action，对Job的进一步封装（工作内容），实现与业务系统的对接，业务系统会向Action中提供具体要求（参数）</li>
+<li>Gocraft概念：Context，Action中的内容会从Context中取出，送入middleware中进行执行</li>
+</ul>
+</li>
+</ul>
+<h3 id="基本特性">基本特性</h3>
+<p>gocraft/work lets you enqueue and processes background jobs in Go. Jobs are durable and backed by Redis. 实现了基于Redis的后台任务队列管理。主要特性如下：</p>
+<ul>
+<li>Fast and efficient. 快速而高效，号称最快。</li>
+<li>Reliable - don&rsquo;t lose jobs even if your process crashes. 系统崩溃不会丢失任务。</li>
+<li>Middleware on jobs &ndash; good for metrics instrumentation, logging, etc. 支持钩子。</li>
+<li>If a job fails, it will be retried a specified number of times. 支持任务失效重试。</li>
+<li>Schedule jobs to happen in the future. 支持计划任务。</li>
+<li>Enqueue unique jobs so that only one job with a given name/arguments exists in the queue at once. 确保同名任务唯一性。</li>
+<li>Web UI to manage failed jobs and observe the system. 提供前端监控界面。</li>
+<li>Periodically enqueue jobs on a cron-like schedule. 支持周期任务。</li>
+<li>Pause / unpause jobs and control concurrency within and across processes。支持暂停和并发控制。</li>
+</ul>
+<h3 id="工作流程">工作流程</h3>
+<blockquote>
+<p>1）准备阶段</p>
+</blockquote>
+<blockquote>
+<p>To enqueue jobs, you need to make an Enqueuer with a redis namespace and a redigo pool. Each enqueued job has a name and can take optional arguments. Arguments are k/v pairs (serialized as JSON internally). 需要先创建一个队列（基于redis），每个任务（job）具有名字和参数。</p>
+</blockquote>
+<ul>
+<li>连接redis</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Init_redis_db</span>() {
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+	path <span style="color:#666">:=</span> strings.<span style="color:#00f">Join</span>(
+		[]<span style="color:#b00040">string</span>{
+			<span style="color:#ba2121">&#34;redis://&#34;</span>,
+			cfg.Redisdb.Host,
+			<span style="color:#ba2121">&#34;:&#34;</span>,
+			cfg.Redisdb.Port,
+		}, <span style="color:#ba2121">&#34;&#34;</span>)
+
+	__redis_pool = <span style="color:#666">&amp;</span>redis.Pool{
+		MaxActive: <span style="color:#666">5</span>,
+		MaxIdle:   <span style="color:#666">5</span>,
+		Wait:      <span style="color:#008000;font-weight:bold">true</span>,
+		Dial: <span style="color:#008000;font-weight:bold">func</span>() (redis.Conn, <span style="color:#b00040">error</span>) {
+			cnn, err <span style="color:#666">:=</span> redis.<span style="color:#00f">DialURL</span>(path)
+			<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+				log.<span style="color:#00f">Fatalf</span>(<span style="color:#ba2121">&#34;init redis (%s) is failure, %v\n&#34;</span>, path, err)
+				<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+			}
+			<span style="color:#008000;font-weight:bold">return</span> cnn, <span style="color:#008000;font-weight:bold">nil</span>
+		},
+	}
+
+	cnn <span style="color:#666">:=</span> __redis_pool.<span style="color:#00f">Get</span>()
+	__redis_db = <span style="color:#666">&amp;</span>cnn
+
+	log.<span style="color:#00f">Println</span>(tools.<span style="color:#00f">Green</span>(tools.<span style="color:#00f">MethodOk</span>()))
+}
+
+
+</code></pre></div><ul>
+<li>创建队列(enqueuer)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">var</span> (
+	Agenda_enqueuer    <span style="color:#666">*</span>work.Enqueuer
+)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">init_enqueuer</span>() {
+	pool <span style="color:#666">:=</span> redis.<span style="color:#00f">Get_redis_pool</span>()
+	eqr <span style="color:#666">:=</span> work.<span style="color:#00f">NewEnqueuer</span>(constants.NODE_AGENDA_NAMESPACE, pool)
+	Agenda_enqueuer = eqr
+}
+
+</code></pre></div><blockquote>
+<p>2）注册job处理器</p>
+</blockquote>
+<blockquote>
+<p>In order to process jobs, you&rsquo;ll need to make a WorkerPool. Add middleware and jobs to the pool, and start the pool.</p>
+</blockquote>
+<ul>
+<li>创建 workpool</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">var</span> (
+	Agenda_worker_pool <span style="color:#666">*</span>work.WorkerPool
+)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">init_worker_pool</span>() {
+
+	redis_pool <span style="color:#666">:=</span> redis.<span style="color:#00f">Get_redis_pool</span>()
+	
+	<span style="color:#408080;font-style:italic">// Make a new pool. Arguments:
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// Context{} is a struct that will be the context for the request.
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// 10 is the max concurrency
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// &#34;my_app_namespace&#34; is the Redis namespace
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// redisPool is a Redis pool
+</span><span style="color:#408080;font-style:italic"></span>	worker_pool <span style="color:#666">:=</span> work.<span style="color:#00f">NewWorkerPool</span>(
+		<span style="color:#666">*</span><span style="color:#00f">New_AgendaContext</span>(),
+		<span style="color:#666">10</span>,
+		constants.NODE_AGENDA_NAMESPACE,
+		redis_pool)
+
+   <span style="color:#408080;font-style:italic">// Add middleware that will be executed for each job
+</span><span style="color:#408080;font-style:italic"></span>	worker_pool.<span style="color:#00f">Middleware</span>((<span style="color:#666">*</span>Context).Log)
+	worker_pool.<span style="color:#00f">Middleware</span>((<span style="color:#666">*</span>Context).Find_manager_job)
+	worker_pool.<span style="color:#00f">Middleware</span>((<span style="color:#666">*</span>Context).Find_manager_visitor)
+	worker_pool.<span style="color:#00f">Middleware</span>((<span style="color:#666">*</span>Context).Find_check_timestamp)
+
+	Agenda_worker_pool = worker_pool
+}
+
+</code></pre></div><ul>
+<li>注册任务钩子（middleware)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Context <span style="color:#008000;font-weight:bold">struct</span> {
+	Handler_job          service.JobServiceHandler
+	Handler_job_status   service.JobStatusServiceHandler
+	Handler_table        service.TableServiceHandler
+	Manager_job_uuid     <span style="color:#b00040">string</span>
+	Manager_visitor_uuid <span style="color:#b00040">string</span>
+	Check_timestamp      <span style="color:#b00040">int64</span>
+}
+
+<span style="color:#408080;font-style:italic">// 导出方法（middleware）: 注意, 不能直接调用，由gocraft-work间接调用
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">func</span> (ctx <span style="color:#666">*</span>Context) <span style="color:#00f">Log</span>(job <span style="color:#666">*</span>work.Job, next work.NextMiddlewareFunc) <span style="color:#b00040">error</span> {
+
+	msg <span style="color:#666">:=</span> fmt.<span style="color:#00f">Sprintf</span>(<span style="color:#ba2121">&#34;Starting a work: %s&#34;</span>, job.Name)
+	log.<span style="color:#00f">Println</span>(tools.<span style="color:#00f">Green</span>(msg))
+
+	ctx.Handler_job_status = service.<span style="color:#00f">New_JobStatusService</span>()
+	ctx.Handler_job = service.<span style="color:#00f">New_JobService</span>()
+	ctx.Handler_table = service.<span style="color:#00f">New_TableService</span>()
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">next</span>()
+}
+
+<span style="color:#408080;font-style:italic">// 要求参数中必须包括：manager_job_uuid
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (ctx <span style="color:#666">*</span>Context) <span style="color:#00f">Find_manager_job</span>(job <span style="color:#666">*</span>work.Job, next work.NextMiddlewareFunc) <span style="color:#b00040">error</span> {
+	<span style="color:#008000;font-weight:bold">if</span> _, ok <span style="color:#666">:=</span> job.Args[<span style="color:#ba2121">&#34;manager_job_uuid&#34;</span>]; ok {
+		ctx.Manager_job_uuid = job.<span style="color:#00f">ArgString</span>(<span style="color:#ba2121">&#34;manager_job_uuid&#34;</span>)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> job.<span style="color:#00f">ArgError</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			log.<span style="color:#00f">Println</span>(tools.<span style="color:#00f">Red</span>(tools.<span style="color:#00f">MethodError</span>()))
+			<span style="color:#008000;font-weight:bold">return</span> err
+		}
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">next</span>()
+}
+
+<span style="color:#408080;font-style:italic">// 要求参数中必须包括：check_timestamp (int64)
+</span><span style="color:#408080;font-style:italic">// check_timestamp, 用于在运行任务时，
+</span><span style="color:#408080;font-style:italic">// 通过检查job的相关时间参数（例如start_at, end_at），
+</span><span style="color:#408080;font-style:italic">// 确认这个参数是否修改过，
+</span><span style="color:#408080;font-style:italic">// 如果该check_timestamp不一致，则任务直接返回（相当于取消任务）
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (ctx <span style="color:#666">*</span>Context) <span style="color:#00f">Find_check_timestamp</span>(job <span style="color:#666">*</span>work.Job, next work.NextMiddlewareFunc) <span style="color:#b00040">error</span> {
+	<span style="color:#008000;font-weight:bold">if</span> _, ok <span style="color:#666">:=</span> job.Args[<span style="color:#ba2121">&#34;check_timestamp&#34;</span>]; ok {
+		ctx.Check_timestamp = job.<span style="color:#00f">ArgInt64</span>(<span style="color:#ba2121">&#34;check_timestamp&#34;</span>)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> job.<span style="color:#00f">ArgError</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			log.<span style="color:#00f">Println</span>(tools.<span style="color:#00f">Red</span>(tools.<span style="color:#00f">MethodError</span>()))
+			<span style="color:#008000;font-weight:bold">return</span> err
+		}
+	}
+
+	<span style="color:#408080;font-style:italic">//log.Println(tools.Green(tools.MethodOk()), tools.JsonInfo(job))
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">next</span>()
+}
+
+<span style="color:#408080;font-style:italic">// 按照任务状态序列（JOB_status_xxx）定义多个对应的方法
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (ctx <span style="color:#666">*</span>Context) <span style="color:#00f">Handle_startup_job</span>(job <span style="color:#666">*</span>work.Job) <span style="color:#b00040">error</span> {
+
+	params <span style="color:#666">:=</span> iris.Map{
+		<span style="color:#ba2121">&#34;job&#34;</span>: <span style="color:#666">*</span>job,
+	}
+
+	rs <span style="color:#666">:=</span> ctx.Handler_job.<span style="color:#00f">Get_job_by_uuid</span>(ctx.Manager_job_uuid)
+	check_job <span style="color:#666">:=</span> rs.Data[<span style="color:#ba2121">&#34;job&#34;</span>]
+	check_job_start_at <span style="color:#666">:=</span> check_job.(mongo.Job).Start_at
+	<span style="color:#008000;font-weight:bold">if</span> check_job_start_at.<span style="color:#00f">Unix</span>() <span style="color:#666">!=</span> ctx.Check_timestamp {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+	}
+
+	current_job_status <span style="color:#666">:=</span> check_job.(mongo.Job).Current_status
+	<span style="color:#008000;font-weight:bold">if</span> current_job_status <span style="color:#666">!=</span> constants.JOB_status_published {
+		<span style="color:#008000;font-weight:bold">return</span> errors.<span style="color:#00f">New</span>(<span style="color:#ba2121">&#34;stat-up a job is error because the job current status is not &#34;</span> <span style="color:#666">+</span> constants.JOB_status_published)
+	}
+
+	rs = ctx.Handler_job_status.<span style="color:#00f">New_job_status</span>(ctx.Manager_job_uuid, ctx.Manager_visitor_uuid)
+	the_job_status <span style="color:#666">:=</span> rs.Data[<span style="color:#ba2121">&#34;job_status&#34;</span>]
+	the_job_status_uuid <span style="color:#666">:=</span> the_job_status.(mongo.JobStatus).Job_status_uuid
+
+	new_status <span style="color:#666">:=</span> mongo.JobStatus{
+		Job_status_uuid:   the_job_status_uuid,
+		Job_status_name:   constants.JOB_status_running,
+		Job_status_number: <span style="color:#666">3</span>,
+		Create_at:         time.<span style="color:#00f">Now</span>(),
+		Start_at:          time.<span style="color:#00f">Now</span>(),
+	}
+
+	rs = ctx.Handler_job_status.<span style="color:#00f">Update_job_status_time_info</span>(<span style="color:#666">&amp;</span>new_status)
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><blockquote>
+<p>3）注册工作者调度器（WorkerScheduler，在Buffalo中又称WorkerManager）</p>
+</blockquote>
+<blockquote>
+<p>参考（gobuffalo.io/en/docs/workers）对gocraft-work进行封装。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Worker <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Start</span>(context.Context) <span style="color:#b00040">error</span>
+	<span style="color:#00f">Stop</span>() <span style="color:#b00040">error</span>
+
+	<span style="color:#00f">Register</span>(work_name <span style="color:#b00040">string</span>, work_handler <span style="color:#008000;font-weight:bold">interface</span>{}) <span style="color:#666">*</span>results.Result
+	<span style="color:#00f">RegisterWithOptions</span>(work_name <span style="color:#b00040">string</span>, opts work.JobOptions, work_handler <span style="color:#008000;font-weight:bold">interface</span>{}) <span style="color:#666">*</span>results.Result
+
+	<span style="color:#00f">PerformNow</span>(action <span style="color:#666">*</span>Action) <span style="color:#666">*</span>results.Result
+	<span style="color:#00f">PerformAt</span>(action <span style="color:#666">*</span>Action, at time.Time) <span style="color:#666">*</span>results.Result
+	<span style="color:#00f">PerformIn</span>(action <span style="color:#666">*</span>Action, in time.Duration) <span style="color:#666">*</span>results.Result
+
+	<span style="color:#408080;font-style:italic">// PerformEvery(Job) error
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">type</span> WorkerManager <span style="color:#008000;font-weight:bold">struct</span> {
+	Name     <span style="color:#b00040">string</span>
+	Enqueuer <span style="color:#666">*</span>work.Enqueuer
+	Pool     <span style="color:#666">*</span>work.WorkerPool
+	ctx      context.Context
+}
+
+<span style="color:#408080;font-style:italic">// Action: 作为 Worker 与 Controller 之间的中介桥梁
+</span><span style="color:#408080;font-style:italic">// Work: Worker 采用的术语
+</span><span style="color:#408080;font-style:italic">// Action.Job: Controller 采用，job_args 来自于业务
+</span><span style="color:#408080;font-style:italic">// work.Job: work 采用，job 为 gocraft/work 的内部类型
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">type</span> Action <span style="color:#008000;font-weight:bold">struct</span> {
+	Work_name <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;work_name&#34;`</span> <span style="color:#408080;font-style:italic">// = work_name = work.Job.job_name
+</span><span style="color:#408080;font-style:italic"></span>	Job_args  work.Q <span style="color:#ba2121">`json:&#34;job_args&#34;`</span>  <span style="color:#408080;font-style:italic">// = Controller 传送的参数（含manager_job_uuid, manager_visitor_uuid）
+</span><span style="color:#408080;font-style:italic"></span>}
+
+</code></pre></div><blockquote>
+<p>4）创建并启动worker</p>
+</blockquote>
+<blockquote>
+<p>启动后，Worker会从queue中抽取job，调用job处理器，进行处理</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Init_job_agenda</span>() {
+
+	<span style="color:#00f">init_enqueuer</span>()
+	<span style="color:#00f">init_worker_pool</span>()
+
+	agd <span style="color:#666">:=</span> schedule.<span style="color:#00f">New_WorkManager</span>(<span style="color:#ba2121">&#34;Agenda&#34;</span>, Agenda_enqueuer, Agenda_worker_pool)
+	Agenda = agd
+
+	_ = Agenda.<span style="color:#00f">Register</span>(constants.AGENDA_startup_job, (<span style="color:#666">*</span>Context).Handle_startup_job)
+	_ = Agenda.<span style="color:#00f">Register</span>(constants.AGENDA_submit_job, (<span style="color:#666">*</span>Context).Handle_submit_job)
+
+}
+
+<span style="color:#408080;font-style:italic">// main.go
+</span><span style="color:#408080;font-style:italic"></span>
+_ = job.Agenda.<span style="color:#00f">Start</span>(context.<span style="color:#00f">Background</span>())
+	
+</code></pre></div><blockquote>
+<p>5）业务处理</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#408080;font-style:italic">// controller
+</span><span style="color:#408080;font-style:italic">// Job任务入队
+</span><span style="color:#408080;font-style:italic"></span>a_action <span style="color:#666">:=</span> schedule.Action{
+			Work_name: constants.AGENDA_startup_job,
+			Job_args: iris.Map{
+				<span style="color:#ba2121">&#34;manager_job_uuid&#34;</span>:     job_uuid,
+				<span style="color:#ba2121">&#34;manager_visitor_uuid&#34;</span>: manager_visitor_uuid,
+				<span style="color:#ba2121">&#34;check_timestamp&#34;</span>:      the_now_at.<span style="color:#00f">Unix</span>(),
+			},
+}
+rs = job.Agenda.<span style="color:#00f">PerformNow</span>(<span style="color:#666">&amp;</span>a_action)
+		
+</code></pre></div><h2 id="特性说明">特性说明</h2>
+<h3 id="context">Context</h3>
+<p>Gocraft/work lets you use your own contexts. Your context can be empty or it can have various fields in it. The fields can be whatever you want - it&rsquo;s your type! When a new job is processed by a worker, we&rsquo;ll allocate an instance of this struct and pass it to your middleware and handlers. This allows you to pass information from one middleware function to the next, and onto your handlers. 用户可以根据需要定义自己的 Context。当一个Worker（协程）获得一个Job后，会创建一个Context实例，将其传送到Middleware和Handler中。</p>
+<h3 id="进度检测check-ins">进度检测（check-ins）</h3>
+<p>To solve this, you can instrument your jobs to &ldquo;checkin&rdquo; every so often with a string message. This checkin status will show up in the web UI. For instance, your job could look like this:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>Context) <span style="color:#00f">Export</span>(job <span style="color:#666">*</span>work.Job) <span style="color:#b00040">error</span> {
+	rowsToExport <span style="color:#666">:=</span> <span style="color:#00f">getRows</span>()
+	<span style="color:#008000;font-weight:bold">for</span> i, row <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> rowsToExport {
+		<span style="color:#00f">exportRow</span>(row)
+		<span style="color:#008000;font-weight:bold">if</span> i <span style="color:#666">%</span> <span style="color:#666">1000</span> <span style="color:#666">==</span> <span style="color:#666">0</span> {
+			job.<span style="color:#00f">Checkin</span>(<span style="color:#ba2121">&#34;i=&#34;</span> <span style="color:#666">+</span> fmt.<span style="color:#00f">Sprint</span>(i))   <span style="color:#408080;font-style:italic">// Here&#39;s the magic! This tells gocraft/work our status
+</span><span style="color:#408080;font-style:italic"></span>		}
+	}
+}
+
+</code></pre></div><blockquote>
+<p>相关接口</p>
+</blockquote>
+<ul>
+<li>Client implements all of the functionality of the web UI. It can be used to inspect the status of a running cluster and retry dead jobs.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Client <span style="color:#008000;font-weight:bold">struct</span> {
+	<span style="color:#408080;font-style:italic">// contains filtered or unexported fields
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">NewClient</span>(namespace <span style="color:#b00040">string</span>, pool <span style="color:#666">*</span>redis.Pool) <span style="color:#666">*</span>Client
+
+<span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>Client) <span style="color:#00f">WorkerObservations</span>() ([]<span style="color:#666">*</span>WorkerObservation, <span style="color:#b00040">error</span>)
+
+<span style="color:#008000;font-weight:bold">func</span> (j <span style="color:#666">*</span>Job) <span style="color:#00f">Checkin</span>(msg <span style="color:#b00040">string</span>)
+
+<span style="color:#008000;font-weight:bold">type</span> WorkerObservation <span style="color:#008000;font-weight:bold">struct</span> {
+	WorkerID <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;worker_id&#34;`</span>
+	IsBusy   <span style="color:#b00040">bool</span>   <span style="color:#ba2121">`json:&#34;is_busy&#34;`</span>
+
+	<span style="color:#408080;font-style:italic">// If IsBusy:
+</span><span style="color:#408080;font-style:italic"></span>	JobName   <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;job_name&#34;`</span>
+	JobID     <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;job_id&#34;`</span>
+	StartedAt <span style="color:#b00040">int64</span>  <span style="color:#ba2121">`json:&#34;started_at&#34;`</span>
+	ArgsJSON  <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;args_json&#34;`</span>
+	Checkin   <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;checkin&#34;`</span>
+	CheckinAt <span style="color:#b00040">int64</span>  <span style="color:#ba2121">`json:&#34;checkin_at&#34;`</span>
+}
+
+</code></pre></div><p><img src="media/16448962125499.jpg" alt=""></p>
+<h3 id="计划任务未来运行的任务">计划任务（未来运行的任务）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+enqueuer <span style="color:#666">:=</span> work.<span style="color:#00f">NewEnqueuer</span>(<span style="color:#ba2121">&#34;my_app_namespace&#34;</span>, redisPool)
+secondsInTheFuture <span style="color:#666">:=</span> <span style="color:#666">300</span>
+_, err <span style="color:#666">:=</span> enqueuer.<span style="color:#00f">EnqueueIn</span>(<span style="color:#ba2121">&#34;send_welcome_email&#34;</span>, secondsInTheFuture, work.Q{<span style="color:#ba2121">&#34;address&#34;</span>: <span style="color:#ba2121">&#34;test@example.com&#34;</span>})
+
+</code></pre></div><h3 id="任务唯一性任务参数动态更新">任务唯一性（任务参数动态更新）</h3>
+<p>you can provide your own key for making a job unique. When another job is enqueued with the same key as a job already in the queue, it will simply update the arguments.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+enqueuer <span style="color:#666">:=</span> work.<span style="color:#00f">NewEnqueuer</span>(<span style="color:#ba2121">&#34;my_app_namespace&#34;</span>, redisPool)
+job, err <span style="color:#666">:=</span> enqueuer.<span style="color:#00f">EnqueueUniqueByKey</span>(<span style="color:#ba2121">&#34;clear_cache&#34;</span>, work.Q{<span style="color:#ba2121">&#34;object_id_&#34;</span>: <span style="color:#ba2121">&#34;123&#34;</span>}, <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#008000;font-weight:bold">interface</span>{}{<span style="color:#ba2121">&#34;my_key&#34;</span>: <span style="color:#ba2121">&#34;586&#34;</span>})
+job, err = enqueuer.<span style="color:#00f">EnqueueUniqueInByKey</span>(<span style="color:#ba2121">&#34;clear_cache&#34;</span>, <span style="color:#666">300</span>, work.Q{<span style="color:#ba2121">&#34;object_id_&#34;</span>: <span style="color:#ba2121">&#34;789&#34;</span>}, <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#008000;font-weight:bold">interface</span>{}{<span style="color:#ba2121">&#34;my_key&#34;</span>: <span style="color:#ba2121">&#34;586&#34;</span>})
+
+</code></pre></div><h3 id="周期任务cron">周期任务(Cron)</h3>
+<p>支持Cron语法</p>
+<h3 id="并发度控制">并发度控制</h3>
+<p>You can control job concurrency using JobOptions{MaxConcurrency: <!-- raw HTML omitted -->}.This works by putting a precondition on enqueuing function, meaning a new job will not be scheduled if we are at or over a job&rsquo;s MaxConcurrency limit. The default value is 0, which means &ldquo;no limit on job concurrency&rdquo;.（默认没有上限）</p>
+<h2 id="工作原理">工作原理</h2>
+<blockquote>
+<p>持久化</p>
+</blockquote>
+<ul>
+<li>When jobs are enqueued, they&rsquo;re serialized with JSON and added to a simple Redis list with LPUSH. 每个任务信息以JSON形式保存在Redis队列中。</li>
+<li>Jobs are added to a list with the same name as the job. Each job name gets its own queue. 同名任务保存同一个队列中。</li>
+</ul>
+<blockquote>
+<p>调度算法（基于队列优先级从相应的队列中选择一个任务调度执行）</p>
+</blockquote>
+<ul>
+<li>Each job lives in a list-based queue with the same name as the job.</li>
+<li>Each of these queues can have an associated priority. The priority is a number from 1 to 100000.</li>
+<li>Each time a worker pulls a job, it needs to choose a queue. It chooses a queue probabilistically based on its relative priority.</li>
+<li>If the sum of priorities among all queues is 1000, and one queue has priority 100, jobs will be pulled from that queue 10% of the time.</li>
+</ul>
+<blockquote>
+<p>工作协程</p>
+</blockquote>
+<ul>
+<li>WorkerPools provide the public API of gocraft/work.
+<ul>
+<li>You can attach jobs and middleware to them. （绑定任务和中间件）</li>
+<li>You can start and stop them. （启停控制）</li>
+<li>Based on their concurrency setting, they&rsquo;ll spin up N worker goroutines. （创建协程）</li>
+</ul>
+</li>
+<li>Each worker is run in a goroutine. It will get a job from redis, run it, get the next job, etc. （每个工作者生成一个独立的不相关的协程，从redis队列中获取一个任务，进行处理）
+<ul>
+<li>Each worker is independent. They are not dispatched work &ndash; they get their own work.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>支持任务失败重试</p>
+</blockquote>
+<blockquote>
+<p>暂停与重启任务</p>
+</blockquote>
+<ul>
+<li>You can pause jobs from being processed from a specific queue by setting a &ldquo;paused&rdquo; redis key (see redisKeyJobsPaused)。Conversely, jobs in the queue will resume being processed once the paused redis key is removed。</li>
+</ul>
+<h2 id="健康检查基于轮训">健康检查（基于轮训）</h2>
+<h3 id="后端实现">后端实现</h3>
+<p>后端实现健康检查的方法可以考虑两种方式：</p>
+<ul>
+<li>基于gocraft/work的check-in机制，提供一个 Health HTTP API</li>
+<li>基于gocraft/health，启动一个server，提供相应的 Health HTTP API</li>
+</ul>
+<h3 id="前端实现">前端实现</h3>
+<p>采用VUE轮训后端提供的 Health HTTP API</p>
+<ul>
+<li><a href="https://github.com/straightdave/vue-polling">https://github.com/straightdave/vue-polling</a></li>
+</ul>
+<h2 id="分布式任务管理">分布式任务管理</h2>
+<p>Asynq is a Go library for queueing tasks and processing them asynchronously with workers. It&rsquo;s backed by Redis and is designed to be scalable yet easy to get started. Task queues are used as a mechanism to distribute work across multiple machines. A system can consist of multiple worker servers and brokers, giving way to high availability and horizontal scaling.</p>
+<p><img src="media/16449869010268.jpg" alt=""></p>
+<h2 id="总结">总结</h2>
+<p>在实现5W1H协同文档的系统中，文档对象（What）是核心对象，其他辅助因素（例如时间控制等）都是辅助对象。尤其要注意，核心对象单独构建一个微服务，其他辅助因素或者单独开发为独立的微服务，或者均作为授权因子统一实现在权限微服务模块中。对于时间因素，可以考虑实现为一个独立的微服务，既可以实现将静态文档转变为一个活动文档，也可以实现对后台特殊任务的监控管理，并分别提供基于GATT图（任务管理）、日历图（日程管理）、进度条（健康检查、进度监控）等形式的前端管理界面。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://github.com/gocraft/work">https://github.com/gocraft/work</a></li>
+<li><a href="https://gobuffalo.io/en/docs/workers">https://gobuffalo.io/en/docs/workers</a></li>
+<li><a href="https://www.coder.work/article/202616">https://www.coder.work/article/202616</a></li>
+<li><a href="https://github.com/gobuffalo/gocraft-work-adapter/blob/master/gwa.go">https://github.com/gobuffalo/gocraft-work-adapter/blob/master/gwa.go</a></li>
+<li><a href="https://github.com/gocraft/health">https://github.com/gocraft/health</a></li>
+<li><a href="https://github.com/straightdave/vue-polling">https://github.com/straightdave/vue-polling</a></li>
+<li><a href="https://renatello.com/vue-js-polling-using-setinterval/">https://renatello.com/vue-js-polling-using-setinterval/</a></li>
+<li><a href="https://github.com/hibiken/asynq">https://github.com/hibiken/asynq</a></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/casbin-study/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/casbin-study/media/16449360852497_hubaae0ff782c8b75f8b806f4834290463_76038_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/casbin-study/media/16449360852497_hubaae0ff782c8b75f8b806f4834290463_76038_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/casbin-study/media/16449360852497_hubaae0ff782c8b75f8b806f4834290463_76038_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/casbin-study/media/16449360852497_hubaae0ff782c8b75f8b806f4834290463_76038_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">多租户权限管理技术实践</h2>
+    <p class="card-text">Casbin是一个强大的、高效的开源访问控制框架，其权限管理机制支持多种访问控制模型。Restrict is an authorization library that provides a hybrid of RBAC and ABAC models, allowing to define simple role-based policies while using more fine-grained control when needed. 本文总结了基于这两种技术实现角色授权管理的基本过程和相应实践方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2022-01-26 126:00">Jan 26, 2022</time></p>
+      <p>#casbin #go #rule #tenant </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

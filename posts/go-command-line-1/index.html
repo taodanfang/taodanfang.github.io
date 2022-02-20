@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>微服务系统的部署方法（Golang命令行处理） &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  微服务系统的部署方法（Golang命令行处理）</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >微服务系统的部署方法（Golang命令行处理）</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-08-24">Aug 24, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#go-build生成镜像">Go build（生成镜像）</a>
+      <ul>
+        <li><a href="#基本方法">基本方法</a></li>
+        <li><a href="#跨平台">跨平台</a></li>
+      </ul>
+    </li>
+    <li><a href="#flag选项管理">Flag（选项管理）</a></li>
+    <li><a href="#cobra命令管理">Cobra（命令管理）</a>
+      <ul>
+        <li><a href="#项目结构">项目结构</a></li>
+        <li><a href="#主要概念">主要概念</a></li>
+      </ul>
+    </li>
+    <li><a href="#viper配置管理">Viper（配置管理）</a>
+      <ul>
+        <li><a href="#设置默认值">设置默认值</a></li>
+        <li><a href="#读取配置文件">读取配置文件</a></li>
+        <li><a href="#使用-flags">使用 Flags</a></li>
+        <li><a href="#获取值">获取值</a></li>
+        <li><a href="#反序列化">反序列化</a></li>
+        <li><a href="#综合实例">综合实例</a></li>
+      </ul>
+    </li>
+    <li><a href="#exec执行管理">Exec（执行管理）</a></li>
+    <li><a href="#样板代码">样板代码</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/go-cache-study-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">缓存技术学习与实践：前端与后端</h2>
+    <p class="card-text">Caching has an important role to play in a system design. It is primarily used to speed up information retrieval from a service and reduce the load on a database engine, the primary source of truth for a service. Data that is frequently requested by users are stored in a in-memory key-value store, like Redis, to speed up subsequent look up of the same data.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-22 822:00">Aug 22, 2021</time></p>
+      <p>#math #distributed computing </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>微服务架构日益被普遍采用，该类应用中往往包含一些固定模式的代码，为了方便服务扩展，我们将探讨一下服务的配置、部署和启动方面的代码样板，为此，我们首先需要介绍Flag，cobra，viper，os/exec等工具库的使用方法，然后给出部署微服务系统的基本框架代码。</p>
+<p>Microservice architectures have become a common way to design systems; they just require some rote code. Following that single purpose model allows the system to grow organically, adding features as they make sense. These services often have a common structure; it is a lot of boiler plate code. In Go there are some frameworks, but generally they’re very complicated. I am going to run through building up and using the boiler plate we use for our services. The boiler plate is going to run through at a high level how we do configuration, commands, and logging. We will be leveraging <a href="https://github.com/Sirupsen/logrus">logrus</a>, <a href="https://github.com/spf13/cobra">cobra</a>, and <a href="https://github.com/spf13/viper">viper</a> to build out an extensible template for a service.</p>
+<blockquote>
+<p>关于cobra, viper等工具的作者<a href="https://link.zhihu.com/?target=http%3A//github.com/spf13">spf13</a>，大神 Steve Francia ，他在google领导着 golang 的产品开发，他也是 gohugo.io 的创始人之一，命令行解析库 cobra 开发者。spf13 开源不少项目，而且他的开源项目质量都比较高。</p>
+</blockquote>
+<h2 id="概述">概述</h2>
+<p>一个微服务系统往往包含多个独立运行的子程序，如何有效的配置和管理这些子程序的有序执行，并提供一个统一的启动程序，是一个非常重要的开发内容。实现这样一个启动程序，往往包含以下几方面的内容：</p>
+<ul>
+<li>生成与发布可执行程序（go build）</li>
+<li>选项管理（flag）</li>
+<li>命令行管理（cobra）</li>
+<li>配置文件管理（viper）</li>
+<li>程序执行管理（os/exec）</li>
+</ul>
+<p>下面我们逐一介绍这几个主要的工具包的基本使用方法。</p>
+<h2 id="go-build生成镜像">Go build（生成镜像）</h2>
+<h3 id="基本方法">基本方法</h3>
+<blockquote>
+<p>In Go, the process of translating source code into a binary executable is called <em>building</em>. Once this executable is built, it will contain not only your application, but also all the support code needed to execute the binary on the target platform. This means that a Go binary does not need system dependencies such as Go tooling to run on a new system, unlike other languages like <a href="https://www.digitalocean.com/community/tutorial_series/how-to-code-in-ruby">Ruby</a>, <a href="https://www.digitalocean.com/community/tutorial_series/how-to-code-in-python-3">Python</a>, or <a href="https://www.digitalocean.com/community/tutorials/how-to-write-and-run-your-first-program-in-node-js">Node.js</a>. Putting these executables in an executable filepath on your own system will allow you to run the program from anywhere on your system. This is called <em>installing</em> the program onto your system. Go 生成的可执行程序在运行时，不需要任何依赖环境。</p>
+</blockquote>
+<ul>
+<li>示例程序</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#ba2121">&#34;fmt&#34;</span>
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Hello, World!&#34;</span>)
+}
+</code></pre></div><blockquote>
+<p>Building Go Binaries With go build</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; <span style="color:#008000">pwd</span>                                                                    
+/Users/haifengfang/go/src/go-build
+
+&gt; go build                                                               
+&gt; ll                                                                    
+total <span style="color:#666">3976</span>
+-rwxr-xr-x  <span style="color:#666">1</span> haifengfang  staff   1.9M Aug <span style="color:#666">24</span> 23:50 go-build
+-rw-r--r--  <span style="color:#666">1</span> haifengfang  staff    17B Aug <span style="color:#666">24</span> 23:44 go.mod
+-rw-r--r--  <span style="color:#666">1</span> haifengfang  staff    73B Aug <span style="color:#666">24</span> 23:46 main.go
+
+&gt; ./go-build                                                            
+Hello, World!
+</code></pre></div><p>By default <code>go build</code> will generate an executable for the current <a href="https://www.digitalocean.com/community/tutorials/building-go-applications-for-different-operating-systems-and-architectures#possible-platforms-for-goos-and-goarch">platform and architecture</a>. For example, if built on a <code>linux/386</code> system, the executable will be compatible with any other <code>linux/386</code> system, even if Go is not installed.</p>
+<blockquote>
+<p>Changing the Binary Name</p>
+</blockquote>
+<p>When you run <code>go build</code>, the default is for Go to automatically decide on the name of the generated executable. It does this in one of two ways:</p>
+<ul>
+<li>If you are using <a href="https://github.com/golang/go/wiki/Modules">Go Modules</a>, then Go will use the last part of your module’s name;</li>
+<li>otherwise, Go will use the current directory’s name.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">module <span style="color:#ba2121">&#34;go-build&#34;</span> <span style="color:#408080;font-style:italic">// 修改为 shark
+</span></code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go build                                                               
+&gt; ll                                                                     
+total <span style="color:#666">7936</span>
+-rwxr-xr-x  <span style="color:#666">1</span> haifengfang  staff   1.9M Aug <span style="color:#666">24</span> 23:50 go-build
+-rw-r--r--  <span style="color:#666">1</span> haifengfang  staff    14B Aug <span style="color:#666">24</span> 23:57 go.mod
+-rw-r--r--  <span style="color:#666">1</span> haifengfang  staff    73B Aug <span style="color:#666">24</span> 23:46 main.go
+-rwxr-xr-x  <span style="color:#666">1</span> haifengfang  staff   1.9M Aug <span style="color:#666">24</span> 23:57 shark
+</code></pre></div><p>In more complex programs that require specific naming conventions, these default values will not always be the best choice for naming your binary. In these cases, it would be best to customize your output with the <code>-o</code> flag.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go build -o bin/hello   
+&gt; ll ./bin                                                               
+total <span style="color:#666">3960</span>
+-rwxr-xr-x  <span style="color:#666">1</span> haifengfang  staff   1.9M Aug <span style="color:#666">24</span> 23:59 hello
+</code></pre></div><blockquote>
+<p>Installing Go Programs with go install</p>
+</blockquote>
+<p>The <code>go install</code> command behaves almost identically to <code>go build</code>, but instead of leaving the executable in the current directory, or a directory specified by the <code>-o</code> flag, it places the executable into the <code>$GOPATH/bin</code> directory. To find where your <code>$GOPATH</code> directory is located, run the following command:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go env GOPATH                                                          
+/Users/haifengfang/go
+</code></pre></div><blockquote>
+<p><strong>Note:</strong> The <code>go install</code> command does <strong>not</strong> support the <code>-o</code> flag, so it will use one of the default names described earlier to name the executable.</p>
+</blockquote>
+<h3 id="跨平台">跨平台</h3>
+<blockquote>
+<p>By using <a href="https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps">environment variables</a> and <a href="https://www.digitalocean.com/community/tutorials/customizing-go-binaries-with-build-tags">build tags</a>, you can control which OS and architecture your final binary is built for, in addition to putting together a workflow that can quickly toggle the inclusion of platform-dependent code without changing your codebase.</p>
+</blockquote>
+<blockquote>
+<p>确定平台环境</p>
+<p>When you run a command like <code>go build</code>, Go uses the current platform’s <code>GOOS</code> and <code>GOARCH</code> to determine how to build the binary. To find out what combination your platform is, you can use the <code>go env</code> command and pass <code>GOOS</code> and <code>GOARCH</code> as arguments:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go env GOOS GOARCH                                                   
+darwin
+amd64
+</code></pre></div><blockquote>
+<p>处理平台相关的路径差异</p>
+<p>Write a Platform-Dependent Program with filepath.Join()</p>
+<p>On Windows, the path separator is a backslash, <code>\</code>, while Unix-based systems use a forward slash, <code>/</code>.</p>
+</blockquote>
+<ul>
+<li>分别定义两个path文件（注意文件首行的+build标签）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="">##</span> path.<span style="color:#008000;font-weight:bold">go</span> (非windows环境)
+<span style="color:#408080;font-style:italic">// +build !windows
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">const</span> PathSeparator = <span style="color:#ba2121">&#34;/&#34;</span>
+
+<span style="">##</span> windows.<span style="color:#008000;font-weight:bold">go</span><span style="">（</span>windows环境<span style="">）</span>
+<span style="color:#408080;font-style:italic">// +build windows
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">const</span> PathSeparator = <span style="color:#ba2121">&#34;\\&#34;</span>
+</code></pre></div><ul>
+<li>定义主程序</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;fmt&#34;</span>
+	<span style="color:#ba2121">&#34;strings&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Join</span>(parts <span style="color:#666">...</span><span style="color:#b00040">string</span>) <span style="color:#b00040">string</span> {
+	<span style="color:#008000;font-weight:bold">return</span> strings.<span style="color:#00f">Join</span>(parts, PathSeparator)
+}
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	s <span style="color:#666">:=</span> <span style="color:#00f">Join</span>(<span style="color:#ba2121">&#34;a&#34;</span>, <span style="color:#ba2121">&#34;b&#34;</span>, <span style="color:#ba2121">&#34;c&#34;</span>)
+	fmt.<span style="color:#00f">Println</span>(s)
+}
+</code></pre></div><ul>
+<li>测试</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go build                                                            
+&gt; ls                                                                     
+go-build   go.mod     main.go    path.go    windows.go
+</code></pre></div><blockquote>
+<p>切换平台环境</p>
+<p>Using Your Local GOOS and GOARCH Environment Variables</p>
+</blockquote>
+<p>You can change <code>GOOS</code> or <code>GOARCH</code> so that they do not default to your local OS and architecture. The <code>go build</code> command behaves in a similar manner to the <code>go env</code> command. You can set either the <code>GOOS</code> or <code>GOARCH</code> environment variables to build for a different platform using <code>go build</code>. If you are not using a Windows system, build a <code>windows</code> binary of <code>app</code> by setting the <code>GOOS</code> environment variable to <code>windows</code> when running the <code>go build</code> command:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; ls                                                                     
+go.mod     main.go    path.go    windows.go
+&gt; env <span style="color:#19177c">GOOS</span><span style="color:#666">=</span>windows go build                                              
+&gt; ls                                                                     
+go-build.exe go.mod       main.go      path.go      windows.go
+&gt; file go-build.exe  
+go-build.exe: PE32+ executable <span style="color:#666">(</span>console<span style="color:#666">)</span> x86-64 <span style="color:#666">(</span>stripped to external PDB<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">for</span> MS Windows
+&gt; env <span style="color:#19177c">GOOS</span><span style="color:#666">=</span>linux <span style="color:#19177c">GOARCH</span><span style="color:#666">=</span>amd64 go build  
+&gt; ls     
+go-build     go-build.exe go.mod       main.go      path.go      windows.go
+&gt; file go-build   
+go-build: ELF 64-bit LSB executable, x86-64, version <span style="color:#666">1</span> <span style="color:#666">(</span>SYSV<span style="color:#666">)</span>, statically linked, not stripped
+</code></pre></div><blockquote>
+<p>为可执行程序添加平台后缀</p>
+<p>Using GOOS and GOARCH Filename Suffixes</p>
+</blockquote>
+<p>Update your program to use the filename suffixes instead of build tags. First, rename the <code>path.go</code> and <code>windows.go</code> file to use the convention used in the <code>os</code> package:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; mv path.go path_unix.go                               
+&gt; mv windows.go path_windows.go  
+</code></pre></div><p>With the two filenames changed, you can remove the build tag you added to <code>path_windows.go</code>. Because <code>unix</code> is not a valid <code>GOOS</code>, the <code>_unix.go</code> suffix has no meaning to the Go compiler. It does, however, convey the intended purpose of the file. Like the <code>os/path_unix.go</code> file, your <code>path_unix.go</code> file still needs to use build tags, so keep that file unchanged.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; env <span style="color:#19177c">GOOS</span><span style="color:#666">=</span>linux <span style="color:#19177c">GOARCH</span><span style="color:#666">=</span>amd64 go build                                   
+&gt; env <span style="color:#19177c">GOOS</span><span style="color:#666">=</span>windows go build                                             
+&gt; ls                                                              
+go-build        go-build.exe    go.mod          main.go         path_unix.go    path_windows.go
+</code></pre></div><h2 id="flag选项管理">Flag（选项管理）</h2>
+<p>Golang 标准库<code>flag</code>用于解析命令行选项。有过类 Unix 系统使用经验的童鞋对命令行选项应该不陌生。例如命令<code>ls -al</code>列出当前目录下所有文件和目录的详细信息，其中<code>-al</code>就是命令行选项。</p>
+<p>命令行选项在实际开发中很常用，例如：</p>
+<ul>
+<li>指定配置文件的路径，如<code>redis-server ./redis.conf</code>以当前目录下的配置文件<code>redis.conf</code>启动 Redis 服务器；</li>
+<li>自定义某些参数，如<code>python -m SimpleHTTPServer 8080</code>启动一个 HTTP 服务器，监听 8080 端口。如果不指定，则默认监听 8000 端口。</li>
+</ul>
+<blockquote>
+<p>使用方法，举例：</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">package</span> main
+
+<span style="color:#008000;font-weight:bold">import</span> (
+  <span style="color:#ba2121">&#34;fmt&#34;</span>
+  <span style="color:#ba2121">&#34;flag&#34;</span>
+)
+
+<span style="color:#408080;font-style:italic">// 1）定义选项变量
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">var</span> (
+  intflag <span style="color:#b00040">int</span>
+  boolflag <span style="color:#b00040">bool</span>
+  stringflag <span style="color:#b00040">string</span>
+)
+
+<span style="color:#408080;font-style:italic">// 2）设置选项变量
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">init</span>() {
+  flag.<span style="color:#00f">IntVar</span>(<span style="color:#666">&amp;</span>intflag, <span style="color:#ba2121">&#34;intflag&#34;</span>, <span style="color:#666">0</span>, <span style="color:#ba2121">&#34;int flag value&#34;</span>)
+  flag.<span style="color:#00f">BoolVar</span>(<span style="color:#666">&amp;</span>boolflag, <span style="color:#ba2121">&#34;boolflag&#34;</span>, <span style="color:#008000;font-weight:bold">false</span>, <span style="color:#ba2121">&#34;bool flag value&#34;</span>)
+  flag.<span style="color:#00f">StringVar</span>(<span style="color:#666">&amp;</span>stringflag, <span style="color:#ba2121">&#34;stringflag&#34;</span>, <span style="color:#ba2121">&#34;default&#34;</span>, <span style="color:#ba2121">&#34;string flag value&#34;</span>)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+  <span style="color:#408080;font-style:italic">// 3）解析命令行选项
+</span><span style="color:#408080;font-style:italic"></span>  flag.<span style="color:#00f">Parse</span>()
+
+  <span style="color:#408080;font-style:italic">// 4）获取命令行选项实际值
+</span><span style="color:#408080;font-style:italic"></span>  fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;int flag:&#34;</span>, intflag)
+  fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;bool flag:&#34;</span>, boolflag)
+  fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;string flag:&#34;</span>, stringflag)
+}
+</code></pre></div><blockquote>
+<p>使用步骤：</p>
+<p>1）定义一些全局变量存储选项的值，如这里的<code>intflag/boolflag/stringflag</code>；</p>
+<p>2）在<code>init</code>方法中使用<code>flag.TypeVar</code>方法定义选项，这里的<code>Type</code>可以为基本类型<code>Int/Uint/Float64/Bool</code>，还可以是时间间隔<code>time.Duration</code>。定义时传入变量的地址、选项名、默认值和帮助信息；</p>
+<p>3）在<code>main</code>方法中调用<code>flag.Parse</code>从<code>os.Args[1:]</code>中解析选项。因为<code>os.Args[0]</code>为可执行程序路径，会被剔除。</p>
+<p>注意：flag.Parse方法必须在所有选项都定义之后调用，且flag.Parse调用之后不能再定义选项。</p>
+</blockquote>
+<h2 id="cobra命令管理">Cobra（命令管理）</h2>
+<p>Cobra 是一个 Golang 包，它提供了简单的接口来创建命令行程序。同时，Cobra 也是一个应用程序，用来生成应用框架，从而开发以 Cobra 为基础的应用。cobra 提供非常丰富的功能：</p>
+<ul>
+<li>轻松支持子命令，如<code>app server</code>，<code>app fetch</code>等；</li>
+<li>完全兼容 POSIX 选项（包括短、长选项）；</li>
+<li>嵌套子命令；</li>
+<li>全局、本地层级选项。可以在多处设置选项，按照一定的顺序取用；</li>
+<li>设置钩子函数，在命令执行前、后执行某些操作；</li>
+<li>生成 Markdown/ReStructed Text/Man Page 格式的文档；</li>
+<li>使用脚手架轻松生成程序框架和命令，等等。</li>
+</ul>
+<h3 id="项目结构">项目结构</h3>
+<blockquote>
+<p>使用 cobra 构建命令行时，程序的目录结构一般比较简单，推荐使用下面这种结构：</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">▾ appName/
+    ▾ cmd/
+        cmd1.go
+        cmd2.go
+        cmd3.go
+        root.go
+    main.go
+</code></pre></div><p>每个命令实现一个文件，所有命令文件存放在<code>cmd</code>目录下。外层的<code>main.go</code>仅初始化 cobra。</p>
+<h3 id="主要概念">主要概念</h3>
+<blockquote>
+<p>命令行格式：</p>
+<p><strong>APPNAME COMMAND ARG &ndash;FLAG</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>command</td>
+<td>代表行为</td>
+<td>命令和子命令都是用<code>Command</code>结构表示的</td>
+</tr>
+<tr>
+<td>argument</td>
+<td>命令行参数</td>
+<td></td>
+</tr>
+<tr>
+<td>flag</td>
+<td>代表对行为的改变(也就是我们常说的命令行选项)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Command</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// Command is just that, a command for your application.
+</span><span style="color:#408080;font-style:italic">// E.g.  &#39;go run ...&#39; - &#39;run&#39; is the command. Cobra requires
+</span><span style="color:#408080;font-style:italic">// you to define the usage and description as part of your command
+</span><span style="color:#408080;font-style:italic">// definition to ensure usability.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> Command <span style="color:#008000;font-weight:bold">struct</span> {
+	<span style="color:#408080;font-style:italic">// Use is the one-line usage message.
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// Recommended syntax is as follow:
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">// Example: add [-F file | -D dir]... [-f format] profile
+</span><span style="color:#408080;font-style:italic"></span>	Use <span style="color:#b00040">string</span>
+
+	<span style="color:#408080;font-style:italic">// Short is the short description shown in the &#39;help&#39; output.
+</span><span style="color:#408080;font-style:italic"></span>	Short <span style="color:#b00040">string</span>
+
+	<span style="color:#408080;font-style:italic">// Long is the long message shown in the &#39;help &lt;this-command&gt;&#39; output.
+</span><span style="color:#408080;font-style:italic"></span>	Long <span style="color:#b00040">string</span>
+
+	<span style="color:#408080;font-style:italic">// Run: Typically the actual work function. Most commands will only implement this.
+</span><span style="color:#408080;font-style:italic"></span>	Run <span style="color:#008000;font-weight:bold">func</span>(cmd <span style="color:#666">*</span>Command, args []<span style="color:#b00040">string</span>)
+	<span style="color:#408080;font-style:italic">// RunE: Run but returns an error.
+</span><span style="color:#408080;font-style:italic"></span>	RunE <span style="color:#008000;font-weight:bold">func</span>(cmd <span style="color:#666">*</span>Command, args []<span style="color:#b00040">string</span>) <span style="color:#b00040">error</span>
+}
+</code></pre></div><p>每个 cobra 程序都有一个根命令，可以给它添加任意多个子命令。定义新的子命令很简单，就是创建一个<code>cobra.Command</code>变量，设置一些字段，然后添加到根命令中。</p>
+<blockquote>
+<p>Flag</p>
+</blockquote>
+<p>cobra 中选项分为两种，一种是<strong>永久选项</strong>，定义它的命令和其子命令都可以使用。通过给根命令添加一个选项定义全局选项。 另一种是<strong>本地选项</strong>，只能在定义它的命令中使用。cobra 使用<a href="https://github.com/spf13/pflag">pflag</a>解析命令行选项。<code>pflag</code>使用上基本与<code>flag</code>相同。</p>
+<ul>
+<li>设置永久选项</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">rootCmd.<span style="color:#00f">PersistentFlags</span>().<span style="color:#00f">BoolVarP</span>(<span style="color:#666">&amp;</span>Verbose, <span style="color:#ba2121">&#34;verbose&#34;</span>, <span style="color:#ba2121">&#34;v&#34;</span>, <span style="color:#008000;font-weight:bold">false</span>, <span style="color:#ba2121">&#34;verbose output&#34;</span>)
+</code></pre></div><ul>
+<li>设置本地选项</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">localCmd.<span style="color:#00f">Flags</span>().<span style="color:#00f">StringVarP</span>(<span style="color:#666">&amp;</span>Source, <span style="color:#ba2121">&#34;source&#34;</span>, <span style="color:#ba2121">&#34;s&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;Source directory to read from&#34;</span>)
+</code></pre></div><h2 id="viper配置管理">Viper（配置管理）</h2>
+<p>Viper是一个配置管理的解决方案，它能够从 json，toml，ini，yaml，hcl，env 等多种格式文件中，读取配置内容，它还能从一些远程配置中心读取配置文件，如consul，etcd等；它还能够监听文件的内容变化，读取命令行flag的值等等。</p>
+<blockquote>
+<p><a href="https://github.com/spf13/viper">viper</a> 读取配置文件的优先顺序，从高到低，如下：</p>
+<ul>
+<li>显式设置的Set函数</li>
+<li>命令行参数</li>
+<li>环境变量</li>
+<li>配置文件</li>
+<li>远程k-v 存储系统，如consul，etcd等</li>
+<li>默认值</li>
+</ul>
+</blockquote>
+<h3 id="设置默认值">设置默认值</h3>
+<p>一个好的配置系统应该支持默认值。键不需要默认值，但如果没有通过配置文件、环境变量、远程配置或命令行标志（flag）设置键，则默认值非常有用。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">viper.<span style="color:#00f">SetDefault</span>(<span style="color:#ba2121">&#34;ContentDir&#34;</span>, <span style="color:#ba2121">&#34;content&#34;</span>)
+viper.<span style="color:#00f">SetDefault</span>(<span style="color:#ba2121">&#34;LayoutDir&#34;</span>, <span style="color:#ba2121">&#34;layouts&#34;</span>)
+viper.<span style="color:#00f">SetDefault</span>(<span style="color:#ba2121">&#34;Taxonomies&#34;</span>, <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#b00040">string</span>{<span style="color:#ba2121">&#34;tag&#34;</span>: <span style="color:#ba2121">&#34;tags&#34;</span>, <span style="color:#ba2121">&#34;category&#34;</span>: <span style="color:#ba2121">&#34;categories&#34;</span>})
+</code></pre></div><h3 id="读取配置文件">读取配置文件</h3>
+<p>Viper可以搜索多个路径，但目前单个Viper实例只支持单个配置文件。Viper不默认任何配置搜索路径，将默认决策留给应用程序。下面是一个如何使用Viper搜索和读取配置文件的示例。不需要任何特定的路径，但是至少应该提供一个配置文件预期出现的路径。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">viper.<span style="color:#00f">SetConfigFile</span>(<span style="color:#ba2121">&#34;./config.yaml&#34;</span>) 	<span style="color:#408080;font-style:italic">// 指定配置文件路径
+</span><span style="color:#408080;font-style:italic"></span>viper.<span style="color:#00f">SetConfigName</span>(<span style="color:#ba2121">&#34;config&#34;</span>) 				<span style="color:#408080;font-style:italic">// 配置文件名称(无扩展名)
+</span><span style="color:#408080;font-style:italic"></span>viper.<span style="color:#00f">SetConfigType</span>(<span style="color:#ba2121">&#34;yaml&#34;</span>) 					<span style="color:#408080;font-style:italic">// 如果配置文件的名称中有扩展名，则需要配置此项
+</span><span style="color:#408080;font-style:italic"></span>viper.<span style="color:#00f">AddConfigPath</span>(<span style="color:#ba2121">&#34;/etc/appname/&#34;</span>)  <span style="color:#408080;font-style:italic">// 查找配置文件所在的路径
+</span><span style="color:#408080;font-style:italic"></span>viper.<span style="color:#00f">AddConfigPath</span>(<span style="color:#ba2121">&#34;$HOME/.appname&#34;</span>) <span style="color:#408080;font-style:italic">// 多次调用以添加多个搜索路径
+</span><span style="color:#408080;font-style:italic"></span>viper.<span style="color:#00f">AddConfigPath</span>(<span style="color:#ba2121">&#34;.&#34;</span>)              <span style="color:#408080;font-style:italic">// 还可以在工作目录中查找配置
+</span><span style="color:#408080;font-style:italic"></span>err <span style="color:#666">:=</span> viper.<span style="color:#00f">ReadInConfig</span>() 					<span style="color:#408080;font-style:italic">// 查找并读取配置文件
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> { 											<span style="color:#408080;font-style:italic">// 处理读取配置文件的错误
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000">panic</span>(fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;Fatal error config file: %s \n&#34;</span>, err))
+}
+</code></pre></div><h3 id="使用-flags">使用 Flags</h3>
+<p>Viper 具有绑定到标志的能力。具体来说，Viper支持<a href="https://github.com/spf13/cobra">Cobra</a>库中使用的<code>Pflag</code>。例如：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">serverCmd.<span style="color:#00f">Flags</span>().<span style="color:#00f">Int</span>(<span style="color:#ba2121">&#34;port&#34;</span>, <span style="color:#666">1138</span>, <span style="color:#ba2121">&#34;Port to run Application server on&#34;</span>)
+viper.<span style="color:#00f">BindPFlag</span>(<span style="color:#ba2121">&#34;port&#34;</span>, serverCmd.<span style="color:#00f">Flags</span>().<span style="color:#00f">Lookup</span>(<span style="color:#ba2121">&#34;port&#34;</span>))
+</code></pre></div><h3 id="获取值">获取值</h3>
+<p>在Viper中，有几种方法可以根据值的类型获取值。每一个Get方法在找不到值的时候都会返回零值。为了检查给定的键是否存在，提供了<code>IsSet()</code>方法。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">viper.<span style="color:#00f">GetString</span>(<span style="color:#ba2121">&#34;logfile&#34;</span>) <span style="color:#408080;font-style:italic">// 不区分大小写的设置和获取
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> viper.<span style="color:#00f">GetBool</span>(<span style="color:#ba2121">&#34;verbose&#34;</span>) {
+    fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;verbose enabled&#34;</span>)
+}
+</code></pre></div><h3 id="反序列化">反序列化</h3>
+<p>可以选择将所有或特定的值解析到结构体、map等。有两种方法可以做到这一点：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> config <span style="color:#008000;font-weight:bold">struct</span> {
+	Port <span style="color:#b00040">int</span>
+	Name <span style="color:#b00040">string</span>
+	PathMap <span style="color:#b00040">string</span> <span style="color:#ba2121">`mapstructure:&#34;path_map&#34;`</span>
+}
+
+<span style="color:#008000;font-weight:bold">var</span> C config
+
+err <span style="color:#666">:=</span> viper.<span style="color:#00f">Unmarshal</span>(<span style="color:#666">&amp;</span>C)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+	t.<span style="color:#00f">Fatalf</span>(<span style="color:#ba2121">&#34;unable to decode into struct, %v&#34;</span>, err)
+}
+</code></pre></div><h3 id="综合实例">综合实例</h3>
+<blockquote>
+<p>基本顺序：</p>
+<ol>
+<li>设置配置文件搜索路径</li>
+<li>设置配置文件名称</li>
+<li>设置默认值</li>
+<li>读取文件</li>
+<li>打印一部分读取到的值</li>
+<li>重新写入文件</li>
+</ol>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Config <span style="color:#008000;font-weight:bold">struct</span> {
+	Port    <span style="color:#b00040">int</span>    <span style="color:#ba2121">`mapstructure:&#34;port&#34;`</span>
+	Version <span style="color:#b00040">string</span> <span style="color:#ba2121">`mapstructure:&#34;version&#34;`</span>
+}
+
+<span style="color:#008000;font-weight:bold">var</span> Conf = <span style="color:#008000">new</span>(Config)
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	viper.<span style="color:#00f">SetConfigFile</span>(<span style="color:#ba2121">&#34;./conf/config.yaml&#34;</span>) <span style="color:#408080;font-style:italic">// 指定配置文件路径
+</span><span style="color:#408080;font-style:italic"></span>	err <span style="color:#666">:=</span> viper.<span style="color:#00f">ReadInConfig</span>()               <span style="color:#408080;font-style:italic">// 读取配置信息
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {                           <span style="color:#408080;font-style:italic">// 读取配置信息失败
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#008000">panic</span>(fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;Fatal error config file: %s \n&#34;</span>, err))
+	}
+	<span style="color:#408080;font-style:italic">// 将读取的配置信息保存至全局变量Conf
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> viper.<span style="color:#00f">Unmarshal</span>(Conf); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000">panic</span>(fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;unmarshal conf failed, err:%s \n&#34;</span>, err))
+	}
+	<span style="color:#408080;font-style:italic">// 监控配置文件变化
+</span><span style="color:#408080;font-style:italic"></span>	viper.<span style="color:#00f">WatchConfig</span>()
+	<span style="color:#408080;font-style:italic">// 注意！！！配置文件发生变化后要同步到全局变量Conf
+</span><span style="color:#408080;font-style:italic"></span>	viper.<span style="color:#00f">OnConfigChange</span>(<span style="color:#008000;font-weight:bold">func</span>(in fsnotify.Event) {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;夭寿啦~配置文件被人修改啦...&#34;</span>)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> viper.<span style="color:#00f">Unmarshal</span>(Conf); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000">panic</span>(fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;unmarshal conf failed, err:%s \n&#34;</span>, err))
+		}
+	})
+
+	r <span style="color:#666">:=</span> gin.<span style="color:#00f">Default</span>()
+	<span style="color:#408080;font-style:italic">// 访问/version的返回值会随配置文件的变化而变化
+</span><span style="color:#408080;font-style:italic"></span>	r.<span style="color:#00f">GET</span>(<span style="color:#ba2121">&#34;/version&#34;</span>, <span style="color:#008000;font-weight:bold">func</span>(c <span style="color:#666">*</span>gin.Context) {
+		c.<span style="color:#00f">String</span>(http.StatusOK, Conf.Version)
+	})
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> r.<span style="color:#00f">Run</span>(fmt.<span style="color:#00f">Sprintf</span>(<span style="color:#ba2121">&#34;:%d&#34;</span>, Conf.Port)); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000">panic</span>(err)
+	}
+}
+</code></pre></div><h2 id="exec执行管理">Exec（执行管理）</h2>
+<p>Go标准库提供了便利的方法，可以很容易地运行外部命令，一般我们会使用os/exec包下的方法实现执行外部命令以及和外部命令交互。</p>
+<blockquote>
+<p>运行一个外部程序，并获得输出</p>
+</blockquote>
+<ul>
+<li>Run 阻塞进程，直到命令执行结束</li>
+<li>Start 非阻塞执行</li>
+<li>Wait 阻塞进程，等待命令执行结束, 与 Star 配合使用</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+  <span style="color:#408080;font-style:italic">// 执行一个外部程序
+</span><span style="color:#408080;font-style:italic"></span>	cmd <span style="color:#666">:=</span> exec.<span style="color:#00f">Command</span>(<span style="color:#ba2121">&#34;ls&#34;</span>, <span style="color:#ba2121">&#34;-lah&#34;</span>)
+	
+  <span style="color:#408080;font-style:italic">// Stdout和Stderr代表外部程序进程的标准输出和错误输出，
+</span><span style="color:#408080;font-style:italic"></span>  <span style="color:#408080;font-style:italic">// 如果为空，那么输出到null device中。
+</span><span style="color:#408080;font-style:italic"></span>  cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	
+  <span style="color:#408080;font-style:italic">// 默认情况下进程的工作路径是调用这个进程的文件夹，但是你也可以手工指定
+</span><span style="color:#408080;font-style:italic"></span>	cmd.Dir = <span style="color:#ba2121">&#34;./&#34;</span>
+  
+  <span style="color:#408080;font-style:italic">// Cmd.Path是要执行的程序的路径，如果是相对路径，那么它基于Cmd.Dir计算相对路径
+</span><span style="color:#408080;font-style:italic"></span>	log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;path: %s\n&#34;</span>, cmd.Path)
+
+  <span style="color:#408080;font-style:italic">// 执行
+</span><span style="color:#408080;font-style:italic"></span>	err <span style="color:#666">:=</span> cmd.<span style="color:#00f">Run</span>()
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Fatalf</span>(<span style="color:#ba2121">&#34;failed to call cmd.Run(): %v\n&#34;</span>, err)
+	}
+}
+</code></pre></div><ul>
+<li>测试</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">haifengfang@wugeek-cto ~/g/s/go-exec&gt; go run main.go                                                          
+
+2021/08/24 23:23:12 path: /bin/ls
+total <span style="color:#666">16</span>
+drwxr-xr-x   <span style="color:#666">5</span> haifengfang  staff   160B Aug <span style="color:#666">24</span> 23:22 .
+drwxr-xr-x  <span style="color:#666">10</span> haifengfang  staff   320B Aug <span style="color:#666">24</span> 22:38 ..
+drwxr-xr-x   <span style="color:#666">6</span> haifengfang  staff   192B Aug <span style="color:#666">24</span> 22:40 .idea
+-rw-r--r--   <span style="color:#666">1</span> haifengfang  staff    16B Aug <span style="color:#666">24</span> 22:38 go.mod
+-rw-r--r--   <span style="color:#666">1</span> haifengfang  staff   1.8K Aug <span style="color:#666">24</span> 23:22 main.go
+</code></pre></div><blockquote>
+<p>获取底层进程信息</p>
+</blockquote>
+<p><code>os/exec</code>是封装的一个便利库，底层它是使用<code>os.StartProcess</code>实现的，所以你可以得到底层的<a href="https://golang.org/pkg/os/#Process">Process对象</a>和<a href="https://golang.org/pkg/os/#ProcessState">ProcessState对象</a>,分别代表进程和进程的状态。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	
+ 	<span style="color:#408080;font-style:italic">// 判断外部命令是否存在
+</span><span style="color:#408080;font-style:italic"></span>	path, err <span style="color:#666">:=</span> exec.<span style="color:#00f">LookPath</span>(<span style="color:#ba2121">&#34;bash&#34;</span>)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;&#39;bash&#39; not found\n&#34;</span>)
+	} <span style="color:#008000;font-weight:bold">else</span> {
+		log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;&#39;bash&#39; is in &#39;%s&#39;\n&#34;</span>, path)
+	}
+	
+	cmd <span style="color:#666">:=</span> exec.<span style="color:#00f">Command</span>(<span style="color:#ba2121">&#34;bash&#34;</span>, <span style="color:#ba2121">&#34;-c&#34;</span>, <span style="color:#ba2121">&#34;sleep 1; echo $myvar&#34;</span>)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	
+  <span style="color:#408080;font-style:italic">// 设置环境变量
+</span><span style="color:#408080;font-style:italic"></span>	cmd.Env = []<span style="color:#b00040">string</span>{<span style="color:#ba2121">&#34;myvar=abc&#34;</span>}
+
+  <span style="color:#408080;font-style:italic">// 启动外部程序
+</span><span style="color:#408080;font-style:italic"></span>	err = cmd.<span style="color:#00f">Start</span>()
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Fatalf</span>(<span style="color:#ba2121">&#34;failed to call cmd.Start(): %v\n&#34;</span>, err)
+	}
+
+  <span style="color:#408080;font-style:italic">// 获取进程信息
+</span><span style="color:#408080;font-style:italic"></span>	log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;pid: %d\n&#34;</span>, cmd.Process.Pid)
+	cmd.Process.<span style="color:#00f">Wait</span>()
+
+	log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;exitcode: %d\n&#34;</span>, cmd.ProcessState.<span style="color:#00f">ExitCode</span>())
+}
+</code></pre></div><ul>
+<li>测试</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">haifengfang@wugeek-cto ~/g/s/go-exec&gt; go run main.go                                                          <span style="color:#666">(</span>base<span style="color:#666">)</span> 
+2021/08/24 23:27:46 <span style="color:#ba2121">&#39;bash&#39;</span> is in <span style="color:#ba2121">&#39;/bin/bash&#39;</span>
+2021/08/24 23:27:46 pid: <span style="color:#666">16072</span>
+abc
+2021/08/24 23:27:47 exitcode: -1
+</code></pre></div><blockquote>
+<p>获取命令结果</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	cmd <span style="color:#666">:=</span> exec.<span style="color:#00f">Command</span>(<span style="color:#ba2121">&#34;ls&#34;</span>, <span style="color:#ba2121">&#34;-lah&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">var</span> stdout, stderr bytes.Buffer
+	cmd.Stdout = <span style="color:#666">&amp;</span>stdout
+	cmd.Stderr = <span style="color:#666">&amp;</span>stderr
+
+	err <span style="color:#666">:=</span> cmd.<span style="color:#00f">Run</span>()
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Fatalf</span>(<span style="color:#ba2121">&#34;failed to call Run(): %v\n&#34;</span>, err)
+	}
+
+	log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;out:\n%s\nerr:\n%s\n&#34;</span>, stdout.<span style="color:#00f">String</span>(), stderr.<span style="color:#00f">String</span>())
+}
+</code></pre></div><ul>
+<li>测试</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">haifengfang@wugeek-cto ~/g/s/go-exec&gt; go run main.go                                                          <span style="color:#666">(</span>base<span style="color:#666">)</span> 
+2021/08/24 23:31:25 out:
+total <span style="color:#666">16</span>
+drwxr-xr-x   <span style="color:#666">5</span> haifengfang  staff   160B Aug <span style="color:#666">24</span> 23:30 .
+drwxr-xr-x  <span style="color:#666">10</span> haifengfang  staff   320B Aug <span style="color:#666">24</span> 22:38 ..
+drwxr-xr-x   <span style="color:#666">6</span> haifengfang  staff   192B Aug <span style="color:#666">24</span> 22:40 .idea
+-rw-r--r--   <span style="color:#666">1</span> haifengfang  staff    16B Aug <span style="color:#666">24</span> 22:38 go.mod
+-rw-r--r--   <span style="color:#666">1</span> haifengfang  staff   2.0K Aug <span style="color:#666">24</span> 23:30 main.go
+
+err:
+
+
+</code></pre></div><h2 id="样板代码">样板代码</h2>
+<blockquote>
+<p>基本流程：</p>
+<p>1，定义公共的配置管理模块</p>
+<p>2，主程序负责加载配置文件，解析后传递给微服务子系统</p>
+<p>3，微服务子系统解析命令行参数，独立运行</p>
+</blockquote>
+<ul>
+<li>项目结构</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">voc_cloud // 项目名称
+	config
+		config.go
+	microservices
+		begin
+			service-1 // 微服务子系统名称，例如 keystone
+				cmd
+					server.go
+	startup
+		bin
+			voc_keystone // 微服务可执行程序镜像
+		cmd
+			root.go
+		config.json
+		main.go
+</code></pre></div><ul>
+<li>Config.go</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic">// 类型定义
+</span><span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> microserver <span style="color:#008000;font-weight:bold">struct</span> {
+	Host      <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;host&#34;`</span>
+	Http_port <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;http_port&#34;`</span>
+	Grpc_port <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;grpc_port&#34;`</span>
+	Name      <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;name&#34;`</span>
+	ID        <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;id&#34;`</span>
+}
+
+<span style="color:#008000;font-weight:bold">type</span> system_config <span style="color:#008000;font-weight:bold">struct</span> {
+	Keystone             microserver           <span style="color:#ba2121">`json:&#34;customer&#34;`</span>
+}
+
+<span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic">// 全局变量
+</span><span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">var</span> __config = <span style="color:#666">&amp;</span>system_config{}
+
+<span style="color:#008000;font-weight:bold">var</span> default_config_file = <span style="color:#ba2121">&#34;./startup/config.json&#34;</span>
+
+<span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic">// 初始化方法（默认配置文件）
+</span><span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Init_config</span>() <span style="color:#b00040">error</span> {
+	config_file, err <span style="color:#666">:=</span> ioutil.<span style="color:#00f">ReadFile</span>(default_config_file)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;reading default config.json is failure, %v\n&#34;</span>, err)
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	err = json.<span style="color:#00f">Unmarshal</span>(config_file, __config)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;decoding default config.json is failure, %v\n&#34;</span>, err)
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic">// API：导出方法
+</span><span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Get_config</span>() <span style="color:#666">*</span>system_config {
+	<span style="color:#008000;font-weight:bold">return</span> __config
+}
+
+<span style="color:#408080;font-style:italic">// for startup
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Load_config</span>(cmd <span style="color:#666">*</span>cobra.Command) (config_type <span style="color:#b00040">string</span>, cfg <span style="color:#666">*</span>system_config, host <span style="color:#b00040">string</span>, port <span style="color:#b00040">string</span>, err <span style="color:#b00040">error</span>) {
+
+	<span style="color:#008000;font-weight:bold">if</span> err = viper.<span style="color:#00f">BindPFlags</span>(cmd.<span style="color:#00f">Flags</span>()); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;error&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, err
+	}
+
+	<span style="color:#008000;font-weight:bold">if</span> config_file, _ <span style="color:#666">:=</span> cmd.<span style="color:#00f">Flags</span>().<span style="color:#00f">GetString</span>(<span style="color:#ba2121">&#34;config&#34;</span>); config_file <span style="color:#666">!=</span> <span style="color:#ba2121">&#34;&#34;</span> {
+		viper.<span style="color:#00f">SetConfigFile</span>(config_file)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> viper.<span style="color:#00f">ReadInConfig</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			tools.<span style="color:#00f">Log</span>(err)
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;error&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, err
+		}
+
+		cfg = <span style="color:#00f">Get_config</span>()
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> viper.<span style="color:#00f">Unmarshal</span>(cfg); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			tools.<span style="color:#00f">Log</span>(err)
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;error&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, err
+		}
+
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;config&#34;</span>, cfg, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>
+
+	} <span style="color:#008000;font-weight:bold">else</span> {
+
+		host = viper.<span style="color:#00f">GetString</span>(<span style="color:#ba2121">&#34;host&#34;</span>)
+		port = viper.<span style="color:#00f">GetString</span>(<span style="color:#ba2121">&#34;port&#34;</span>)
+		<span style="color:#008000;font-weight:bold">if</span> host <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> <span style="color:#666">||</span> port <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> {
+			err = <span style="color:#00f">Init_config</span>()
+			<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+				<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;error&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, err
+			}
+
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;default&#34;</span>, __config, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;flag&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>, host, port, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+
+<span style="color:#408080;font-style:italic">// for server
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Load_flag</span>(cmd <span style="color:#666">*</span>cobra.Command, server_name <span style="color:#b00040">string</span>) (host <span style="color:#b00040">string</span>, port <span style="color:#b00040">string</span>, err <span style="color:#b00040">error</span>) {
+
+	<span style="color:#008000;font-weight:bold">if</span> err = viper.<span style="color:#00f">BindPFlags</span>(cmd.<span style="color:#00f">Flags</span>()); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, err
+	}
+
+	host = viper.<span style="color:#00f">GetString</span>(<span style="color:#ba2121">&#34;host&#34;</span>)
+	port = viper.<span style="color:#00f">GetString</span>(<span style="color:#ba2121">&#34;port&#34;</span>)
+	<span style="color:#008000;font-weight:bold">if</span> host <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> <span style="color:#666">||</span> port <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> {
+		err = <span style="color:#00f">Init_config</span>()
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, err
+		}
+
+		cfg <span style="color:#666">:=</span> <span style="color:#00f">Get_config</span>()
+
+		<span style="color:#008000;font-weight:bold">switch</span> server_name {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;keystone_http&#34;</span>:
+			host = cfg.Keystone.Host
+			port = cfg.Keystone.Http_port
+			err = <span style="color:#008000;font-weight:bold">nil</span>
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;keystone_grpc&#34;</span>:
+			host = cfg.Keystone.Host
+			port = cfg.Keystone.Grpc_port
+			err = <span style="color:#008000;font-weight:bold">nil</span>
+		<span style="color:#008000;font-weight:bold">default</span>:
+			host = <span style="color:#ba2121">&#34;&#34;</span>
+			port = <span style="color:#ba2121">&#34;&#34;</span>
+			err = errors.<span style="color:#00f">New</span>(<span style="color:#ba2121">&#34;server name is error&#34;</span>)
+		}
+
+		<span style="color:#008000;font-weight:bold">return</span> host, port, err
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> host, port, <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><ul>
+<li>cmd/root.go</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Root_command</span>() <span style="color:#666">*</span>cobra.Command {
+	<span style="color:#008000;font-weight:bold">var</span> root_cmd = cobra.Command{
+		Use: <span style="color:#ba2121">&#34;voc_cloud&#34;</span>,
+		Run: run,
+	}
+
+	root_cmd.<span style="color:#00f">PersistentFlags</span>().<span style="color:#00f">StringP</span>(<span style="color:#ba2121">&#34;config&#34;</span>, <span style="color:#ba2121">&#34;c&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;the config.json file to use&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>root_cmd
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">run</span>(cmd <span style="color:#666">*</span>cobra.Command, args []<span style="color:#b00040">string</span>) {
+
+	cfg_type, cfg, host, port, err <span style="color:#666">:=</span> config.<span style="color:#00f">Load_config</span>(cmd)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Fatal</span>(<span style="color:#ba2121">&#34;Failed to load config: &#34;</span> <span style="color:#666">+</span> err.<span style="color:#00f">Error</span>())
+	}
+
+	<span style="color:#008000;font-weight:bold">switch</span> cfg_type {
+	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;default&#34;</span>:
+		log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;default_config: %#v\n&#34;</span>, cfg)
+	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;config&#34;</span>:
+		log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;config_file: %s\n&#34;</span>, viper.<span style="color:#00f">GetString</span>(<span style="color:#ba2121">&#34;config&#34;</span>))
+		log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;set_config: %#v\n&#34;</span>, cfg)
+	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;flag&#34;</span>:
+		log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;host:port = %s:%s&#34;</span>, host, port)
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;no config file, will return&#34;</span>)
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;--- config voc_cloud ok ---&#34;</span>)
+
+	time.<span style="color:#00f">Sleep</span>(<span style="color:#666">1</span> <span style="color:#666">*</span> time.Second)
+	_ = <span style="color:#00f">run_sub_server</span>(<span style="color:#ba2121">&#34;voc_keystone_http&#34;</span>, cfg.Keystone.Host, cfg.Keystone.Http_port)
+
+	time.<span style="color:#00f">Sleep</span>(<span style="color:#666">1</span> <span style="color:#666">*</span> time.Second)
+	_ = <span style="color:#00f">run_sub_server</span>(<span style="color:#ba2121">&#34;voc_keystone_grpc&#34;</span>, cfg.Keystone.Host, cfg.Keystone.Grpc_port)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;voc_cloud all server startup ok!.........&#34;</span>)
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">run_sub_server</span>(server_name, host, port <span style="color:#b00040">string</span>) <span style="color:#b00040">error</span> {
+
+	server <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;./bin/&#34;</span> <span style="color:#666">+</span> server_name
+
+	path, err <span style="color:#666">:=</span> exec.<span style="color:#00f">LookPath</span>(server)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;run server: &#34;</span> <span style="color:#666">+</span> path)
+
+	server_flag <span style="color:#666">:=</span> <span style="color:#ba2121">&#34; -a &#34;</span> <span style="color:#666">+</span> host <span style="color:#666">+</span> <span style="color:#ba2121">&#34; -p &#34;</span> <span style="color:#666">+</span> port <span style="color:#666">+</span> <span style="color:#ba2121">&#34;&#34;</span>
+	cmd <span style="color:#666">:=</span> exec.<span style="color:#00f">Command</span>(server, server_flag, <span style="color:#ba2121">&#34; &amp;&#34;</span>)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err = cmd.<span style="color:#00f">Start</span>()
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Fatalf</span>(<span style="color:#ba2121">&#34;failed to call &#39;%s %s&#39;: %v\n&#34;</span>, server, server_flag, err)
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+</code></pre></div><ul>
+<li>微服务 server.go</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main_route</span>(host, port <span style="color:#b00040">string</span>) {
+
+	<span style="color:#008000;font-weight:bold">if</span> host <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> <span style="color:#666">||</span> port <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> {
+		_ = config.<span style="color:#00f">Init_config</span>()
+		the_cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+		host = the_cfg.Keystone.Host
+		port = the_cfg.Keystone.Http_port
+	}
+
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+
+	<span style="color:#408080;font-style:italic">// .... 初始化微服务 ......
+</span><span style="color:#408080;font-style:italic"></span>  
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		tools.<span style="color:#00f">Log</span>(cfg.Keystone.Name <span style="color:#666">+</span> <span style="color:#ba2121">&#34; http server start at &#34;</span> <span style="color:#666">+</span> host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> port)
+		err_chan <span style="color:#666">&lt;-</span> web_app.<span style="color:#00f">Run</span>(iris.<span style="color:#00f">Addr</span>(host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> port))
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> os.Signal, <span style="color:#666">1</span>)
+		signal.<span style="color:#00f">Notify</span>(c, syscall.SIGINT, syscall.SIGTERM)
+		err_chan <span style="color:#666">&lt;-</span> fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;%s&#34;</span>, <span style="color:#666">&lt;-</span>c)
+	}()
+
+	err = <span style="color:#666">&lt;-</span>err_chan
+	tools.<span style="color:#00f">Log</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// ------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic">// 启动程序
+</span><span style="color:#408080;font-style:italic">// ------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">root_command</span>() <span style="color:#666">*</span>cobra.Command {
+	<span style="color:#008000;font-weight:bold">var</span> root_cmd = cobra.Command{
+		Use: <span style="color:#ba2121">&#34;voc_keystone_http&#34;</span>,
+		Run: run,
+	}
+
+	root_cmd.<span style="color:#00f">PersistentFlags</span>().<span style="color:#00f">StringP</span>(<span style="color:#ba2121">&#34;host&#34;</span>, <span style="color:#ba2121">&#34;a&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;the host to use&#34;</span>)
+	root_cmd.<span style="color:#00f">PersistentFlags</span>().<span style="color:#00f">StringP</span>(<span style="color:#ba2121">&#34;port&#34;</span>, <span style="color:#ba2121">&#34;p&#34;</span>, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#ba2121">&#34;the port to use&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>root_cmd
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">run</span>(cmd <span style="color:#666">*</span>cobra.Command, args []<span style="color:#b00040">string</span>) {
+
+	host, port, err <span style="color:#666">:=</span> config.<span style="color:#00f">Load_flag</span>(cmd, <span style="color:#ba2121">&#34;keystone_http&#34;</span>)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Fatal</span>(<span style="color:#ba2121">&#34;Failed to load flag: &#34;</span> <span style="color:#666">+</span> err.<span style="color:#00f">Error</span>())
+	}
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;--- config keystone_http ok ---&#34;</span>)
+
+	<span style="color:#00f">main_route</span>(host, port)
+
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> <span style="color:#00f">root_command</span>().<span style="color:#00f">Execute</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Fatal</span>(err)
+	}
+
+}
+</code></pre></div><ul>
+<li>Main.go</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> cmd.<span style="color:#00f">Root_command</span>().<span style="color:#00f">Execute</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Fatal</span>(err)
+	}
+}
+</code></pre></div><ul>
+<li>配置文件 config.json</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;keystone&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;host&#34;</span>: <span style="color:#ba2121">&#34;172.16.170.1&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;http_port&#34;</span>: <span style="color:#ba2121">&#34;6001&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#ba2121">&#34;keystone&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;id&#34;</span>:<span style="color:#ba2121">&#34;0717a232-16a8-4809-814b-ccb85aa89af8&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;grpc_port&#34;</span>: <span style="color:#ba2121">&#34;7001&#34;</span>
+  }
+}
+</code></pre></div><blockquote>
+<p>生成镜像文件</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> microservices/begin/keystone/cmd
+go build -o startup/bin/voc_keystone_http
+</code></pre></div><blockquote>
+<p>启动主程序</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> startup
+go run main.go -c ./config.json
+</code></pre></div><blockquote>
+<p>如果是调试阶段，可以统一采用 &lsquo;go run main -a host -p port&rsquo; 替换 root.go中的command</p>
+</blockquote>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="https://www.netlify.com/blog/2016/09/06/creating-a-microservice-boilerplate-in-go/">https://www.netlify.com/blog/2016/09/06/creating-a-microservice-boilerplate-in-go/</a></li>
+<li><a href="https://www.cnblogs.com/sparkdev/p/10856077.html">https://www.cnblogs.com/sparkdev/p/10856077.html</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/103363533">https://zhuanlan.zhihu.com/p/103363533</a></li>
+<li><a href="https://darjun.github.io/2020/01/10/godailylib/flag/">https://darjun.github.io/2020/01/10/godailylib/flag/</a></li>
+<li><a href="https://github.com/spf13/cobra/blob/master/user_guide.md">https://github.com/spf13/cobra/blob/master/user_guide.md</a></li>
+<li><a href="https://github.com/spf13/viper">https://github.com/spf13/viper</a></li>
+<li><a href="https://www.liwenzhou.com/posts/Go/viper_tutorial/">https://www.liwenzhou.com/posts/Go/viper_tutorial/</a></li>
+<li><a href="https://colobu.com/2020/12/27/go-with-os-exec">https://colobu.com/2020/12/27/go-with-os-exec</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-build-and-install-go-programs">https://www.digitalocean.com/community/tutorials/how-to-build-and-install-go-programs</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/building-go-applications-for-different-operating-systems-and-architectures">https://www.digitalocean.com/community/tutorials/building-go-applications-for-different-operating-systems-and-architectures</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/go-cache-study-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/go-cache-study-1/3_hu3d03a01dcc18bc5be0e67db3d8d209a6_1095739_400x0_resize_lanczos_3.png 1x, https://taodanfang.github.io/posts/go-cache-study-1/3_hu3d03a01dcc18bc5be0e67db3d8d209a6_1095739_800x0_resize_lanczos_3.png 2x, https://taodanfang.github.io/posts/go-cache-study-1/3_hu3d03a01dcc18bc5be0e67db3d8d209a6_1095739_1200x0_resize_lanczos_3.png 3x">
+      <img src="https://taodanfang.github.io/posts/go-cache-study-1/3_hu3d03a01dcc18bc5be0e67db3d8d209a6_1095739_400x0_resize_lanczos_3.png" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">缓存技术学习与实践：前端与后端</h2>
+    <p class="card-text">Caching has an important role to play in a system design. It is primarily used to speed up information retrieval from a service and reduce the load on a database engine, the primary source of truth for a service. Data that is frequently requested by users are stored in a in-memory key-value store, like Redis, to speed up subsequent look up of the same data.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-22 822:00">Aug 22, 2021</time></p>
+      <p>#math #distributed computing </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

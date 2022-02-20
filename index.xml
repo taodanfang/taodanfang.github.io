@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/</link>
+    <description>Recent content on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Posts</title>
+      <link>https://taodanfang.github.io/posts/</link>
+      <pubDate>Mon, 14 Feb 2022 21:27:19 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

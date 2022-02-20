@@ -1,0 +1,2627 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>基于Go-kit 框架定制微服务应用的开发流程 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  基于Go-kit 框架定制微服务应用的开发流程</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >基于Go-kit 框架定制微服务应用的开发流程</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-07-27">Jul 27, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/go-kit-microservice-1/5_hu3d03a01dcc18bc5be0e67db3d8d209a6_949616_711x0_resize_lanczos_3.png 1x, https://taodanfang.github.io/posts/go-kit-microservice-1/5_hu3d03a01dcc18bc5be0e67db3d8d209a6_949616_1422x0_resize_lanczos_3.png 2x, https://taodanfang.github.io/posts/go-kit-microservice-1/5_hu3d03a01dcc18bc5be0e67db3d8d209a6_949616_2133x0_resize_lanczos_3.png 3x">
+            <img src="https://taodanfang.github.io/posts/go-kit-microservice-1/5_hu3d03a01dcc18bc5be0e67db3d8d209a6_949616_711x0_resize_lanczos_3.png" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#微服务基本框架">微服务基本框架</a></li>
+    <li><a href="#定制-http-微服务应用">定制 HTTP 微服务应用</a>
+      <ul>
+        <li><a href="#application">application</a></li>
+        <li><a href="#transport">transport</a></li>
+        <li><a href="#endpoint">endpoint</a></li>
+        <li><a href="#service">service</a></li>
+        <li><a href="#cmdserver">cmd/server</a></li>
+        <li><a href="#测试运行">测试运行</a></li>
+      </ul>
+    </li>
+    <li><a href="#定制-grpc-微服务应用">定制 gRPC 微服务应用</a>
+      <ul>
+        <li><a href="#pb">pb</a></li>
+        <li><a href="#serverapplication">server/application</a></li>
+        <li><a href="#servertransport">server/transport</a></li>
+        <li><a href="#serverendpoint">server/endpoint</a></li>
+        <li><a href="#serverservice">server/service</a></li>
+        <li><a href="#cmdserver-1">cmd/server</a></li>
+        <li><a href="#clienttransport">client/transport</a></li>
+        <li><a href="#clientendpoint">client/endpoint</a></li>
+        <li><a href="#cmdclient">cmd/client</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#http微服务支持服务注册">HTTP微服务支持服务注册</a>
+      <ul>
+        <li><a href="#基本思路">基本思路</a></li>
+        <li><a href="#client">client</a></li>
+        <li><a href="#transport-1">transport</a></li>
+        <li><a href="#endpoint-1">endpoint</a></li>
+        <li><a href="#service-1">service</a></li>
+        <li><a href="#测试-1">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#定制微服务http网关">定制微服务HTTP网关</a>
+      <ul>
+        <li><a href="#微服务网关">微服务网关</a></li>
+        <li><a href="#定制网关的方法">定制网关的方法</a></li>
+        <li><a href="#proxy-网关">Proxy 网关</a></li>
+        <li><a href="#reverse-网关">Reverse 网关</a></li>
+        <li><a href="#gateway-网关">Gateway 网关</a></li>
+      </ul>
+    </li>
+    <li><a href="#定制-ws-微服务应用">定制 WS 微服务应用</a>
+      <ul>
+        <li><a href="#application-1">application</a></li>
+        <li><a href="#transport-2">transport</a></li>
+        <li><a href="#cmdserver-2">cmd/server</a></li>
+        <li><a href="#测试-2">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#http业务接口开发">HTTP业务接口开发</a></li>
+    <li><a href="#grpc微服务支持服务注册">GRPC微服务支持服务注册</a>
+      <ul>
+        <li><a href="#基本思路-1">基本思路</a></li>
+        <li><a href="#client-1">client</a></li>
+        <li><a href="#service-2">service</a></li>
+        <li><a href="#与-grpc-server-绑定">与 grpc server 绑定</a></li>
+      </ul>
+    </li>
+    <li><a href="#grpc-客户端开发">GRPC 客户端开发</a>
+      <ul>
+        <li><a href="#transports公共">transports（公共）</a></li>
+        <li><a href="#pb公共">pb（公共）</a></li>
+        <li><a href="#endpoints公共">endpoints（公共）</a></li>
+        <li><a href="#访问某个grpc服务">访问某个grpc服务</a></li>
+        <li><a href="#proto独立">proto（独立）</a></li>
+        <li><a href="#endpoints独立">endpoints（独立）</a></li>
+        <li><a href="#controller">controller</a></li>
+        <li><a href="#内部调用示例">内部调用示例</a></li>
+        <li><a href="#测试-3">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考框架">参考框架</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/d2admin-study-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">基于D2admin定制化微服务前端应用的开发方法</h2>
+    <p class="card-text">D2Admin 是一个完全 开源免费 的企业中后台产品前端集成方案，使用最新的前端技术栈，小于 60kb 的本地首屏 js 加载，已经做好大部分项目前期准备工作，并且带有大量示例代码，助力管理系统快速开发。本文介绍基于D2admin框架进行微服务前端开发的基本思路和过程。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-07-12 712:00">Jul 12, 2021</time></p>
+      <p>#vue #d2admin </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>本文总结了基于go-kit定制微服务框架的基本方法和开发流程。</p>
+<blockquote>
+<ul>
+<li>http 微服务只需要实现 server 端封装逻辑即可</li>
+<li>Grpc 微服务需要同时实现 client/server 两端的封装逻辑</li>
+<li>两种微服务均采用标准化的参数传输方法，即封装为单一的 json 数据 payload</li>
+<li>注意 context 参数的使用，一般用于会产生延时的 service 接口，作为第一个参数传入，并在 main 中创建根context对象</li>
+<li>本文的撰写顺序是针对开发顺序，实际的执行顺序一般与开发顺序是相反的，可以参考 main 中的执行顺序</li>
+<li>一个微服务一般包含独立的database，针对该database实现独立的业务，尽量保持与其他微服务的解耦</li>
+</ul>
+</blockquote>
+<h2 id="微服务基本框架">微服务基本框架</h2>
+<p><img src="image-20210719192204853.png" alt="image-20210719192204853"></p>
+<h2 id="定制-http-微服务应用">定制 HTTP 微服务应用</h2>
+<blockquote>
+<p>项目结构</p>
+</blockquote>
+<p><img src="image-20210704182101344.png" alt="image-20210211165151441"></p>
+<blockquote>
+<p>项目结构说明</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>文件夹</th>
+<th>子文件夹</th>
+<th>作用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cmd</td>
+<td></td>
+<td>启动程序</td>
+<td>Main</td>
+</tr>
+<tr>
+<td>server</td>
+<td></td>
+<td>服务端实现</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>app</td>
+<td>定义服务端应用接口</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>transports</td>
+<td>实现http传输层处理</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>endpoints</td>
+<td>实现http服务端口封装</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>services</td>
+<td>实现单一服务</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>helpers</td>
+<td>实现组合服务</td>
+<td></td>
+</tr>
+<tr>
+<td>client</td>
+<td></td>
+<td>客户端访问方法</td>
+<td>http为单向连接，一般通过web-browser进行访问</td>
+</tr>
+</tbody>
+</table>
+<h3 id="application">application</h3>
+<blockquote>
+<p>1.1）定义应用接口（Application）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_http_application <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Make_route</span>(<span style="color:#b00040">string</span>, endpoint.Endpoint)
+
+	<span style="color:#00f">Get_db</span>() <span style="color:#666">*</span>mongo.Database
+	<span style="color:#00f">Get_router</span>() <span style="color:#666">*</span>iris.Application
+	<span style="color:#00f">Get_logger</span>() <span style="color:#666">*</span>log.Logger
+
+	<span style="color:#00f">Decode_request</span>(ctx context.Context, request <span style="color:#666">*</span>http.Request) (<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#b00040">error</span>)
+	<span style="color:#00f">Encode_response</span>(ctx context.Context, w http.ResponseWriter, response <span style="color:#008000;font-weight:bold">interface</span>{}) <span style="color:#b00040">error</span>
+	<span style="color:#00f">Encode_error</span>(ctx context.Context, err <span style="color:#b00040">error</span>, w http.ResponseWriter)
+}
+</code></pre></div><blockquote>
+<p>1.2）定义Payload数据结构，对于http来说，就是body中的内容结构</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Http_payload_request <span style="color:#008000;font-weight:bold">struct</span> {
+	Params iris.Map <span style="color:#ba2121">`json:&#34;params`</span>
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Http_payload_response <span style="color:#008000;font-weight:bold">struct</span> {
+	Result results.Result <span style="color:#ba2121">`json:&#34;result&#34;`</span>
+}
+</code></pre></div><h3 id="transport">transport</h3>
+<blockquote>
+<p>2.1）定义实现 application 接口的transport层对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Transport_for_http_application <span style="color:#008000;font-weight:bold">struct</span> {
+	db             <span style="color:#666">*</span>mongo.Database
+	logger         log.Logger
+	router         <span style="color:#666">*</span>iris.Application
+	server_options []go_kit_http.ServerOption
+}
+</code></pre></div><blockquote>
+<p>2.2）实现 application 入口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Make_http_application</span>(router <span style="color:#666">*</span>iris.Application, db <span style="color:#666">*</span>mongo.Database, logger log.Logger) {
+
+	tps <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Transport_for_http_application{router: router, db: db, logger: logger}
+
+	client_service <span style="color:#666">:=</span> services.<span style="color:#00f">New_default_client_service</span>(db)
+
+	client_authorization_options <span style="color:#666">:=</span> []go_kit_http.ServerOption{
+		go_kit_http.<span style="color:#00f">ServerBefore</span>(<span style="color:#00f">make_client_context</span>(client_service, logger)),
+		go_kit_http.<span style="color:#00f">ServerErrorHandler</span>(transport.<span style="color:#00f">NewLogErrorHandler</span>(logger)),
+		go_kit_http.<span style="color:#00f">ServerErrorEncoder</span>(tps.Encode_error),
+	}
+
+	tps.server_options = client_authorization_options
+
+	endpoints.<span style="color:#00f">Init_iris_controllers</span>(tps)
+}
+</code></pre></div><h3 id="endpoint">endpoint</h3>
+<blockquote>
+<p>3.1）定义 endpoint 的控制器 controller</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Token_controller <span style="color:#008000;font-weight:bold">struct</span> {
+	transport_server app.I_http_application
+	endpoints        <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint
+
+	handler_client        services.I_client_service
+	helper_token_enhance  helpers.I_token_enhance
+	helper_token          helpers.I_token_service_helper
+	helper_token_granters helpers.I_token_grant_helper
+}
+</code></pre></div><blockquote>
+<p>3.2）定义 controller 构造方法</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_token_controller</span>(tps app.I_http_application) {
+	ctl <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Token_controller{transport_server: tps}
+
+	ctl.handler_client = services.<span style="color:#00f">New_default_client_service</span>(tps.<span style="color:#00f">Get_db</span>())
+	ctl.helper_token_enhance = helpers.<span style="color:#00f">New_jwt_token_enhancer</span>(tps.<span style="color:#00f">Get_db</span>(), <span style="color:#ba2121">&#34;jwt_secret&#34;</span>)
+	ctl.helper_token = helpers.<span style="color:#00f">New_default_token_service</span>(tps.<span style="color:#00f">Get_db</span>(), ctl.helper_token_enhance)
+
+	token_granter_with_user_and_password <span style="color:#666">:=</span> helpers.<span style="color:#00f">New_token_granter_with_username_and_password</span>(tps.<span style="color:#00f">Get_db</span>(), ctl.helper_token)
+	ctl.helper_token_granters = helpers.<span style="color:#00f">New_token_granters</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]helpers.I_token_grant_helper{
+		<span style="color:#ba2121">&#34;password&#34;</span>: token_granter_with_user_and_password,
+	})
+
+	ctl.endpoints = <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint, <span style="color:#666">0</span>)
+	ctl.<span style="color:#00f">register_endpoint_router</span>()
+}
+</code></pre></div><blockquote>
+<p>3.3）添加endpoint的路由</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>Token_controller) <span style="color:#00f">register_endpoint_router</span>() {
+	tps <span style="color:#666">:=</span> ctl.transport_server
+
+	ctl.endpoints[<span style="color:#ba2121">&#34;grant_token&#34;</span>] = <span style="color:#00f">Make_client_authorization_middleware</span>()(ctl.<span style="color:#00f">grant_token</span>())
+
+	tps.<span style="color:#00f">Make_route</span>(<span style="color:#ba2121">&#34;/oauth/token&#34;</span>, ctl.endpoints[<span style="color:#ba2121">&#34;grant_token&#34;</span>])
+}
+</code></pre></div><blockquote>
+<p>3.4）定义 endpoint</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>Token_controller) <span style="color:#00f">grant_token</span>() endpoint.Endpoint {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(ctx context.Context, request <span style="color:#008000;font-weight:bold">interface</span>{}) (response <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>) {
+
+		data <span style="color:#666">:=</span> results.<span style="color:#00f">API</span>()
+
+		grant_type <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;&#34;</span>
+
+		rq <span style="color:#666">:=</span> request.(app.Http_payload_request)
+		<span style="color:#008000;font-weight:bold">if</span> value, ok <span style="color:#666">:=</span> rq.Params[<span style="color:#ba2121">&#34;grant_type&#34;</span>]; ok {
+			grant_type = value.(<span style="color:#b00040">string</span>)
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			rs <span style="color:#666">:=</span> results.<span style="color:#00f">Error</span>(data, Err_lost_parameters_with_request.<span style="color:#00f">Error</span>())
+			<span style="color:#008000;font-weight:bold">return</span> app.Http_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+
+		client <span style="color:#666">:=</span> ctx.<span style="color:#00f">Value</span>(app.OAUTH2_authorization_client_key).(model.Client)
+		rs <span style="color:#666">:=</span> ctl.helper_token_granters.<span style="color:#00f">Grant</span>(ctx, grant_type, client.Client_uuid, rq.Params)
+
+		<span style="color:#008000;font-weight:bold">return</span> app.Http_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+</code></pre></div><blockquote>
+<p>3.5）创建并初始化 controller</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Init_iris_controllers</span>(tps app.I_http_application) {
+	<span style="color:#00f">New_token_controller</span>(tps)
+}
+</code></pre></div><h3 id="service">service</h3>
+<blockquote>
+<p>服务分为两种类型：</p>
+<ul>
+<li>单一服务接口</li>
+<li>组合服务接口</li>
+</ul>
+<p>两种类型接口的实现方式类似，其中组合服务接口可以基于单一服务接口进行组合封装</p>
+</blockquote>
+<blockquote>
+<p>4.1）定义服务接口和对象 service</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_user_service <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">New_user</span>(ctx context.Context, user_name, password <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result
+	<span style="color:#00f">Get_user_by_uuid</span>(ctx context.Context, user_uuid <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result
+	<span style="color:#00f">Check_user_by_name_and_password</span>(ctx context.Context, user_name, password <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result
+}
+
+<span style="color:#008000;font-weight:bold">type</span> User_service <span style="color:#008000;font-weight:bold">struct</span> {
+	db         <span style="color:#666">*</span>mongo.Database
+	collection <span style="color:#666">*</span>mongo.Collection
+}
+</code></pre></div><blockquote>
+<p>4.2）定义 service 的构造方法</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_default_user_service</span>(db <span style="color:#666">*</span>mongo.Database) <span style="color:#666">*</span>User_service {
+	service <span style="color:#666">:=</span> User_service{}
+	service.db = db
+	service.collection = db.<span style="color:#00f">Collection</span>(<span style="color:#ba2121">&#34;users&#34;</span>)
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>service
+}
+</code></pre></div><blockquote>
+<p>4.3）实现service 接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>User_service) <span style="color:#00f">New_user</span>(ctx context.Context, user_name, password <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result {
+	data <span style="color:#666">:=</span> results.<span style="color:#00f">API</span>()
+
+	a_user <span style="color:#666">:=</span> model.User{
+		User_uuid: primitive.<span style="color:#00f">NewObjectID</span>().<span style="color:#00f">Hex</span>(),
+		User_name: user_name,
+		Password:  password,
+	}
+
+	_, err <span style="color:#666">:=</span> s.collection.<span style="color:#00f">InsertOne</span>(ctx, a_user)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Error</span>(data, Err_failed_to_insert.<span style="color:#00f">Error</span>())
+	}
+
+	current <span style="color:#666">:=</span> s.<span style="color:#00f">get_user</span>(ctx, a_user.User_uuid)
+	data[<span style="color:#ba2121">&#34;user&#34;</span>] = current[<span style="color:#ba2121">&#34;user&#34;</span>]
+
+	<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Ok</span>(data)
+}
+</code></pre></div><h3 id="cmdserver">cmd/server</h3>
+<blockquote>
+<p>5）实现服务的启动</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	err_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">error</span>)
+
+	config.<span style="color:#00f">Init_config</span>()
+	db.<span style="color:#00f">Init_mongo_db</span>()
+
+	ctx <span style="color:#666">:=</span> context.<span style="color:#00f">Background</span>()
+	database <span style="color:#666">:=</span> db.<span style="color:#00f">Get_mongo_db</span>()
+	web_app <span style="color:#666">:=</span> iris.<span style="color:#00f">New</span>()
+	logger <span style="color:#666">:=</span> go_kit_log.<span style="color:#00f">NewLogfmtLogger</span>(os.Stderr)
+
+	logger = go_kit_log.<span style="color:#00f">With</span>(logger, <span style="color:#ba2121">&#34;ts&#34;</span>, go_kit_log.DefaultTimestampUTC)
+	logger = go_kit_log.<span style="color:#00f">With</span>(logger, <span style="color:#ba2121">&#34;caller&#34;</span>, go_kit_log.DefaultCaller)
+
+	<span style="color:#00f">init_data</span>(ctx, database, logger)
+
+	transports.<span style="color:#00f">Make_http_application</span>(ctx, web_app, database, logger)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Http server start at port: 5000&#34;</span>)
+		err_chan <span style="color:#666">&lt;-</span> web_app.<span style="color:#00f">Run</span>(iris.<span style="color:#00f">Addr</span>(<span style="color:#ba2121">&#34;:5000&#34;</span>))
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> os.Signal, <span style="color:#666">1</span>)
+		signal.<span style="color:#00f">Notify</span>(c, syscall.SIGINT, syscall.SIGTERM)
+		err_chan <span style="color:#666">&lt;-</span> fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;%s&#34;</span>, <span style="color:#666">&lt;-</span>c)
+	}()
+
+	err <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>err_chan
+	log.<span style="color:#00f">Println</span>(err)
+}
+</code></pre></div><h3 id="测试运行">测试运行</h3>
+<ul>
+<li>启动server</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> cmd
+go run server.go
+</code></pre></div><ul>
+<li>postman 调用</li>
+</ul>
+<p><img src="./image-20210704205551697.png" alt="image-20210704205551697"></p>
+<h2 id="定制-grpc-微服务应用">定制 gRPC 微服务应用</h2>
+<blockquote>
+<p>项目结构</p>
+</blockquote>
+<p><img src="./image-20210704211403342.png" alt="image-20210704211403342"></p>
+<blockquote>
+<p>项目结构说明</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>文件夹</th>
+<th>子文件夹</th>
+<th>作用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cmd</td>
+<td></td>
+<td>启动客户端与服务端主程序</td>
+<td>server.go, client.go</td>
+</tr>
+<tr>
+<td>pb</td>
+<td></td>
+<td>定义grpc服务的proto和自动生成的pb.go</td>
+<td>proto需要编写，并通过protoc编译自动生成对应的pb.go</td>
+</tr>
+<tr>
+<td>server</td>
+<td></td>
+<td>服务端实现</td>
+<td>grpc是双向连接，需要分别定义client和server的go-kit封装逻辑</td>
+</tr>
+<tr>
+<td></td>
+<td>app</td>
+<td>定义服务端应用接口</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>transports</td>
+<td>实现grpc传输层处理</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Endpoints</td>
+<td>实现grpc服务端口封装</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Services</td>
+<td>实现单一服务</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Helpers</td>
+<td>实现组合服务</td>
+<td></td>
+</tr>
+<tr>
+<td>client</td>
+<td></td>
+<td>客户端实现</td>
+<td>grpc是双向连接，需要分别定义client和server的go-kit封装逻辑</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pb">pb</h3>
+<blockquote>
+<p>0）定义 grpc服务</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-protobuf" data-lang="protobuf">syntax <span style="color:#666">=</span> <span style="color:#ba2121">&#34;proto3&#34;</span>;<span style="">
+</span><span style="">
+</span><span style=""></span><span style="color:#008000;font-weight:bold">option</span> go_package<span style="color:#666">=</span><span style="color:#ba2121">&#34;/pb&#34;</span>;<span style="">
+</span><span style="">
+</span><span style=""></span><span style="color:#008000;font-weight:bold">service</span> StringService {<span style="">
+</span><span style=""></span>    <span style="color:#008000;font-weight:bold">rpc</span> Concat(JsonRequest) <span style="color:#008000;font-weight:bold">returns</span> (JsonResponse) {}<span style="">
+</span><span style=""></span>    <span style="color:#008000;font-weight:bold">rpc</span> Diff(JsonRequest) <span style="color:#008000;font-weight:bold">returns</span> (JsonResponse) {}<span style="">
+</span><span style=""></span>}<span style="">
+</span><span style="">
+</span><span style=""></span><span style="color:#008000;font-weight:bold">message</span> <span style="color:#00f;font-weight:bold">JsonRequest</span> {<span style="">
+</span><span style=""></span>    <span style="color:#b00040">bytes</span> Params <span style="color:#666">=</span> <span style="color:#666">1</span>;<span style="">
+</span><span style=""></span>}<span style="">
+</span><span style="">
+</span><span style=""></span><span style="color:#008000;font-weight:bold">message</span> <span style="color:#00f;font-weight:bold">JsonResponse</span> {<span style="">
+</span><span style=""></span>    <span style="color:#b00040">bytes</span> Result <span style="color:#666">=</span> <span style="color:#666">1</span>;<span style="">
+</span><span style=""></span>}<span style="">
+</span></code></pre></div><blockquote>
+<p>生成go 文件</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo go get github.com/golang/protobuf/protoc-gen-go@v1.3.2
+<span style="color:#008000">cd</span> pb
+<span style="color:#008000">cd</span> ../
+protoc -I pb --go_out<span style="color:#666">=</span><span style="color:#19177c">plugins</span><span style="color:#666">=</span>grpc:. pb/string.proto
+
+<span style="color:#408080;font-style:italic">## 输出 string.pb.go</span>
+</code></pre></div><h3 id="serverapplication">server/application</h3>
+<blockquote>
+<p>1.1）定义应用接口（Application）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_grpc_application <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Make_route</span>(<span style="color:#b00040">string</span>, endpoint.Endpoint)
+
+	<span style="color:#00f">Get_db</span>() <span style="color:#666">*</span>mongo.Database
+	<span style="color:#00f">Get_router</span>() <span style="color:#666">*</span>Router
+	<span style="color:#00f">Get_logger</span>() <span style="color:#666">*</span>log.Logger
+
+	<span style="color:#408080;font-style:italic">// gRPC payload 转码
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#00f">Decode_request</span>(ctx context.Context, r <span style="color:#008000;font-weight:bold">interface</span>{}) (request <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>)
+	<span style="color:#00f">Encode_response</span>(ctx context.Context, w <span style="color:#008000;font-weight:bold">interface</span>{}) (response <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>)
+}
+</code></pre></div><blockquote>
+<p>1.2）定义应用路由（Router），模拟iris.application的router</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Router <span style="color:#008000;font-weight:bold">struct</span> {
+	Table <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]grpc.Handler
+}
+</code></pre></div><blockquote>
+<p>1.3）定义Payload数据结构，对于gRPC来说，我们将rpc方法的参数进行标准化，将其与http的payload保持一致，采用json封装</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Grpc_payload_request <span style="color:#008000;font-weight:bold">struct</span> {
+	Method <span style="color:#b00040">string</span>   <span style="color:#ba2121">`json:&#34;method&#34;`</span> <span style="color:#408080;font-style:italic">// 全部小写
+</span><span style="color:#408080;font-style:italic"></span>	Params iris.Map <span style="color:#ba2121">`json:&#34;params&#34;`</span>
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Grpc_payload_response <span style="color:#008000;font-weight:bold">struct</span> {
+	Result results.Result <span style="color:#ba2121">`json:&#34;result&#34;`</span>
+}
+</code></pre></div><h3 id="servertransport">server/transport</h3>
+<blockquote>
+<p>2.1）定义实现application 接口的transport层对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Transport_for_grpc_application <span style="color:#008000;font-weight:bold">struct</span> {
+	db             <span style="color:#666">*</span>mongo.Database
+	logger         log.Logger
+	router         <span style="color:#666">*</span>app.Router
+	server_options []grpc.ServerOption
+}
+</code></pre></div><blockquote>
+<p>2.2）实现application 入口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Make_grpc_application</span>(db <span style="color:#666">*</span>mongo.Database, logger log.Logger) <span style="color:#666">*</span>Transport_for_grpc_application {
+	router <span style="color:#666">:=</span> app.Router{
+		Table: <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]grpc.Handler, <span style="color:#666">0</span>),
+	}
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>Transport_for_grpc_application{
+		db:     db,
+		logger: logger,
+		router: <span style="color:#666">&amp;</span>router,
+	}
+}
+</code></pre></div><blockquote>
+<p>2.3）定义路由控制器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> String_service_router <span style="color:#008000;font-weight:bold">struct</span> {
+	transport_server app.I_grpc_application
+	concat           grpc.Handler
+	diff             grpc.Handler
+}
+</code></pre></div><blockquote>
+<p>2.4）创建路由器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_string_service_router</span>(tps app.I_grpc_application) <span style="color:#666">*</span>String_service_router {
+	router <span style="color:#666">:=</span> String_service_router{transport_server: tps}
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>router
+}
+</code></pre></div><blockquote>
+<p>2.5）初始化路由器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>String_service_router) <span style="color:#00f">Init_router</span>() {
+
+	router_table <span style="color:#666">:=</span> s.transport_server.<span style="color:#00f">Get_router</span>().Table
+
+	<span style="color:#008000;font-weight:bold">for</span> method, handler <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> router_table {
+		<span style="color:#008000;font-weight:bold">switch</span> method {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;concat&#34;</span>:
+			s.concat = handler
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;diff&#34;</span>:
+			s.diff = handler
+		}
+	}
+}
+</code></pre></div><h3 id="serverendpoint">server/endpoint</h3>
+<blockquote>
+<p>3.1）定义 endpoint 的控制器 controller</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> String_controller <span style="color:#008000;font-weight:bold">struct</span> {
+	transport_server app.I_grpc_application
+	endpoints        <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint
+
+	handler_string services.I_string_service
+}
+</code></pre></div><blockquote>
+<p>3.2）定义 controller 构造方法</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_string_controller</span>(tps app.I_grpc_application) {
+	ctl <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>String_controller{transport_server: tps}
+
+	ctl.handler_string = services.<span style="color:#00f">New_default_string_service</span>(tps.<span style="color:#00f">Get_db</span>())
+
+	ctl.endpoints = <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint, <span style="color:#666">0</span>)
+	ctl.<span style="color:#00f">register_endpoint_router</span>()
+}
+</code></pre></div><blockquote>
+<p>3.3）添加 endpoint 路由</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>String_controller) <span style="color:#00f">register_endpoint_router</span>() {
+	ctl.<span style="color:#00f">register_endpoint</span>(<span style="color:#ba2121">&#34;concat&#34;</span>, ctl.<span style="color:#00f">concat</span>())
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>String_controller) <span style="color:#00f">register_endpoint</span>(name <span style="color:#b00040">string</span>, endpoint endpoint.Endpoint) {
+	tps <span style="color:#666">:=</span> ctl.transport_server
+	ctl.endpoints[name] = endpoint
+	tps.<span style="color:#00f">Make_route</span>(name, ctl.endpoints[name])
+}
+</code></pre></div><blockquote>
+<p>3.4）定义 endpoint</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>String_controller) <span style="color:#00f">concat</span>() endpoint.Endpoint {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(ctx context.Context, request <span style="color:#008000;font-weight:bold">interface</span>{}) (response <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>) {
+
+		data <span style="color:#666">:=</span> results.<span style="color:#00f">API</span>()
+
+		rq <span style="color:#666">:=</span> request.(<span style="color:#666">*</span>app.Grpc_payload_request)
+
+		<span style="color:#408080;font-style:italic">//pp.Println(&#34;string_controller.concat&#34;, rq)
+</span><span style="color:#408080;font-style:italic"></span>
+		err = rq.<span style="color:#00f">Check_request</span>(<span style="color:#ba2121">&#34;concat&#34;</span>, <span style="color:#ba2121">&#34;a&#34;</span>, <span style="color:#ba2121">&#34;b&#34;</span>)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			rs <span style="color:#666">:=</span> results.<span style="color:#00f">Error</span>(data, err.<span style="color:#00f">Error</span>())
+			<span style="color:#008000;font-weight:bold">return</span> app.Grpc_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+
+		a <span style="color:#666">:=</span> rq.Params[<span style="color:#ba2121">&#34;a&#34;</span>].(<span style="color:#b00040">string</span>)
+		b <span style="color:#666">:=</span> rq.Params[<span style="color:#ba2121">&#34;b&#34;</span>].(<span style="color:#b00040">string</span>)
+
+		rs <span style="color:#666">:=</span> ctl.handler_string.<span style="color:#00f">Concat</span>(ctx, a, b)
+		<span style="color:#008000;font-weight:bold">return</span> app.Grpc_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+</code></pre></div><blockquote>
+<p>3.5）创建并初始化 controller</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Init_json_controllers</span>(tps app.I_grpc_application) {
+	<span style="color:#00f">New_string_controller</span>(tps)
+}
+</code></pre></div><h3 id="serverservice">server/service</h3>
+<blockquote>
+<p>服务也分为两种类型</p>
+</blockquote>
+<blockquote>
+<p>4.1）定义服务接口和对象 service</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_string_service <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Concat</span>(ctx context.Context, a, b <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result
+	<span style="color:#00f">Diff</span>(ctx context.Context, a, b <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result
+}
+
+<span style="color:#008000;font-weight:bold">type</span> String_service <span style="color:#008000;font-weight:bold">struct</span> {
+	db         <span style="color:#666">*</span>mongo.Database
+	collection <span style="color:#666">*</span>mongo.Collection
+}
+</code></pre></div><blockquote>
+<p>4.2）定义 service 的构造方法</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_default_string_service</span>(db <span style="color:#666">*</span>mongo.Database) <span style="color:#666">*</span>String_service {
+	service <span style="color:#666">:=</span> String_service{}
+	service.db = db
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>service
+}
+</code></pre></div><blockquote>
+<p>4.3）实现 service 接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>String_service) <span style="color:#00f">Concat</span>(ctx context.Context, a, b <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result {
+
+	<span style="color:#408080;font-style:italic">//pp.Println(&#34;string_service.concat&#34;, a, b)
+</span><span style="color:#408080;font-style:italic"></span>
+	data <span style="color:#666">:=</span> results.<span style="color:#00f">API</span>()
+
+	data[<span style="color:#ba2121">&#34;ret&#34;</span>] = a <span style="color:#666">+</span> b
+
+	<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Ok</span>(data)
+}
+</code></pre></div><h3 id="cmdserver-1">cmd/server</h3>
+<blockquote>
+<p>5）实现服务的启动</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	err_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">error</span>)
+
+	config.<span style="color:#00f">Init_config</span>()
+	db.<span style="color:#00f">Init_mongo_db</span>()
+
+	database <span style="color:#666">:=</span> db.<span style="color:#00f">Get_mongo_db</span>()
+	logger <span style="color:#666">:=</span> go_kit_log.<span style="color:#00f">NewLogfmtLogger</span>(os.Stderr)
+
+	logger = go_kit_log.<span style="color:#00f">With</span>(logger, <span style="color:#ba2121">&#34;ts&#34;</span>, go_kit_log.DefaultTimestampUTC)
+	logger = go_kit_log.<span style="color:#00f">With</span>(logger, <span style="color:#ba2121">&#34;caller&#34;</span>, go_kit_log.DefaultCaller)
+
+	tps <span style="color:#666">:=</span> transports.<span style="color:#00f">Make_grpc_application</span>(database, logger)
+	endpoints.<span style="color:#00f">Init_json_controllers</span>(tps)
+	router <span style="color:#666">:=</span> transports.<span style="color:#00f">New_string_service_router</span>(tps)
+	router.<span style="color:#00f">Init_router</span>()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;gRPC server start at port: 5001&#34;</span>)
+		ls, _ <span style="color:#666">:=</span> net.<span style="color:#00f">Listen</span>(<span style="color:#ba2121">&#34;tcp&#34;</span>, <span style="color:#ba2121">&#34;:5001&#34;</span>)
+		gRPCServer <span style="color:#666">:=</span> grpc.<span style="color:#00f">NewServer</span>()
+		pb.<span style="color:#00f">RegisterStringServiceServer</span>(gRPCServer, router)
+		err_chan <span style="color:#666">&lt;-</span> gRPCServer.<span style="color:#00f">Serve</span>(ls)
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> os.Signal, <span style="color:#666">1</span>)
+		signal.<span style="color:#00f">Notify</span>(c, syscall.SIGINT, syscall.SIGTERM)
+		err_chan <span style="color:#666">&lt;-</span> fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;%s&#34;</span>, <span style="color:#666">&lt;-</span>c)
+	}()
+
+	err <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>err_chan
+	log.<span style="color:#00f">Println</span>(err)
+}
+</code></pre></div><h3 id="clienttransport">client/transport</h3>
+<blockquote>
+<p>1.1）定义客户端接口（Client）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_grpc_client <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Make_endpoint</span>(method <span style="color:#b00040">string</span>) endpoint.Endpoint
+
+	<span style="color:#408080;font-style:italic">// gRPC payload 转码
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#00f">Encode_request</span>(ctx context.Context, w <span style="color:#008000;font-weight:bold">interface</span>{}) (request <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>)
+	<span style="color:#00f">Decode_response</span>(ctx context.Context, r <span style="color:#008000;font-weight:bold">interface</span>{}) (response <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>)
+}
+</code></pre></div><blockquote>
+<p>1.2）实现客户端接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Transport_for_grpc_client <span style="color:#008000;font-weight:bold">struct</span> {
+	service_name <span style="color:#b00040">string</span>
+	conn         <span style="color:#666">*</span>grpc.ClientConn
+}
+</code></pre></div><blockquote>
+<p>1.3）实现客户端入口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Make_grpc_client</span>(service_name <span style="color:#b00040">string</span>, conn <span style="color:#666">*</span>grpc.ClientConn) <span style="color:#666">*</span>Transport_for_grpc_client {
+
+	tps <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Transport_for_grpc_client{
+		conn:         conn,
+		service_name: service_name,
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> tps
+}
+</code></pre></div><h3 id="clientendpoint">client/endpoint</h3>
+<blockquote>
+<p>2.1）定义 endpoint 控制器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_string_service_client_endpoints <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Concat</span>(ctx context.Context, a, b <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result
+}
+
+<span style="color:#008000;font-weight:bold">type</span> String_service_client_endpoints <span style="color:#008000;font-weight:bold">struct</span> {
+	transport_client I_grpc_client
+	endpoints        <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint
+}
+</code></pre></div><blockquote>
+<p>2.2）定义 endpoint 控制器构造方法</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_string_service_client_endpoints</span>(tps I_grpc_client) I_string_service_client_endpoints {
+
+	endpoints <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint, <span style="color:#666">0</span>)
+
+	clt <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>String_service_client_endpoints{
+		transport_client: tps,
+		endpoints:        endpoints,
+	}
+
+	clt.<span style="color:#00f">register_endpoint</span>(<span style="color:#ba2121">&#34;Concat&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">return</span> clt
+}
+</code></pre></div><blockquote>
+<p>2.3）添加需要访问的endpoint</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>String_service_client_endpoints) <span style="color:#00f">register_endpoint</span>(method <span style="color:#b00040">string</span>) {
+	tps <span style="color:#666">:=</span> c.transport_client
+	edp <span style="color:#666">:=</span> tps.<span style="color:#00f">Make_endpoint</span>(method)
+	c.endpoints[method] = edp
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>String_service_client_endpoints) <span style="color:#00f">do_endpoint</span>(ctx context.Context, method <span style="color:#b00040">string</span>, params iris.Map) <span style="color:#666">*</span>json_response {
+
+	method_name <span style="color:#666">:=</span> strings.<span style="color:#00f">ToLower</span>(method)
+
+	request <span style="color:#666">:=</span> json_request{
+		Method: method_name,
+		Params: params,
+	}
+
+	edp <span style="color:#666">:=</span> c.endpoints[method]
+
+	rs, _ <span style="color:#666">:=</span> <span style="color:#00f">edp</span>(ctx, <span style="color:#666">&amp;</span>request)
+
+	<span style="color:#008000;font-weight:bold">return</span> rs.(<span style="color:#666">*</span>json_response)
+}
+</code></pre></div><blockquote>
+<p>2.4）定义需要访问的 endpoint</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>String_service_client_endpoints) <span style="color:#00f">Concat</span>(ctx context.Context, a, b <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result {
+
+	data <span style="color:#666">:=</span> results.<span style="color:#00f">API</span>()
+
+	params <span style="color:#666">:=</span> iris.Map{
+		<span style="color:#ba2121">&#34;a&#34;</span>: a,
+		<span style="color:#ba2121">&#34;b&#34;</span>: b,
+	}
+
+	rs <span style="color:#666">:=</span> c.<span style="color:#00f">do_endpoint</span>(ctx, <span style="color:#ba2121">&#34;Concat&#34;</span>, params)
+
+	<span style="color:#008000;font-weight:bold">if</span> rs.Success <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">false</span> {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Error</span>(data)
+	}
+
+	ret <span style="color:#666">:=</span> rs.Response.Data[<span style="color:#ba2121">&#34;ret&#34;</span>].(<span style="color:#b00040">string</span>)
+
+	data[<span style="color:#ba2121">&#34;ret&#34;</span>] = ret
+	<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Ok</span>(data)
+}
+</code></pre></div><h3 id="cmdclient">cmd/client</h3>
+<blockquote>
+<p>3）实现客户端的启动</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	ctx <span style="color:#666">:=</span> context.<span style="color:#00f">Background</span>()
+
+	conn, err <span style="color:#666">:=</span> grpc.<span style="color:#00f">Dial</span>(<span style="color:#ba2121">&#34;:5001&#34;</span>, grpc.<span style="color:#00f">WithInsecure</span>())
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;gRPC dial err:&#34;</span>, err)
+	}
+	<span style="color:#008000;font-weight:bold">defer</span> conn.<span style="color:#00f">Close</span>()
+
+	tps <span style="color:#666">:=</span> client.<span style="color:#00f">Make_grpc_client</span>(<span style="color:#ba2121">&#34;StringService&#34;</span>, conn)
+	rpc <span style="color:#666">:=</span> client.<span style="color:#00f">New_string_service_client_endpoints</span>(tps)
+
+	rs <span style="color:#666">:=</span> rpc.<span style="color:#00f">Concat</span>(ctx, <span style="color:#ba2121">&#34;AAAA&#34;</span>, <span style="color:#ba2121">&#34;BBBB&#34;</span>)
+
+	<span style="color:#008000;font-weight:bold">if</span> rs.Success <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">true</span> {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;ret: &#34;</span>, rs.Data[<span style="color:#ba2121">&#34;ret&#34;</span>])
+	}
+
+}
+</code></pre></div><h3 id="测试">测试</h3>
+<blockquote>
+<p>启动服务端</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> cmd
+go run server.go
+
+<span style="color:#408080;font-style:italic"># 输出如下内容</span>
+2021/07/04 22:05:55 path: mongodb://192.168.31.10:27017
+2021/07/04 22:05:55 Mongodb connection is ok.
+2021/07/04 22:05:55 gRPC server start at port: <span style="color:#666">5001</span>
+</code></pre></div><blockquote>
+<p>启动客户端</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> cmd
+go run client.go
+
+<span style="color:#408080;font-style:italic"># 输出如下内容</span>
+ret:  AAAABBBB
+</code></pre></div><h2 id="http微服务支持服务注册">HTTP微服务支持服务注册</h2>
+<h3 id="基本思路">基本思路</h3>
+<blockquote>
+<ul>
+<li>每个微服务都需要支持向“服务注册中心”进行服务注册的能力</li>
+<li>采用go-kit提供的consul包进行实现，作为所有微服务应用的公共模块</li>
+<li>本节以“定制http微服务应用”为基础，为其添加服务注册功能</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> common
+mkdir discovery
+<span style="color:#008000">cd</span> discovery
+<span style="color:#008000">echo</span> <span style="color:#ba2121">&#34;&#34;</span> &gt;&gt; client.go
+<span style="color:#008000">echo</span> <span style="color:#ba2121">&#34;&#34;</span> &gt;&gt; service.go
+<span style="color:#008000">echo</span> <span style="color:#ba2121">&#34;&#34;</span> &gt;&gt; endpoint.go
+<span style="color:#008000">echo</span> <span style="color:#ba2121">&#34;&#34;</span> &gt;&gt; transport.go
+</code></pre></div><h3 id="client">client</h3>
+<blockquote>
+<p>参考《Go Kit 官方示例学习及其 API Gateway 实现》中的“服务注册与发现”一节进行实现</p>
+</blockquote>
+<blockquote>
+<p>定义 discovery_client 接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_discovery_client <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Register</span>(service_name, instance_id, health_check_url <span style="color:#b00040">string</span>, host <span style="color:#b00040">string</span>, port <span style="color:#b00040">string</span>, meta <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>go_kit_log.Logger) <span style="color:#b00040">bool</span>
+	<span style="color:#00f">Deregister</span>(instance_id <span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>go_kit_log.Logger) <span style="color:#b00040">bool</span>
+	<span style="color:#00f">Discover_services</span>(service_name <span style="color:#b00040">string</span>, logger <span style="color:#666">*</span>go_kit_log.Logger) []<span style="color:#008000;font-weight:bold">interface</span>{}
+}
+</code></pre></div><h3 id="transport-1">transport</h3>
+<blockquote>
+<p>定义服务注册应用接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_http_discovery <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Make_route</span>(route_name <span style="color:#b00040">string</span>, endpoint endpoint.Endpoint, decode_request_func go_kit_http.DecodeRequestFunc)
+
+	<span style="color:#00f">Get_discovery_client</span>() I_discovery_client
+	<span style="color:#00f">Get_router</span>() <span style="color:#666">*</span>iris.Application
+	<span style="color:#00f">Get_logger</span>() <span style="color:#666">*</span>log.Logger
+
+	<span style="color:#00f">Encode_response</span>(ctx context.Context, w http.ResponseWriter, response <span style="color:#008000;font-weight:bold">interface</span>{}) <span style="color:#b00040">error</span>
+	<span style="color:#00f">Encode_error</span>(ctx context.Context, err <span style="color:#b00040">error</span>, w http.ResponseWriter)
+}
+</code></pre></div><blockquote>
+<p>定义服务注册应用对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Transport_for_http_discovery <span style="color:#008000;font-weight:bold">struct</span> {
+	discovery_client I_discovery_client
+	logger           log.Logger
+	router           <span style="color:#666">*</span>iris.Application
+	server_options   []go_kit_http.ServerOption
+}
+</code></pre></div><blockquote>
+<p>创建服务注册对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Make_http_discovery</span>(router <span style="color:#666">*</span>iris.Application, discovery_client I_discovery_client, logger log.Logger) {
+	tps <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Transport_for_http_discovery{router: router, discovery_client: discovery_client, logger: logger}
+
+	server_options <span style="color:#666">:=</span> []go_kit_http.ServerOption{
+		go_kit_http.<span style="color:#00f">ServerErrorHandler</span>(transport.<span style="color:#00f">NewLogErrorHandler</span>(logger)),
+		go_kit_http.<span style="color:#00f">ServerErrorEncoder</span>(tps.Encode_error),
+	}
+
+	tps.server_options = server_options
+
+	<span style="color:#00f">New_http_discovery_controller</span>(tps)
+}
+</code></pre></div><blockquote>
+<p>说明</p>
+<ul>
+<li>服务注册对象会与consul等第三方注册中心交互，不能采用统一的&quot;json&quot;数据接口，需要定制参数解析方法（decode_request）</li>
+<li>服务注册对象向第三方注册中心提供的回调接口，不能采用统一的POST方法，需要定制路由注册方法 （make_route）</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> (t <span style="color:#666">*</span>Transport_for_http_discovery) <span style="color:#00f">Make_route</span>(route_name <span style="color:#b00040">string</span>, endpoint endpoint.Endpoint, decode_request_func go_kit_http.DecodeRequestFunc) {
+
+	t.router.<span style="color:#00f">Get</span>(<span style="color:#ba2121">&#34;/&#34;</span><span style="color:#666">+</span>route_name, iris.<span style="color:#00f">FromStd</span>(
+		go_kit_http.<span style="color:#00f">NewServer</span>(
+			endpoint,
+			decode_request_func,
+			t.Encode_response,
+			t.server_options<span style="color:#666">...</span>,
+		)))
+}
+</code></pre></div><h3 id="endpoint-1">endpoint</h3>
+<blockquote>
+<p>定义服务注册端点（endpoint）</p>
+<p>针对consul，主要支持两个端点（discovery，health_check）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Http_discovery_controller <span style="color:#008000;font-weight:bold">struct</span> {
+	transport_server I_http_discovery
+	discovery_client I_discovery_client
+
+	Discovery_endpoint    endpoint.Endpoint
+	Health_check_endpoint endpoint.Endpoint
+
+	handler_discovery I_http_discovery_service
+}
+</code></pre></div><blockquote>
+<p>创建服务注册控制器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_http_discovery_controller</span>(tps I_http_discovery) {
+	ctl <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Http_discovery_controller{
+		transport_server: tps, 
+		discovery_client: tps.<span style="color:#00f">Get_discovery_client</span>()}
+
+	ctl.handler_discovery = <span style="color:#00f">New_discovery_service</span>(tps)
+	ctl.Discovery_endpoint = ctl.<span style="color:#00f">Make_discovery_endpoint</span>()
+	ctl.Health_check_endpoint = ctl.<span style="color:#00f">Make_health_check_endpoint</span>()
+
+	ctl.<span style="color:#00f">register_endpoint_router</span>()
+}
+</code></pre></div><blockquote>
+<p>注册路由</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>Http_discovery_controller) <span style="color:#00f">register_endpoint_router</span>() {
+	tps <span style="color:#666">:=</span> ctl.transport_server
+
+	tps.<span style="color:#00f">Make_route</span>(<span style="color:#ba2121">&#34;discovery&#34;</span>, ctl.Discovery_endpoint, decode_discovery_request)
+	tps.<span style="color:#00f">Make_route</span>(<span style="color:#ba2121">&#34;health&#34;</span>, ctl.Health_check_endpoint, decode_health_check_request)
+}
+</code></pre></div><blockquote>
+<p>说明：需要分别针对（discovery，health_check）进行 endpoint 封装</p>
+</blockquote>
+<h3 id="service-1">service</h3>
+<blockquote>
+<p>定义服务注册接口对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_http_discovery_service <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Health_check</span>() <span style="color:#b00040">bool</span>
+	<span style="color:#00f">Discovery_service</span>(ctx context.Context, service_name <span style="color:#b00040">string</span>) ([]<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#b00040">error</span>)
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Http_discovery_service <span style="color:#008000;font-weight:bold">struct</span> {
+	transport_server I_http_discovery
+	discovery_client I_discovery_client
+}
+</code></pre></div><blockquote>
+<p>创建服务注册接口对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_discovery_service</span>(tps I_http_discovery) I_http_discovery_service {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>Http_discovery_service{
+		transport_server: tps,
+		discovery_client: tps.<span style="color:#00f">Get_discovery_client</span>(),
+	}
+}
+</code></pre></div><blockquote>
+<p>实现回调接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>Http_discovery_service) <span style="color:#00f">Discovery_service</span>(_ context.Context, service_name <span style="color:#b00040">string</span>) ([]<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#b00040">error</span>) {
+
+	instances <span style="color:#666">:=</span> s.discovery_client.<span style="color:#00f">Discover_services</span>(service_name, s.transport_server.<span style="color:#00f">Get_logger</span>())
+
+	<span style="color:#008000;font-weight:bold">if</span> instances <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">nil</span> <span style="color:#666">||</span> <span style="color:#008000">len</span>(instances) <span style="color:#666">==</span> <span style="color:#666">0</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, Err_service_instance_does_not_exist
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> instances, <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>Http_discovery_service) <span style="color:#00f">Health_check</span>() <span style="color:#b00040">bool</span> {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">true</span>
+}
+</code></pre></div><h3 id="测试-1">测试</h3>
+<blockquote>
+<p>启动服务</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> cmd
+go run server.go
+
+<span style="color:#408080;font-style:italic"># 输出如下：</span>
+021/07/17 11:42:53 path: mongodb://192.168.31.10:27017
+2021/07/17 11:42:53 Mongodb connection is ok.
+2021/07/17 11:42:53 Http server start at  192.168.31.156:5000
+2021/07/17 11:42:53 Register service success!
+Now listening on: http://192.168.31.156:5000
+</code></pre></div><blockquote>
+<p>查看注册中心</p>
+</blockquote>
+<p><img src="image-20210717114553415.png" alt="image-20210717114553415"></p>
+<p><img src="image-20210717114631739.png" alt="image-20210717114631739"></p>
+<p><img src="image-20210717114852501.png" alt="image-20210717114852501"></p>
+<h2 id="定制微服务http网关">定制微服务HTTP网关</h2>
+<h3 id="微服务网关">微服务网关</h3>
+<blockquote>
+<ul>
+<li>网关位于接入层和服务层之间，封装了系统内部架构，对每个客户端提供定制的API，用来保护、增强和控制对微服务的访问。</li>
+<li>API网关的最基本功能是对请求的路由转发，根据客户端HTTP请求，动态查询注册中心的服务实例，通过反向代理实现对后台服务的调用。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>常见 API 网关</p>
+</blockquote>
+<p><img src="image-20210717155621620.png" alt="image-20210717155621620"></p>
+<h3 id="定制网关的方法">定制网关的方法</h3>
+<blockquote>
+<p>基于 gokit实现网关有三种方法</p>
+<ul>
+<li>面向endpoint的独立网关(proxy模式)
+<ul>
+<li>可以对每个API提供细粒度的代理</li>
+<li>仅仅支持http</li>
+<li>不支持httputil.reverseproxy</li>
+</ul>
+</li>
+<li>面向service的独立网关(reverseproxy模式)
+<ul>
+<li>可以service为单位进行代理</li>
+<li>可同时支持http和websocket</li>
+<li>仅仅支持httputil.reverseproxy</li>
+</ul>
+</li>
+<li>双网关（gateway模式）
+<ul>
+<li>针对http和websocket分别提供独立的入口地址</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><img src="image-20210719182942010.png" alt="image-20210719182942010"></p>
+<h3 id="proxy-网关">Proxy 网关</h3>
+<blockquote>
+<p>定义服务发现管理器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Service_instance_manager <span style="color:#008000;font-weight:bold">struct</span> {
+	client       consul.Client
+	instance_map <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#666">*</span>consul.Instancer
+}
+</code></pre></div><blockquote>
+<p>创建服务发现管理器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_service_instance_manager</span>() <span style="color:#666">*</span>Service_instance_manager {
+
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+	consul_config <span style="color:#666">:=</span> api.<span style="color:#00f">DefaultConfig</span>()
+	consul_config.Address = cfg.Consul.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Consul.Port
+
+	consul_client, err <span style="color:#666">:=</span> api.<span style="color:#00f">NewClient</span>(consul_config)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+	}
+	client <span style="color:#666">:=</span> consul.<span style="color:#00f">NewClient</span>(consul_client)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>Service_instance_manager{
+		client:       client,
+		instance_map: <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#666">*</span>consul.Instancer, <span style="color:#666">0</span>),
+	}
+}
+</code></pre></div><blockquote>
+<p>实现服务发现接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>Service_instance_manager) <span style="color:#00f">Register_instance</span>(service_name <span style="color:#b00040">string</span>) <span style="color:#666">*</span>consul.Instancer {
+	instance, ok <span style="color:#666">:=</span> s.instance_map[service_name]
+	<span style="color:#008000;font-weight:bold">if</span> ok {
+		<span style="color:#008000;font-weight:bold">return</span> instance
+	}
+
+	instance = consul.<span style="color:#00f">NewInstancer</span>(
+		s.client, tools.<span style="color:#00f">Get_gokit_logger</span>(), service_name, []<span style="color:#b00040">string</span>{}, <span style="color:#008000;font-weight:bold">true</span>)
+	s.instance_map[service_name] = instance
+
+	<span style="color:#008000;font-weight:bold">return</span> instance
+}
+</code></pre></div><blockquote>
+<p>定义API端口管理器（一个gateway仅需要实现一个即可）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Service_endpoint_manager <span style="color:#008000;font-weight:bold">struct</span> {
+	instance_manager <span style="color:#666">*</span>Service_instance_manager
+
+  endpoint_map <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#666">*</span>endpoint_handler <span style="color:#408080;font-style:italic">// service@endpoint : handler
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">type</span> endpoint_handler <span style="color:#008000;font-weight:bold">struct</span> {
+	transport_type <span style="color:#b00040">string</span>
+	service_name   <span style="color:#b00040">string</span>
+	path           <span style="color:#b00040">string</span>
+	method         <span style="color:#b00040">string</span>
+
+	endpoint endpoint.Endpoint
+	handler  <span style="color:#666">*</span>httptransport.Server
+}
+</code></pre></div><blockquote>
+<p>实现API端口发现和代理接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>Service_endpoint_manager) <span style="color:#00f">Register_http_endpoint</span>(service_name <span style="color:#b00040">string</span>, path <span style="color:#b00040">string</span>, method <span style="color:#b00040">string</span>) <span style="color:#b00040">error</span> {
+
+	an_endpoint_handler <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>endpoint_handler{
+		transport_type: <span style="color:#ba2121">&#34;http&#34;</span>,
+		service_name:   service_name,
+		path:           path,
+		method:         method,
+	}
+
+	the_instancer <span style="color:#666">:=</span> s.instance_manager.<span style="color:#00f">Get_instance</span>(service_name)
+	<span style="color:#008000;font-weight:bold">if</span> the_instancer <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> Err_service_does_not_exist
+	}
+
+	the_endpointer <span style="color:#666">:=</span> sd.<span style="color:#00f">NewEndpointer</span>(
+		the_instancer, <span style="color:#00f">http_service_factory_builder</span>(path, method), tools.<span style="color:#00f">Get_gokit_logger</span>())
+	the_endpoint <span style="color:#666">:=</span> lb.<span style="color:#00f">Retry</span>(<span style="color:#666">3</span>, <span style="color:#666">3</span><span style="color:#666">*</span>time.Second, lb.<span style="color:#00f">NewRoundRobin</span>(the_endpointer))
+
+	an_endpoint_handler.endpoint = the_endpoint
+
+	the_handler <span style="color:#666">:=</span> httptransport.<span style="color:#00f">NewServer</span>(
+		the_endpoint,
+		<span style="color:#00f">decode_http_request_FuncBuilder</span>(Http_gateway_request{}),
+		encode_http_response,
+	)
+
+	an_endpoint_handler.handler = the_handler
+
+	s.endpoint_map[service_name<span style="color:#666">+</span><span style="color:#ba2121">&#34;@&#34;</span><span style="color:#666">+</span>path] = an_endpoint_handler
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><blockquote>
+<p>实现API端口封装</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">http_service_factory_builder</span>(path <span style="color:#b00040">string</span>, method <span style="color:#b00040">string</span>) sd.Factory {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(instance <span style="color:#b00040">string</span>) (e endpoint.Endpoint, closer io.Closer, err <span style="color:#b00040">error</span>) {
+
+		http_prefix <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;http://&#34;</span>
+		<span style="color:#008000;font-weight:bold">if</span> !strings.<span style="color:#00f">HasPrefix</span>(instance, http_prefix) {
+			instance = http_prefix <span style="color:#666">+</span> instance
+		}
+		<span style="color:#408080;font-style:italic">//pp.Println(&#34;instance: &#34;, instance)
+</span><span style="color:#408080;font-style:italic"></span>		tgt, err <span style="color:#666">:=</span> url.<span style="color:#00f">Parse</span>(instance)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, <span style="color:#008000;font-weight:bold">nil</span>, err
+		}
+
+		tgt.Path = path
+
+		<span style="color:#408080;font-style:italic">//pp.Println(&#34;tgt: &#34;, tgt)
+</span><span style="color:#408080;font-style:italic"></span>		<span style="color:#008000;font-weight:bold">return</span> httptransport.<span style="color:#00f">NewClient</span>(
+			method, tgt,
+			encode_http_request, <span style="color:#00f">decode_http_response_FuncBuilder</span>(Http_gateway_response{}),
+		).<span style="color:#00f">Endpoint</span>(), <span style="color:#008000;font-weight:bold">nil</span>, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+
+</code></pre></div><blockquote>
+<p>针对每个微服务定义对应的代理对象（以keystone服务为例）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Proxy_to_keystone <span style="color:#008000;font-weight:bold">struct</span> {
+	router           <span style="color:#666">*</span>iris.Application
+	service_name     <span style="color:#b00040">string</span>
+	transport_type   <span style="color:#b00040">string</span>
+	instance_manager <span style="color:#666">*</span>proxy.Service_instance_manager
+	endpoint_manager <span style="color:#666">*</span>proxy.Service_endpoint_manager
+}
+</code></pre></div><blockquote>
+<p>创建proxy对象，并注册API代理端口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Init_route_to_keystone</span>(router <span style="color:#666">*</span>iris.Application, instance_manager <span style="color:#666">*</span>proxy.Service_instance_manager, endpoint_manager <span style="color:#666">*</span>proxy.Service_endpoint_manager) {
+	an_proxy <span style="color:#666">:=</span> Proxy_to_keystone{
+		service_name:     proxy.SVC_keystone,
+		transport_type:   <span style="color:#ba2121">&#34;http&#34;</span>,
+		router:           router,
+		instance_manager: instance_manager,
+		endpoint_manager: endpoint_manager}
+
+	instance_manager.<span style="color:#00f">Register_instance</span>(proxy.SVC_keystone)
+
+	_ = an_proxy.<span style="color:#00f">Make_route</span>(<span style="color:#ba2121">&#34;POST&#34;</span>, <span style="color:#ba2121">&#34;oauth/token&#34;</span>)
+}
+</code></pre></div><blockquote>
+<p>实现API代理端口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#00f">unc</span> (p <span style="color:#666">*</span>Proxy_to_keystone) <span style="color:#00f">Make_route</span>(method, path <span style="color:#b00040">string</span>) <span style="color:#b00040">error</span> {
+	edp <span style="color:#666">:=</span> p.endpoint_manager
+	err <span style="color:#666">:=</span> edp.<span style="color:#00f">Register_http_endpoint</span>(p.service_name, path, method)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	the_handler, _ <span style="color:#666">:=</span> edp.<span style="color:#00f">Get_handler</span>(p.service_name, path)
+
+	full_path <span style="color:#666">:=</span> p.service_name <span style="color:#666">+</span> <span style="color:#ba2121">&#34;/&#34;</span> <span style="color:#666">+</span> path
+	<span style="color:#008000;font-weight:bold">switch</span> method {
+	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;GET&#34;</span>:
+		p.router.<span style="color:#00f">Get</span>(full_path, iris.<span style="color:#00f">FromStd</span>(the_handler))
+	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;POST&#34;</span>:
+		p.router.<span style="color:#00f">Post</span>(full_path, iris.<span style="color:#00f">FromStd</span>(the_handler))
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><blockquote>
+<p>实现proxy服务器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	config.<span style="color:#00f">Init_config</span>()
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+	web_app <span style="color:#666">:=</span> iris.<span style="color:#00f">New</span>()
+
+	instance_manager <span style="color:#666">:=</span> proxy.<span style="color:#00f">New_service_instance_manager</span>()
+	endpoint_manager <span style="color:#666">:=</span> proxy.<span style="color:#00f">New_service_endpoint_manager</span>(instance_manager)
+
+	microserver.<span style="color:#00f">Init_route_to_keystone</span>(web_app, instance_manager, endpoint_manager)
+
+	tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Gateway server start at &#34;</span>, cfg.Gateway_proxy.Host<span style="color:#666">+</span><span style="color:#ba2121">&#34;:&#34;</span><span style="color:#666">+</span>cfg.Gateway_proxy.Port)
+	tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;err&#34;</span>, web_app.<span style="color:#00f">Run</span>(iris.<span style="color:#00f">Addr</span>(cfg.Gateway_proxy.Host<span style="color:#666">+</span><span style="color:#ba2121">&#34;:&#34;</span><span style="color:#666">+</span>cfg.Gateway_proxy.Port)))
+}
+
+</code></pre></div><blockquote>
+<p>说明：request的解析</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Http_gateway_request <span style="color:#008000;font-weight:bold">struct</span> {
+	Authorization <span style="color:#b00040">string</span>
+	Params        iris.Map <span style="color:#ba2121">`json:&#34;params&#34;`</span>
+}
+<span style="color:#008000;font-weight:bold">type</span> Http_gateway_response <span style="color:#008000;font-weight:bold">struct</span> {
+	Result results.Result <span style="color:#ba2121">`json:&#34;result&#34;`</span>
+}
+</code></pre></div><blockquote>
+<p>1）Proxy 的request解析</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">decode_http_request_FuncBuilder</span>(request Http_gateway_request) httptransport.DecodeRequestFunc {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(_ context.Context, r <span style="color:#666">*</span>http.Request) (_request <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>) {
+
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> json.<span style="color:#00f">NewDecoder</span>(r.Body).<span style="color:#00f">Decode</span>(<span style="color:#666">&amp;</span>request); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+		}
+
+		request.Authorization = r.Header.<span style="color:#00f">Get</span>(<span style="color:#ba2121">&#34;Authorization&#34;</span>)
+
+		<span style="color:#008000;font-weight:bold">return</span> request, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+</code></pre></div><blockquote>
+<ol start="2">
+<li>API 端口的request 封装</li>
+</ol>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">encode_http_request</span>(_ context.Context, r <span style="color:#666">*</span>http.Request, request <span style="color:#008000;font-weight:bold">interface</span>{}) <span style="color:#b00040">error</span> {
+
+  <span style="color:#008000;font-weight:bold">var</span> buf bytes.Buffer
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> json.<span style="color:#00f">NewEncoder</span>(<span style="color:#666">&amp;</span>buf).<span style="color:#00f">Encode</span>(request.(Http_gateway_request)); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+	r.Body = ioutil.<span style="color:#00f">NopCloser</span>(<span style="color:#666">&amp;</span>buf)
+	r.Header.<span style="color:#00f">Set</span>(<span style="color:#ba2121">&#34;Authorization&#34;</span>, request.(Http_gateway_request).Authorization)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><h3 id="reverse-网关">Reverse 网关</h3>
+<blockquote>
+<p>定义服务发现管理器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Service_instance_reverse_manager <span style="color:#008000;font-weight:bold">struct</span> {
+	api_client <span style="color:#666">*</span>api.Client
+}
+</code></pre></div><blockquote>
+<p>创建服务发现管理器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_service_instance_reverse_manager</span>() <span style="color:#666">*</span>Service_instance_reverse_manager {
+
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+	consul_config <span style="color:#666">:=</span> api.<span style="color:#00f">DefaultConfig</span>()
+	consul_config.Address = cfg.Consul.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Consul.Port
+
+	api_client, err <span style="color:#666">:=</span> api.<span style="color:#00f">NewClient</span>(consul_config)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>Service_instance_reverse_manager{
+		api_client: api_client,
+	}
+}
+</code></pre></div><blockquote>
+<p>定义服务ReverseProxy管理器（一个gateway仅需要实现一个）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Service_endpoint_reverse_manager <span style="color:#008000;font-weight:bold">struct</span> {
+	instance_manager <span style="color:#666">*</span>Service_instance_reverse_manager
+
+	Reverse_proxy <span style="color:#666">*</span>httputil.ReverseProxy
+}
+</code></pre></div><blockquote>
+<p>实现服务反向代理</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>Service_endpoint_reverse_manager) <span style="color:#00f">Register_http_endpoint_reverse</span>() <span style="color:#b00040">error</span> {
+	director <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(req <span style="color:#666">*</span>http.Request) {
+		req_path <span style="color:#666">:=</span> req.URL.Path
+		<span style="color:#008000;font-weight:bold">if</span> req_path <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> {
+			<span style="color:#008000;font-weight:bold">return</span>
+		}
+
+		path_array <span style="color:#666">:=</span> strings.<span style="color:#00f">Split</span>(req_path, <span style="color:#ba2121">&#34;/&#34;</span>)
+		service_name <span style="color:#666">:=</span> path_array[<span style="color:#666">1</span>]
+		result, _, err <span style="color:#666">:=</span> s.instance_manager.api_client.<span style="color:#00f">Catalog</span>().<span style="color:#00f">Service</span>(service_name, <span style="color:#ba2121">&#34;&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			tools.<span style="color:#00f">Log</span>(err)
+			<span style="color:#008000;font-weight:bold">return</span>
+		}
+
+		<span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">len</span>(result) <span style="color:#666">==</span> <span style="color:#666">0</span> {
+			tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;no such service instance: &#34;</span>, service_name)
+			<span style="color:#008000;font-weight:bold">return</span>
+		}
+
+		dest_path <span style="color:#666">:=</span> strings.<span style="color:#00f">Join</span>(path_array[<span style="color:#666">2</span>:], <span style="color:#ba2121">&#34;/&#34;</span>)
+
+		tgt <span style="color:#666">:=</span> result[rand.<span style="color:#00f">Int</span>()<span style="color:#666">%</span><span style="color:#008000">len</span>(result)]
+
+		req.URL.Scheme = <span style="color:#ba2121">&#34;http&#34;</span>
+		req.URL.Host = fmt.<span style="color:#00f">Sprintf</span>(<span style="color:#ba2121">&#34;%s:%d&#34;</span>, tgt.ServiceAddress, tgt.ServicePort)
+		req.URL.Path = <span style="color:#ba2121">&#34;/&#34;</span> <span style="color:#666">+</span> dest_path
+	}
+
+	the_proxy <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>httputil.ReverseProxy{Director: director}
+
+	s.Reverse_proxy = the_proxy
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+</code></pre></div><blockquote>
+<p>实现reverse_proxy服务器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	config.<span style="color:#00f">Init_config</span>()
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+
+	instance_manager <span style="color:#666">:=</span> reverse.<span style="color:#00f">New_service_instance_reverse_manager</span>()
+	endpoint_manager <span style="color:#666">:=</span> reverse.<span style="color:#00f">New_service_endpoint_reverse_manager</span>(instance_manager)
+	_ = endpoint_manager.<span style="color:#00f">Register_http_endpoint_reverse</span>()
+
+	err_ch <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">error</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> os.Signal)
+		signal.<span style="color:#00f">Notify</span>(c, syscall.SIGINT, syscall.SIGTERM)
+		err_ch <span style="color:#666">&lt;-</span> fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;%s&#34;</span>, <span style="color:#666">&lt;-</span>c)
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Gateway reverse proxy start at: &#34;</span> <span style="color:#666">+</span> cfg.Gateway_proxy_reverse.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Gateway_proxy_reverse.Port)
+		err_ch <span style="color:#666">&lt;-</span> http.<span style="color:#00f">ListenAndServe</span>(cfg.Gateway_proxy_reverse.Host<span style="color:#666">+</span><span style="color:#ba2121">&#34;:&#34;</span><span style="color:#666">+</span>cfg.Gateway_proxy_reverse.Port, endpoint_manager.Reverse_proxy)
+	}()
+
+	tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;exit&#34;</span>, <span style="color:#666">&lt;-</span>err_ch)
+}
+</code></pre></div><h3 id="gateway-网关">Gateway 网关</h3>
+<blockquote>
+<p>实现Proxy网关和Reverse网关的综合，分别提供两个地址：</p>
+<ul>
+<li>Proxy：仅仅支持http</li>
+<li>Reverse：主要支持websocket</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	config.<span style="color:#00f">Init_config</span>()
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+	web_app <span style="color:#666">:=</span> iris.<span style="color:#00f">New</span>()
+
+	reverse_instance_manager <span style="color:#666">:=</span> reverse.<span style="color:#00f">New_service_instance_reverse_manager</span>()
+	reverse_endpoint_manager <span style="color:#666">:=</span> reverse.<span style="color:#00f">New_service_endpoint_reverse_manager</span>(reverse_instance_manager)
+	_ = reverse_endpoint_manager.<span style="color:#00f">Register_http_endpoint_reverse</span>()
+
+	proxy_instance_manager <span style="color:#666">:=</span> proxy.<span style="color:#00f">New_service_instance_manager</span>()
+	proxy_endpoint_manager <span style="color:#666">:=</span> proxy.<span style="color:#00f">New_service_endpoint_manager</span>(proxy_instance_manager)
+	microserver.<span style="color:#00f">Init_route_to_keystone</span>(web_app, proxy_instance_manager, proxy_endpoint_manager)
+	microserver.<span style="color:#00f">Init_route_to_message</span>(web_app, proxy_instance_manager, proxy_endpoint_manager)
+
+	err_ch <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">error</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> os.Signal)
+		signal.<span style="color:#00f">Notify</span>(c, syscall.SIGINT, syscall.SIGTERM)
+		err_ch <span style="color:#666">&lt;-</span> fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;%s&#34;</span>, <span style="color:#666">&lt;-</span>c)
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Gateway http server start at &#34;</span> <span style="color:#666">+</span> cfg.Gateway_proxy.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Gateway_proxy.Port)
+		err_ch <span style="color:#666">&lt;-</span> web_app.<span style="color:#00f">Run</span>(iris.<span style="color:#00f">Addr</span>(cfg.Gateway_proxy.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Gateway_proxy.Port))
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Gateway websocket server start at &#34;</span> <span style="color:#666">+</span> cfg.Gateway_proxy_reverse.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Gateway_proxy_reverse.Port)
+		err_ch <span style="color:#666">&lt;-</span> http.<span style="color:#00f">ListenAndServe</span>(cfg.Gateway_proxy_reverse.Host<span style="color:#666">+</span><span style="color:#ba2121">&#34;:&#34;</span><span style="color:#666">+</span>cfg.Gateway_proxy_reverse.Port, reverse_endpoint_manager.Reverse_proxy)
+	}()
+
+	tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;exit&#34;</span>, <span style="color:#666">&lt;-</span>err_ch)
+}
+</code></pre></div><h2 id="定制-ws-微服务应用">定制 WS 微服务应用</h2>
+<blockquote>
+<p>说明：</p>
+<ul>
+<li>websocket 是一种特殊的 http 通信模式</li>
+<li>Ws 微服务以 http 微服务为基础进行扩展而成</li>
+</ul>
+</blockquote>
+<p><img src="image-20210719184951217.png" alt="image-20210719184951217"></p>
+<h3 id="application-1">application</h3>
+<blockquote>
+<p>定义 ws 应用接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_ws_application <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Make_route</span>(<span style="color:#b00040">string</span>, <span style="color:#666">*</span>io.Server)
+
+	<span style="color:#00f">Get_db</span>() <span style="color:#666">*</span>mongo.Database
+	<span style="color:#00f">Get_router</span>() <span style="color:#666">*</span>iris.Application
+
+	<span style="color:#00f">Get_ws_server</span>() <span style="color:#666">*</span>io.Server
+}
+</code></pre></div><h3 id="transport-2">transport</h3>
+<blockquote>
+<p>定义ws 应用对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Transport_for_ws_application <span style="color:#008000;font-weight:bold">struct</span> {
+	ws_server <span style="color:#666">*</span>io.Server
+	db        <span style="color:#666">*</span>mongo.Database
+	router    <span style="color:#666">*</span>iris.Application
+}
+</code></pre></div><blockquote>
+<p>创建应用对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Make_ws_application</span>(router <span style="color:#666">*</span>iris.Application, db <span style="color:#666">*</span>mongo.Database) <span style="color:#666">*</span>Transport_for_ws_application {
+
+	tps <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Transport_for_ws_application{router: router, db: db}
+
+	<span style="color:#00f">Init_plugin</span>()
+
+	gosf.<span style="color:#00f">Server_ready</span>()
+	tps.ws_server = gosf.<span style="color:#00f">Get_io_server</span>()
+
+	tps.<span style="color:#00f">Make_route</span>(<span style="color:#ba2121">&#34;/connect&#34;</span>, tps.ws_server)
+
+	<span style="color:#008000;font-weight:bold">return</span> tps
+}
+</code></pre></div><blockquote>
+<p>注册ws端口路由</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (t <span style="color:#666">*</span>Transport_for_ws_application) <span style="color:#00f">Make_route</span>(route_name <span style="color:#b00040">string</span>, server <span style="color:#666">*</span>io.Server) {
+	t.router.<span style="color:#00f">Get</span>(route_name, iris.<span style="color:#00f">FromStd</span>(server))
+}
+</code></pre></div><h3 id="cmdserver-2">cmd/server</h3>
+<blockquote>
+<p>实现服务器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	config.<span style="color:#00f">Init_config</span>()
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+	discovery_client, err <span style="color:#666">:=</span> discovery.<span style="color:#00f">New_kit_discovery_client</span>(cfg.Consul.Host, cfg.Consul.Port)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Get consul client failed!&#34;</span>)
+		os.<span style="color:#00f">Exit</span>(<span style="color:#666">-</span><span style="color:#666">1</span>)
+	}
+
+	err_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">error</span>)
+	db.<span style="color:#00f">Init_mongo_db</span>()
+
+	ctx <span style="color:#666">:=</span> context.<span style="color:#00f">Background</span>()
+	database <span style="color:#666">:=</span> db.<span style="color:#00f">Get_mongo_db</span>()
+	web_app <span style="color:#666">:=</span> iris.<span style="color:#00f">New</span>()
+
+	<span style="color:#00f">init_data</span>(ctx, database)
+	discovery.<span style="color:#00f">Make_http_discovery</span>(web_app, discovery_client)
+
+	ws_transport.<span style="color:#00f">Make_ws_application</span>(web_app, database)
+
+	instance_id <span style="color:#666">:=</span> cfg.Message.Name <span style="color:#666">+</span> <span style="color:#ba2121">&#34;-&#34;</span> <span style="color:#666">+</span> tools.<span style="color:#00f">NewUUID</span>()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Http server start at &#34;</span> <span style="color:#666">+</span> cfg.Message.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Message.Port)
+
+		<span style="color:#008000;font-weight:bold">if</span> !discovery_client.<span style="color:#00f">Register</span>(
+			cfg.Message.Name, instance_id, <span style="color:#ba2121">&#34;/health&#34;</span>,
+			cfg.Message.Host, cfg.Message.Port, <span style="color:#008000;font-weight:bold">nil</span>) {
+			tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;service: &#34;</span> <span style="color:#666">+</span> cfg.Message.Name <span style="color:#666">+</span> <span style="color:#ba2121">&#34;failed.&#34;</span>)
+			os.<span style="color:#00f">Exit</span>(<span style="color:#666">-</span><span style="color:#666">1</span>)
+		}
+
+		err_chan <span style="color:#666">&lt;-</span> web_app.<span style="color:#00f">Run</span>(iris.<span style="color:#00f">Addr</span>(cfg.Message.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Message.Port))
+	}()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> os.Signal, <span style="color:#666">1</span>)
+		signal.<span style="color:#00f">Notify</span>(c, syscall.SIGINT, syscall.SIGTERM)
+		err_chan <span style="color:#666">&lt;-</span> fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;%s&#34;</span>, <span style="color:#666">&lt;-</span>c)
+	}()
+
+	err = <span style="color:#666">&lt;-</span>err_chan
+	log.<span style="color:#00f">Println</span>(err)
+}
+</code></pre></div><h3 id="测试-2">测试</h3>
+<blockquote>
+<p>启动服务</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go run server.go                                                                      
+
+<span style="color:#408080;font-style:italic"># 输出如下</span>
+
+<span style="color:#666">[</span>CC-Table<span style="color:#666">]</span> 2021/07/19 18:42:29 path: mongodb://192.168.31.10:27017
+<span style="color:#666">[</span>CC-Table<span style="color:#666">]</span> 2021/07/19 18:42:29 Mongodb connection is ok.
+
+<span style="color:#ba2121">&#34;Http server start at 192.168.31.156:6002&#34;</span>,
+<span style="color:#ba2121">&#34;Register service success!&#34;</span>,
+
+Now listening on: http://192.168.31.156:6002
+Application started. Press CMD+C to shut down.
+</code></pre></div><blockquote>
+<p>启动网关</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go run gateway.go                                                           
+
+<span style="color:#408080;font-style:italic"># 输出如下</span>
+
+<span style="color:#19177c">ts</span><span style="color:#666">=</span>2021-07-19T10:45:02.196656Z <span style="color:#19177c">caller</span><span style="color:#666">=</span>instancer.go:48 <span style="color:#19177c">service</span><span style="color:#666">=</span>keystone <span style="color:#19177c">tags</span><span style="color:#666">=[]</span> <span style="color:#19177c">instances</span><span style="color:#666">=</span><span style="color:#666">0</span>
+<span style="color:#19177c">ts</span><span style="color:#666">=</span>2021-07-19T10:45:02.231953Z <span style="color:#19177c">caller</span><span style="color:#666">=</span>instancer.go:48 <span style="color:#19177c">service</span><span style="color:#666">=</span>message <span style="color:#19177c">tags</span><span style="color:#666">=[]</span> <span style="color:#19177c">instances</span><span style="color:#666">=</span><span style="color:#666">1</span>
+
+<span style="color:#ba2121">&#34;Gateway http server start at 127.0.0.1:5000&#34;</span>,
+<span style="color:#ba2121">&#34;Gateway websocket server start at 127.0.0.1:5001&#34;</span>,
+
+Now listening on: http://127.0.0.1:5000
+Application started. Press CMD+C to shut down.
+</code></pre></div><blockquote>
+<p>测试（WS工具：http://www.easyswoole.com/wstool.html）</p>
+</blockquote>
+<p><img src="image-20210719184746463.png" alt="image-20210719184746463"></p>
+<h2 id="http业务接口开发">HTTP业务接口开发</h2>
+<blockquote>
+<p>以&quot;register_user&quot;为例</p>
+</blockquote>
+<blockquote>
+<p>(1) model</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> User <span style="color:#008000;font-weight:bold">struct</span> {
+	User_uuid <span style="color:#b00040">string</span>    <span style="color:#ba2121">`json:&#34;user_uuid&#34;, bson:&#34;user_uuid&#34;`</span>
+	User_name <span style="color:#b00040">string</span>    <span style="color:#ba2121">`json:&#34;user_name&#34;, bson:&#34;user_name&#34;`</span>
+	Telephone <span style="color:#b00040">string</span>    <span style="color:#ba2121">`json:&#34;telephone&#34;, bson:&#34;telephone&#34;`</span>
+	Password  <span style="color:#b00040">string</span>    <span style="color:#ba2121">`json:&#34;password&#34;, bson:&#34;password&#34;`</span>
+	Actors    []<span style="color:#b00040">string</span>  <span style="color:#ba2121">`json:&#34;actors&#34;, bson:&#34;actors&#34;`</span>
+	Create_at time.Time <span style="color:#ba2121">`json:&#34;create_at&#34;,bson:&#34;create_at&#34;`</span>
+
+	Is_login <span style="color:#b00040">bool</span> <span style="color:#ba2121">`json:&#34;is_login&#34;,bson:&#34;is_login&#34;`</span>
+}
+</code></pre></div><blockquote>
+<p>(2) service</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>User_service) <span style="color:#00f">New_user_with_telephone</span>(ctx context.Context, user_name, telephone <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result {
+	data <span style="color:#666">:=</span> results.<span style="color:#00f">API</span>()
+
+	a_user <span style="color:#666">:=</span> model.User{
+		User_uuid: primitive.<span style="color:#00f">NewObjectID</span>().<span style="color:#00f">Hex</span>(),
+		User_name: user_name,
+		Password:  telephone,
+		Telephone: telephone,
+		Create_at: time.<span style="color:#00f">Now</span>(),
+		Actors:    tools.EmptyArrayString,
+		Is_login:  <span style="color:#008000;font-weight:bold">false</span>,
+	}
+
+	_, err <span style="color:#666">:=</span> s.collection.<span style="color:#00f">InsertOne</span>(ctx, a_user)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Error</span>(data, results.Err_db_failed_to_insert.<span style="color:#00f">Error</span>())
+	}
+
+	current <span style="color:#666">:=</span> s.<span style="color:#00f">get_user</span>(ctx, a_user.User_uuid)
+	data[<span style="color:#ba2121">&#34;user&#34;</span>] = current[<span style="color:#ba2121">&#34;user&#34;</span>]
+
+	<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Ok</span>(data)
+}
+</code></pre></div><blockquote>
+<p>(3) controller</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>User_controller) <span style="color:#00f">Register_user</span>(ctx context.Context, client_uuid <span style="color:#b00040">string</span>, user_name, telephone, password <span style="color:#b00040">string</span>) <span style="color:#666">*</span>results.Result {
+
+	data <span style="color:#666">:=</span> results.<span style="color:#00f">API</span>()
+
+	rs <span style="color:#666">:=</span> ctl.handler_user.<span style="color:#00f">Check_user_by_name_and_telephone</span>(ctx, user_name, telephone)
+	<span style="color:#008000;font-weight:bold">if</span> rs.<span style="color:#00f">Is_success</span>() {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Ok</span>(data)
+	}
+
+	rs = ctl.handler_user.<span style="color:#00f">New_user_with_telephone</span>(ctx, user_name, telephone)
+	<span style="color:#008000;font-weight:bold">if</span> rs.<span style="color:#00f">Is_failure</span>() {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Error</span>(data, rs.Msg)
+	}
+
+	the_user <span style="color:#666">:=</span> rs.Data[<span style="color:#ba2121">&#34;user&#34;</span>].(model.User)
+
+	rs = ctl.handler_user.<span style="color:#00f">Update_user</span>(ctx, the_user.User_uuid, <span style="color:#ba2121">&#34;password&#34;</span>, password)
+	<span style="color:#008000;font-weight:bold">if</span> rs.<span style="color:#00f">Is_failure</span>() {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Error</span>(data, rs.Msg)
+	}
+
+	the_user = rs.Data[<span style="color:#ba2121">&#34;user&#34;</span>].(model.User)
+
+	rs = ctl.handler_oauth.<span style="color:#00f">New_oauth</span>(ctx, the_user.User_uuid, client_uuid)
+	<span style="color:#008000;font-weight:bold">if</span> rs.<span style="color:#00f">Is_failure</span>() {
+		<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Error</span>(data, rs.Msg)
+	}
+
+	data[<span style="color:#ba2121">&#34;user&#34;</span>] = the_user
+
+	<span style="color:#008000;font-weight:bold">return</span> results.<span style="color:#00f">Ok</span>(data)
+}
+</code></pre></div><blockquote>
+<p>(4) endpoints</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (m <span style="color:#666">*</span>User_manager) <span style="color:#00f">register_user</span>() endpoint.Endpoint {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(ctx context.Context, request <span style="color:#008000;font-weight:bold">interface</span>{}) (response <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>) {
+
+		data <span style="color:#666">:=</span> results.<span style="color:#00f">API</span>()
+
+		client_uuid, err <span style="color:#666">:=</span> <span style="color:#00f">check_oauth_authorization</span>(ctx, m.transport_server)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			rs <span style="color:#666">:=</span> results.<span style="color:#00f">Error</span>(data, err.<span style="color:#00f">Error</span>())
+			<span style="color:#008000;font-weight:bold">return</span> app.Http_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+
+		user_name <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;&#34;</span>
+		telephone <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;&#34;</span>
+		password <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;&#34;</span>
+
+		rq <span style="color:#666">:=</span> request.(app.Http_payload_request)
+		<span style="color:#008000;font-weight:bold">if</span> value, ok <span style="color:#666">:=</span> rq.Params[<span style="color:#ba2121">&#34;user_name&#34;</span>]; ok {
+			user_name = value.(<span style="color:#b00040">string</span>)
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			rs <span style="color:#666">:=</span> results.<span style="color:#00f">Error</span>(data, results.Err_lost_parameters_with_request.<span style="color:#00f">Error</span>())
+			<span style="color:#008000;font-weight:bold">return</span> app.Http_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+
+		<span style="color:#008000;font-weight:bold">if</span> value, ok <span style="color:#666">:=</span> rq.Params[<span style="color:#ba2121">&#34;telephone&#34;</span>]; ok {
+			telephone = value.(<span style="color:#b00040">string</span>)
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			rs <span style="color:#666">:=</span> results.<span style="color:#00f">Error</span>(data, results.Err_lost_parameters_with_request.<span style="color:#00f">Error</span>())
+			<span style="color:#008000;font-weight:bold">return</span> app.Http_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+
+		<span style="color:#008000;font-weight:bold">if</span> value, ok <span style="color:#666">:=</span> rq.Params[<span style="color:#ba2121">&#34;password&#34;</span>]; ok {
+			password = value.(<span style="color:#b00040">string</span>)
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			rs <span style="color:#666">:=</span> results.<span style="color:#00f">Error</span>(data, results.Err_lost_parameters_with_request.<span style="color:#00f">Error</span>())
+			<span style="color:#008000;font-weight:bold">return</span> app.Http_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+
+		rs <span style="color:#666">:=</span> m.ctl_user.<span style="color:#00f">Register_user</span>(ctx, client_uuid, user_name, telephone, password)
+		<span style="color:#008000;font-weight:bold">if</span> rs.<span style="color:#00f">Is_failure</span>() {
+			rs = results.<span style="color:#00f">Error</span>(data, rs.Msg)
+			<span style="color:#008000;font-weight:bold">return</span> app.Http_payload_response{Result: <span style="color:#666">*</span>rs}, <span style="color:#008000;font-weight:bold">nil</span>
+		}
+
+		data[<span style="color:#ba2121">&#34;result&#34;</span>] = iris.Map{
+			<span style="color:#ba2121">&#34;user&#34;</span>: rs.Data[<span style="color:#ba2121">&#34;user&#34;</span>],
+		}
+		<span style="color:#008000;font-weight:bold">return</span> app.Http_payload_response{Result: <span style="color:#666">*</span>results.<span style="color:#00f">Ok</span>(data)}, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+}
+</code></pre></div><blockquote>
+<p>(5) api</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">const</span> (
+	EDP_keystone__user__register_user = <span style="color:#ba2121">&#34;/user/register_user&#34;</span>
+)
+</code></pre></div><blockquote>
+<p>(6) manager</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_user_manager</span>(tps app.I_http_application) {
+	m <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>User_manager{transport_server: tps}
+	m.ctl_user = controller.<span style="color:#00f">New_user_controller</span>(tps)
+
+	m.endpoints = <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint, <span style="color:#666">0</span>)
+
+	m.<span style="color:#00f">Register_endpoint</span>(api.EDP_keystone__user__register_user, m.<span style="color:#00f">register_user</span>())
+}
+</code></pre></div><blockquote>
+<p>(7) proxy.microserver（如果是reverse_proxy，则可以省略）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Init_route_to_keystone</span>(router <span style="color:#666">*</span>iris.Application, instance_manager 
+	_ = an_proxy.<span style="color:#00f">Make_route</span>(<span style="color:#ba2121">&#34;POST&#34;</span>, api.EDP_keystone__user__register_user)
+}
+</code></pre></div><blockquote>
+<p>(8) postman 测试</p>
+</blockquote>
+<ul>
+<li>server</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> cmd
+go run server.go
+</code></pre></div><ul>
+<li>proxy</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> cmd
+go run reverse.go
+</code></pre></div><ul>
+<li>api</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl http://localhost:5001/keystone/user/register_user
+
+
+</code></pre></div><ul>
+<li>Request</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#408080;font-style:italic">// set authorization
+</span><span style="color:#408080;font-style:italic"></span>Autorization<span style="color:#666">:</span> Basic NjBmZTliMzM0OGY5NmY1NDNlNGM1NTBkOmNjdGFibGUtd2ViLWNsaWVudC1zZWNyZXQ<span style="color:#666">=</span>
+
+<span style="color:#408080;font-style:italic">// body
+</span><span style="color:#408080;font-style:italic"></span>{
+<span style="color:#ba2121">&#34;params&#34;</span><span style="color:#666">:</span> {
+	    <span style="color:#ba2121">&#34;user_name&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;test_user_1&#34;</span>,
+        <span style="color:#ba2121">&#34;telephone&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;12345678901&#34;</span>,
+        <span style="color:#ba2121">&#34;password&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;12345678901&#34;</span>
+    }
+}
+</code></pre></div><ul>
+<li>Response</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">{
+    <span style="color:#ba2121">&#34;success&#34;</span><span style="color:#666">:</span> <span style="color:#008000;font-weight:bold">true</span>,
+    <span style="color:#ba2121">&#34;code&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;server-api-ok&#34;</span>,
+    <span style="color:#ba2121">&#34;response&#34;</span><span style="color:#666">:</span> {
+        <span style="color:#ba2121">&#34;Data&#34;</span><span style="color:#666">:</span> {
+            <span style="color:#ba2121">&#34;api_expired&#34;</span><span style="color:#666">:</span> <span style="color:#008000;font-weight:bold">false</span>,
+            <span style="color:#ba2121">&#34;api_name&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;cctable/microservices/keystone/server_http/endpoints.(*User_manager).register_user.func1()&#34;</span>,
+            <span style="color:#ba2121">&#34;result&#34;</span><span style="color:#666">:</span> {
+                <span style="color:#ba2121">&#34;user&#34;</span><span style="color:#666">:</span> {
+                    <span style="color:#ba2121">&#34;user_uuid&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;60fd4f2054f463ce2e5fe3e2&#34;</span>,
+                    <span style="color:#ba2121">&#34;user_name&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;test_user_1&#34;</span>,
+                    <span style="color:#ba2121">&#34;telephone&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;12345678901&#34;</span>,
+                    <span style="color:#ba2121">&#34;password&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;12345678901&#34;</span>,
+                    <span style="color:#ba2121">&#34;actors&#34;</span><span style="color:#666">:</span> <span style="color:#008000;font-weight:bold">null</span>,
+                    <span style="color:#ba2121">&#34;create_at&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;2021-07-25T11:46:40.772Z&#34;</span>
+                }
+            }
+        },
+        <span style="color:#ba2121">&#34;Msg&#34;</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;ok&#34;</span>
+    },
+    <span style="color:#ba2121">&#34;error&#34;</span><span style="color:#666">:</span> {}
+}
+</code></pre></div><h2 id="grpc微服务支持服务注册">GRPC微服务支持服务注册</h2>
+<h3 id="基本思路-1">基本思路</h3>
+<blockquote>
+<p>模仿http服务注册开发方法，并借助于google grpc health 协议进行开发</p>
+</blockquote>
+<h3 id="client-1">client</h3>
+<blockquote>
+<p>定义consul访问接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_discovery_grpc_client <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Register</span>(service_name, instance_id <span style="color:#b00040">string</span>, host <span style="color:#b00040">string</span>, port <span style="color:#b00040">string</span>) <span style="color:#b00040">bool</span>
+	<span style="color:#00f">Deregister</span>(instance_id <span style="color:#b00040">string</span>) <span style="color:#b00040">bool</span>
+	<span style="color:#00f">Discover_services</span>(service_name <span style="color:#b00040">string</span>) []<span style="color:#008000;font-weight:bold">interface</span>{}
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Kit_discovery_grpc_client <span style="color:#008000;font-weight:bold">struct</span> {
+	Host          <span style="color:#b00040">string</span>
+	Port          <span style="color:#b00040">string</span>
+	client        <span style="color:#666">*</span>api.Client
+	agent         <span style="color:#666">*</span>api.Agent
+	config        <span style="color:#666">*</span>api.Config
+	mutex         sync.Mutex
+	instances_map sync.Map
+}
+</code></pre></div><blockquote>
+<p>实现consul访问对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_kit_discovery_grpc_client</span>(host <span style="color:#b00040">string</span>, port <span style="color:#b00040">string</span>) (I_discovery_grpc_client, <span style="color:#b00040">error</span>) {
+
+	consul_config <span style="color:#666">:=</span> api.<span style="color:#00f">DefaultConfig</span>()
+	consul_config.Address = host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> port
+	api_client, err <span style="color:#666">:=</span> api.<span style="color:#00f">NewClient</span>(consul_config)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+	}
+
+	agent <span style="color:#666">:=</span> api_client.<span style="color:#00f">Agent</span>()
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>Kit_discovery_grpc_client{
+		Host:   host,
+		Port:   port,
+		config: consul_config,
+		client: api_client,
+		agent:  agent,
+	}, <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><blockquote>
+<p>实现服务发现与注册接口（支持以tag区分同类服务的不同访问端口，例如http, grpc）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>Kit_discovery_grpc_client) <span style="color:#00f">Register</span>(service_name, instance_id, host, port <span style="color:#b00040">string</span>) <span style="color:#b00040">bool</span> {
+
+	int_port, _ <span style="color:#666">:=</span> strconv.<span style="color:#00f">Atoi</span>(port)
+	service_registration <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>api.AgentServiceRegistration{
+		ID:      instance_id,
+		Name:    service_name,
+		Address: host,
+		Port:    int_port,
+		Tags:    []<span style="color:#b00040">string</span>{<span style="color:#ba2121">&#34;grpc&#34;</span>},
+		Check: <span style="color:#666">&amp;</span>api.AgentServiceCheck{
+			DeregisterCriticalServiceAfter: <span style="color:#ba2121">&#34;30s&#34;</span>,
+			GRPC:                           fmt.<span style="color:#00f">Sprintf</span>(<span style="color:#ba2121">&#34;%v:%v/health&#34;</span>, host, port),
+			Interval:                       <span style="color:#ba2121">&#34;15s&#34;</span>,
+		},
+	}
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> c.agent.<span style="color:#00f">ServiceRegister</span>(service_registration); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Register service &#34;</span> <span style="color:#666">+</span> service_name <span style="color:#666">+</span> <span style="color:#ba2121">&#34; error!&#34;</span>)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>
+	}
+	tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Register service &#34;</span> <span style="color:#666">+</span> service_name <span style="color:#666">+</span> <span style="color:#ba2121">&#34; success!&#34;</span>)
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">true</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>Kit_discovery_grpc_client) <span style="color:#00f">Deregister</span>(instance_id <span style="color:#b00040">string</span>) <span style="color:#b00040">bool</span> {
+
+	err <span style="color:#666">:=</span> c.agent.<span style="color:#00f">ServiceDeregister</span>(instance_id)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Deregister service &#34;</span> <span style="color:#666">+</span> instance_id <span style="color:#666">+</span> <span style="color:#ba2121">&#34; failed!&#34;</span>)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>
+	}
+
+	tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Deregister service &#34;</span> <span style="color:#666">+</span> instance_id <span style="color:#666">+</span> <span style="color:#ba2121">&#34; success!&#34;</span>)
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">true</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>Kit_discovery_grpc_client) <span style="color:#00f">Discover_services</span>(service_name <span style="color:#b00040">string</span>) []<span style="color:#008000;font-weight:bold">interface</span>{} {
+
+	instance_list, ok <span style="color:#666">:=</span> c.instances_map.<span style="color:#00f">Load</span>(service_name)
+	<span style="color:#008000;font-weight:bold">if</span> ok {
+		<span style="color:#008000;font-weight:bold">return</span> instance_list.([]<span style="color:#008000;font-weight:bold">interface</span>{})
+	}
+
+	c.mutex.<span style="color:#00f">Lock</span>()
+	<span style="color:#008000;font-weight:bold">defer</span> c.mutex.<span style="color:#00f">Unlock</span>()
+
+	instance_list, ok = c.instances_map.<span style="color:#00f">Load</span>(service_name)
+	<span style="color:#008000;font-weight:bold">if</span> ok {
+		<span style="color:#008000;font-weight:bold">return</span> instance_list.([]<span style="color:#008000;font-weight:bold">interface</span>{})
+	}
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		params <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#008000;font-weight:bold">interface</span>{})
+		params[<span style="color:#ba2121">&#34;type&#34;</span>] = <span style="color:#ba2121">&#34;service&#34;</span>
+		params[<span style="color:#ba2121">&#34;service&#34;</span>] = service_name
+		plan, _ <span style="color:#666">:=</span> watch.<span style="color:#00f">Parse</span>(params)
+		plan.Handler = <span style="color:#008000;font-weight:bold">func</span>(u <span style="color:#b00040">uint64</span>, i <span style="color:#008000;font-weight:bold">interface</span>{}) {
+			<span style="color:#008000;font-weight:bold">if</span> i <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">nil</span> {
+				<span style="color:#008000;font-weight:bold">return</span>
+			}
+
+			v, ok <span style="color:#666">:=</span> i.([]<span style="color:#666">*</span>api.ServiceEntry)
+			<span style="color:#008000;font-weight:bold">if</span> !ok {
+				<span style="color:#008000;font-weight:bold">return</span>
+			}
+
+			<span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">len</span>(v) <span style="color:#666">==</span> <span style="color:#666">0</span> {
+				c.instances_map.<span style="color:#00f">Store</span>(service_name, []<span style="color:#008000;font-weight:bold">interface</span>{}{})
+			}
+
+			<span style="color:#008000;font-weight:bold">var</span> health_services []<span style="color:#008000;font-weight:bold">interface</span>{}
+			<span style="color:#008000;font-weight:bold">for</span> _, service <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> v {
+				<span style="color:#008000;font-weight:bold">if</span> service.Checks.<span style="color:#00f">AggregatedStatus</span>() <span style="color:#666">==</span> api.HealthPassing {
+					health_services = <span style="color:#008000">append</span>(health_services, service.Service)
+				}
+			}
+			c.instances_map.<span style="color:#00f">Store</span>(service_name, health_services)
+		}
+
+		<span style="color:#008000;font-weight:bold">defer</span> plan.<span style="color:#00f">Stop</span>()
+		_ = plan.<span style="color:#00f">Run</span>(c.config.Address)
+	}()
+
+	entries, _, err <span style="color:#666">:=</span> c.client.<span style="color:#00f">Health</span>().<span style="color:#00f">Service</span>(service_name, <span style="color:#ba2121">&#34;grpc&#34;</span>, <span style="color:#008000;font-weight:bold">false</span>, <span style="color:#008000;font-weight:bold">nil</span>)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		c.instances_map.<span style="color:#00f">Store</span>(service_name, []<span style="color:#008000;font-weight:bold">interface</span>{}{})
+		tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;Discover service error!&#34;</span>)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+	}
+
+	instances <span style="color:#666">:=</span> <span style="color:#008000">make</span>([]<span style="color:#008000;font-weight:bold">interface</span>{}, <span style="color:#008000">len</span>(entries))
+	<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i &lt; <span style="color:#008000">len</span>(instances); i<span style="color:#666">++</span> {
+		instances[i] = entries[i].Service
+	}
+
+	c.instances_map.<span style="color:#00f">Store</span>(service_name, instances)
+	<span style="color:#008000;font-weight:bold">return</span> instances
+}
+</code></pre></div><h3 id="service-2">service</h3>
+<blockquote>
+<p>实现 google.grpc.health 协议接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Gprc_discovery_service <span style="color:#008000;font-weight:bold">struct</span> {
+}
+
+<span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic">// 接口方法
+</span><span style="color:#408080;font-style:italic">// --------------------------------------------------------------------
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>Gprc_discovery_service) <span style="color:#00f">Check</span>(ctx context.Context, req <span style="color:#666">*</span>grpc_health_v1.HealthCheckRequest) (<span style="color:#666">*</span>grpc_health_v1.HealthCheckResponse, <span style="color:#b00040">error</span>) {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>grpc_health_v1.HealthCheckResponse{
+		Status: grpc_health_v1.HealthCheckResponse_SERVING,
+	}, <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>Gprc_discovery_service) <span style="color:#00f">Watch</span>(req <span style="color:#666">*</span>grpc_health_v1.HealthCheckRequest, w grpc_health_v1.Health_WatchServer) <span style="color:#b00040">error</span> {
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+</code></pre></div><h3 id="与-grpc-server-绑定">与 grpc server 绑定</h3>
+<blockquote>
+<p>Main()：注意 grpc_health_v1.RegisterHealthServer 的调用</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">	instance_id <span style="color:#666">:=</span> cfg.Keystone.Name <span style="color:#666">+</span> <span style="color:#ba2121">&#34;-grpc-&#34;</span> <span style="color:#666">+</span> cfg.Keystone.ID
+
+	<span style="color:#008000;font-weight:bold">if</span> !discovery_client.<span style="color:#00f">Register</span>(cfg.Keystone.Name, instance_id, cfg.Keystone.Host, cfg.Keystone.Grpc_port) {
+		tools.<span style="color:#00f">Log</span>(<span style="color:#ba2121">&#34;register grpc service: &#34;</span> <span style="color:#666">+</span> cfg.Keystone.Name <span style="color:#666">+</span> <span style="color:#ba2121">&#34; failed.&#34;</span>)
+		os.<span style="color:#00f">Exit</span>(<span style="color:#666">-</span><span style="color:#666">1</span>)
+	}
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		tools.<span style="color:#00f">Log</span>(cfg.Keystone.Name <span style="color:#666">+</span> <span style="color:#ba2121">&#34; grpc server start at &#34;</span> <span style="color:#666">+</span> cfg.Keystone.Host <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> cfg.Keystone.Grpc_port)
+
+		ls, _ <span style="color:#666">:=</span> net.<span style="color:#00f">Listen</span>(<span style="color:#ba2121">&#34;tcp&#34;</span>, cfg.Keystone.Host<span style="color:#666">+</span><span style="color:#ba2121">&#34;:&#34;</span><span style="color:#666">+</span>cfg.Keystone.Grpc_port)
+		gRPCServer <span style="color:#666">:=</span> grpc.<span style="color:#00f">NewServer</span>()
+		proto.<span style="color:#00f">RegisterTokenServiceServer</span>(gRPCServer, router)
+		grpc_health_v1.<span style="color:#00f">RegisterHealthServer</span>(gRPCServer, <span style="color:#666">&amp;</span>discover_grpc.Gprc_discovery_service{})
+		err_chan <span style="color:#666">&lt;-</span> gRPCServer.<span style="color:#00f">Serve</span>(ls)
+	}()
+
+	err = <span style="color:#666">&lt;-</span>err_chan
+	discovery_client.<span style="color:#00f">Deregister</span>(instance_id)
+</code></pre></div><h2 id="grpc-客户端开发">GRPC 客户端开发</h2>
+<blockquote>
+<p>公共部分</p>
+</blockquote>
+<h3 id="transports公共">transports（公共）</h3>
+<blockquote>
+<p>定义 Grpc 客户端应用</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_grpc_client <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Make_endpoint</span>(service_name, method <span style="color:#b00040">string</span>) endpoint.Endpoint
+
+	<span style="color:#408080;font-style:italic">// gRPC payload 转码
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#00f">Encode_request</span>(ctx context.Context, w <span style="color:#008000;font-weight:bold">interface</span>{}) (request <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>)
+	<span style="color:#00f">Decode_response</span>(ctx context.Context, r <span style="color:#008000;font-weight:bold">interface</span>{}) (response <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>)
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Transport_for_grpc_client <span style="color:#008000;font-weight:bold">struct</span> {
+	conn <span style="color:#666">*</span>grpc.ClientConn
+}
+</code></pre></div><blockquote>
+<p>创建 Grpc 客户端</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Make_grpc_client</span>(conn <span style="color:#666">*</span>grpc.ClientConn) <span style="color:#666">*</span>Transport_for_grpc_client {
+
+	tps <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Transport_for_grpc_client{
+		conn: conn,
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> tps
+}
+</code></pre></div><blockquote>
+<p>实现端点注册、请求响应编解码()</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (t <span style="color:#666">*</span>Transport_for_grpc_client) <span style="color:#00f">Make_endpoint</span>(service_name, method <span style="color:#b00040">string</span>) endpoint.Endpoint {
+	client <span style="color:#666">:=</span> go_kit_grpc.<span style="color:#00f">NewClient</span>(
+		t.conn,
+		service_name,
+		method,
+		t.Encode_request,
+		t.Decode_response,
+		pb.JsonResponse{},
+	)
+
+	<span style="color:#008000;font-weight:bold">return</span> client.<span style="color:#00f">Endpoint</span>()
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (t <span style="color:#666">*</span>Transport_for_grpc_client) <span style="color:#00f">Encode_request</span>(ctx context.Context, w <span style="color:#008000;font-weight:bold">interface</span>{}) (request <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>) {
+
+	<span style="color:#408080;font-style:italic">//pp.Println(&#34;encode_request: &#34;, w)
+</span><span style="color:#408080;font-style:italic"></span>
+	rq <span style="color:#666">:=</span> w.(<span style="color:#666">*</span>Json_rpc_request)
+
+	<span style="color:#408080;font-style:italic">//tools.Log(rq)
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">if</span> rq.Method <span style="color:#666">==</span> <span style="color:#ba2121">&#34;&#34;</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, results.Err_invalid_method_with_rpc_request
+	}
+
+	byte_request, _ <span style="color:#666">:=</span> json.<span style="color:#00f">Marshal</span>(rq)
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>pb.JsonRequest{Params: byte_request}, <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (t <span style="color:#666">*</span>Transport_for_grpc_client) <span style="color:#00f">Decode_response</span>(ctx context.Context, r <span style="color:#008000;font-weight:bold">interface</span>{}) (response <span style="color:#008000;font-weight:bold">interface</span>{}, err <span style="color:#b00040">error</span>) {
+
+	<span style="color:#408080;font-style:italic">//pp.Println(&#34;decode_response: &#34;, r)
+</span><span style="color:#408080;font-style:italic"></span>
+	req <span style="color:#666">:=</span> r.(<span style="color:#666">*</span>pb.JsonResponse)
+
+	<span style="color:#408080;font-style:italic">//tools.Log(req)
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">var</span> api_result Json_rpc_response
+	err = json.<span style="color:#00f">Unmarshal</span>(req.Result, <span style="color:#666">&amp;</span>api_result)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+	}
+
+	<span style="color:#408080;font-style:italic">//pp.Println(api_result)
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>api_result, <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><h3 id="pb公共">pb（公共）</h3>
+<blockquote>
+<p>Grpc client/server 采用统一的 request、response结构，需要定义 pb（payload.proto）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">syntax = <span style="color:#ba2121">&#34;proto3&#34;</span>;
+
+option go_package=<span style="color:#ba2121">&#34;/pb&#34;</span>;
+
+message JsonRequest {
+    bytes Params = <span style="color:#666">1</span>;
+}
+
+message JsonResponse {
+    bytes Result = <span style="color:#666">1</span>;
+}
+</code></pre></div><h3 id="endpoints公共">endpoints（公共）</h3>
+<blockquote>
+<p>定义客户端端点管理器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_grpc_endpoint_client_manager <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Register_grpc_endpoint</span>(service_name, api_name, method <span style="color:#b00040">string</span>)
+	<span style="color:#00f">Call_grpc_endpoint</span>(ctx context.Context, service_name, method <span style="color:#b00040">string</span>, params iris.Map) <span style="color:#666">*</span>Json_rpc_response
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Grpc_endpoint_client_manager <span style="color:#008000;font-weight:bold">struct</span> {
+	transport_client I_grpc_client
+	endpoints        <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint
+}
+</code></pre></div><blockquote>
+<p>实现客户端端点管理器对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Make_grpc_endpoint_client_manager</span>(tps I_grpc_client) <span style="color:#666">*</span>Grpc_endpoint_client_manager {
+
+	endpoints <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]endpoint.Endpoint, <span style="color:#666">0</span>)
+
+	m <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Grpc_endpoint_client_manager{
+		transport_client: tps,
+		endpoints:        endpoints,
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> m
+}
+</code></pre></div><blockquote>
+<p>实现 grpc客户端的端点注册和rpc方法调用器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>Grpc_endpoint_client_manager) <span style="color:#00f">Register_grpc_endpoint</span>(service_name, api_name, method <span style="color:#b00040">string</span>) {
+	tps <span style="color:#666">:=</span> c.transport_client
+	edp <span style="color:#666">:=</span> tps.<span style="color:#00f">Make_endpoint</span>(service_name, method)
+	c.endpoints[service_name<span style="color:#666">+</span><span style="color:#ba2121">&#34;:&#34;</span><span style="color:#666">+</span>api_name] = edp
+	<span style="color:#408080;font-style:italic">//log.Printf(&#34;edp: %#v\n&#34;, edp)
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>Grpc_endpoint_client_manager) <span style="color:#00f">Call_grpc_endpoint</span>(ctx context.Context, service_name, api_name <span style="color:#b00040">string</span>, params iris.Map) <span style="color:#666">*</span>Json_rpc_response {
+
+	api_name = strings.<span style="color:#00f">ToLower</span>(api_name)
+
+	<span style="color:#408080;font-style:italic">//tools.Log(service_name, api_name)
+</span><span style="color:#408080;font-style:italic"></span>
+	request <span style="color:#666">:=</span> Json_rpc_request{
+		Method: api_name,
+		Params: params,
+	}
+
+	edp <span style="color:#666">:=</span> c.endpoints[service_name<span style="color:#666">+</span><span style="color:#ba2121">&#34;:&#34;</span><span style="color:#666">+</span>api_name]
+
+	<span style="color:#408080;font-style:italic">//tools.Log(edp)
+</span><span style="color:#408080;font-style:italic"></span>
+	rs, _ <span style="color:#666">:=</span> <span style="color:#00f">edp</span>(ctx, <span style="color:#666">&amp;</span>request)
+
+	<span style="color:#008000;font-weight:bold">return</span> rs.(<span style="color:#666">*</span>Json_rpc_response)
+}
+</code></pre></div><blockquote>
+<p>注意：以上公共部分</p>
+</blockquote>
+<h3 id="访问某个grpc服务">访问某个grpc服务</h3>
+<blockquote>
+<p>举例：一个device微服务，接收到http请求后，需要验证token有效性，因此，会以grpc客户端身份，调用keystone微服务的grpc接口（例如check_access_token）</p>
+<ul>
+<li>这时，需要在device微服务内部，定义kestone的grpc客户端</li>
+<li>首先要求 keystone支持grpc访问</li>
+</ul>
+</blockquote>
+<h3 id="proto独立">proto（独立）</h3>
+<blockquote>
+<p>Keystone 的 grpc 接口定义（token.proto）</p>
+<ul>
+<li>注意，其中引用了公共的 grpc_payload.proto，以便于使用其中定义的统一的 request/response结构</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">syntax = <span style="color:#ba2121">&#34;proto3&#34;</span>;
+
+option go_package=<span style="color:#ba2121">&#34;/proto&#34;</span>;
+
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#ba2121">&#34;cctable/common/libs/micro/pb/grpc_payload.proto&#34;</span>;
+
+service TokenService {
+    rpc <span style="color:#00f">CheckAccessToken</span>(JsonRequest) <span style="color:#00f">returns</span> (JsonResponse) {}
+}
+
+</code></pre></div><blockquote>
+<p>对于这个proto文件，生成相应的 go文件，需要注意以下问题：</p>
+<ul>
+<li>proto文件中的import路径，从项目文件夹开始（即项目go.mod中定义的module名称)</li>
+<li>执行protoc 时，需要从项目文件夹的上级目录开始执行</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#008000">cd</span> cctable
+<span style="color:#008000">cd</span> ..
+protoc --go_out<span style="color:#666">=</span><span style="color:#19177c">plugins</span><span style="color:#666">=</span>grpc:. cctable/microservices/server/keystone/server_grpc/proto/token.proto
+
+mv ./proto/token.pb.go cctable/microservices/server/keystone/server_grpc/proto/
+</code></pre></div><h3 id="endpoints独立">endpoints（独立）</h3>
+<blockquote>
+<p>定义proto对应的grpc客户端接口服务</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> I_token_service_grpc_client <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Check_access_token</span>(ctx context.Context, token_value <span style="color:#b00040">string</span>) <span style="color:#666">*</span>grpc_client.Json_rpc_response
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Token_service_grpc_client <span style="color:#008000;font-weight:bold">struct</span> {
+	manager      grpc_client.I_grpc_endpoint_client_manager
+	service_name <span style="color:#b00040">string</span>
+}
+</code></pre></div><blockquote>
+<p>创建grpc服务客户端</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_token_service_grpc_client</span>(manager grpc_client.I_grpc_endpoint_client_manager) I_token_service_grpc_client {
+	s <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Token_service_grpc_client{
+		manager:      manager,
+		service_name: api.SVC_grpc_keystone_pb_token_service,
+	}
+
+	manager.<span style="color:#00f">Register_grpc_endpoint</span>(
+		s.service_name,
+		api.EDP_grpc_keystone_token_check_access_token, <span style="color:#ba2121">&#34;CheckAccessToken&#34;</span>)
+	<span style="color:#008000;font-weight:bold">return</span> s
+}
+</code></pre></div><blockquote>
+<p>实现 proto 服务对应的客户端接口</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (c <span style="color:#666">*</span>Token_service_grpc_client) <span style="color:#00f">Check_access_token</span>(ctx context.Context, token_value <span style="color:#b00040">string</span>) <span style="color:#666">*</span>grpc_client.Json_rpc_response {
+
+	params <span style="color:#666">:=</span> iris.Map{
+		<span style="color:#ba2121">&#34;token_value&#34;</span>: token_value,
+	}
+
+	<span style="color:#408080;font-style:italic">//tools.Log(params)
+</span><span style="color:#408080;font-style:italic"></span>
+	rs <span style="color:#666">:=</span> c.manager.<span style="color:#00f">Call_grpc_endpoint</span>(
+		ctx,
+		c.service_name,
+		api.EDP_grpc_keystone_token_check_access_token, params)
+
+	<span style="color:#408080;font-style:italic">//tools.Log(rs)
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">return</span> rs
+}
+</code></pre></div><h3 id="controller">controller</h3>
+<blockquote>
+<p>定义内部调用grpc服务时的客户端封装控制器</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Keystone_token_grpc_client_controller <span style="color:#008000;font-weight:bold">struct</span> {
+	grpc_conn   <span style="color:#666">*</span>grpc.ClientConn
+	grpc_client <span style="color:#666">*</span>grpc_client.Transport_for_grpc_client
+}
+</code></pre></div><blockquote>
+<p>创建内部调用grpc服务时，每次都要进行 grpc 拨号连接</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">New_keystone_token_grpc_client_controller</span>() (controller <span style="color:#666">*</span>Keystone_token_grpc_client_controller, err <span style="color:#b00040">error</span>) {
+	config.<span style="color:#00f">Init_config</span>()
+	cfg <span style="color:#666">:=</span> config.<span style="color:#00f">Get_config</span>()
+
+	conn, err <span style="color:#666">:=</span> grpc.<span style="color:#00f">Dial</span>(cfg.Keystone.Host<span style="color:#666">+</span><span style="color:#ba2121">&#34;:&#34;</span><span style="color:#666">+</span>cfg.Keystone.Grpc_port, grpc.<span style="color:#00f">WithInsecure</span>())
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		tools.<span style="color:#00f">Log</span>(err)
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, results.Err_connect_to_rpc_server_is_failure
+	}
+
+	tps <span style="color:#666">:=</span> grpc_client.<span style="color:#00f">Make_grpc_client</span>(conn)
+
+	c <span style="color:#666">:=</span> <span style="color:#666">&amp;</span>Keystone_token_grpc_client_controller{
+		grpc_conn:   conn,
+		grpc_client: tps,
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> c, <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><blockquote>
+<p>实现内部调用grpc服务时的proto服务接口客户端调用封装器（每次都是一次远程连接访问）</p>
+<ul>
+<li>注意，每次通过该封装器调用完成一个rpc服务之后，要及时关闭</li>
+<li>每个rpc服务返回的是与http.response类似的结构，注意与内部result的区别</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>Keystone_token_grpc_client_controller) <span style="color:#00f">Check_access_token</span>(ctx context.Context, token_value <span style="color:#b00040">string</span>) <span style="color:#666">*</span>grpc_client.Json_rpc_response {
+	manager <span style="color:#666">:=</span> grpc_client.<span style="color:#00f">Make_grpc_endpoint_client_manager</span>(ctl.grpc_client)
+	handler <span style="color:#666">:=</span> endpoints.<span style="color:#00f">New_token_service_grpc_client</span>(manager)
+	rs <span style="color:#666">:=</span> handler.<span style="color:#00f">Check_access_token</span>(ctx, token_value)
+	<span style="color:#008000;font-weight:bold">return</span> rs
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (ctl <span style="color:#666">*</span>Keystone_token_grpc_client_controller) <span style="color:#00f">Close_client</span>() {
+	_ = ctl.grpc_conn.<span style="color:#00f">Close</span>()
+}
+</code></pre></div><h3 id="内部调用示例">内部调用示例</h3>
+<blockquote>
+<p>以内部调用一个rpc服务为例（例如，进行远程token验证）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Check_token_authorization</span>(ctx context.Context, app app.I_http_application) <span style="color:#b00040">error</span> {
+	rpc, err <span style="color:#666">:=</span> controller.<span style="color:#00f">New_keystone_token_grpc_client_controller</span>()
+	<span style="color:#008000;font-weight:bold">defer</span> rpc.<span style="color:#00f">Close_client</span>()
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	<span style="color:#008000;font-weight:bold">if</span> err, ok <span style="color:#666">:=</span> ctx.<span style="color:#00f">Value</span>(transports.Authorization_error_key).(<span style="color:#b00040">error</span>); ok {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	auth <span style="color:#666">:=</span> ctx.<span style="color:#00f">Value</span>(transports.Authorization_value_key).(iris.Map)
+	the_auth_type <span style="color:#666">:=</span> auth[<span style="color:#ba2121">&#34;auth_type&#34;</span>].(<span style="color:#b00040">string</span>)
+
+	<span style="color:#008000;font-weight:bold">if</span> the_auth_type <span style="color:#666">==</span> <span style="color:#ba2121">&#34;token&#34;</span> {
+		token_value <span style="color:#666">:=</span> auth[<span style="color:#ba2121">&#34;token_value&#34;</span>].(<span style="color:#b00040">string</span>)
+		<span style="color:#408080;font-style:italic">//tools.Log(&#34;rpc.check_token: &#34;, token_value)
+</span><span style="color:#408080;font-style:italic"></span>
+		rs <span style="color:#666">:=</span> rpc.<span style="color:#00f">Check_access_token</span>(ctx, token_value)
+
+		tools.<span style="color:#00f">Log</span>(rs)
+
+		<span style="color:#008000;font-weight:bold">if</span> rs.Success <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">false</span> {
+			<span style="color:#008000;font-weight:bold">return</span> results.Err_token_does_not_exist
+		}
+
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> results.Err_invalid_authorization_header
+}
+</code></pre></div><h3 id="测试-3">测试</h3>
+<blockquote>
+<p>示例：</p>
+<ul>
+<li>
+<p>启动 keystone.http_server 和 keystone.grpc_server</p>
+</li>
+<li>
+<p>启动 device.http_server</p>
+</li>
+<li>
+<p>启动 gateway.reverse</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>consul 终端</p>
+</blockquote>
+<p><img src="image-20210728223735207.png" alt="image-20210728223735207"></p>
+<blockquote>
+<p>postman</p>
+</blockquote>
+<p><img src="image-20210728223954461.png" alt="image-20210728223954461"></p>
+<blockquote>
+<p>Device.http_server</p>
+</blockquote>
+<p><img src="image-20210728223930924.png" alt="image-20210728223930924"></p>
+<h2 id="参考框架">参考框架</h2>
+<blockquote>
+<p>示例代码：https://github.com/taodanfang/gokit-microservices-template</p>
+</blockquote>
+<blockquote>
+<p>整体应用框架组织结构：</p>
+</blockquote>
+<blockquote>
+<p>公共部分（框架）</p>
+</blockquote>
+<p><img src="image-20210728230049506.png" alt="image-20210728230049506"></p>
+<blockquote>
+<p>业务部分（每个业务一个微服务）</p>
+</blockquote>
+<p><img src="image-20210728230248917.png" alt="image-20210728230248917"></p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li>《Go 语言高并发与微服务实战》</li>
+<li><a href="https://zhuanlan.zhihu.com/p/340557494">https://zhuanlan.zhihu.com/p/340557494</a></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/d2admin-study-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/d2admin-study-1/image-3_huc44826355b0dcfe6db5d93780f7f411f_3185427_400x0_resize_q75_lanczos.jpeg 1x, https://taodanfang.github.io/posts/d2admin-study-1/image-3_huc44826355b0dcfe6db5d93780f7f411f_3185427_800x0_resize_q75_lanczos.jpeg 2x, https://taodanfang.github.io/posts/d2admin-study-1/image-3_huc44826355b0dcfe6db5d93780f7f411f_3185427_1200x0_resize_q75_lanczos.jpeg 3x">
+      <img src="https://taodanfang.github.io/posts/d2admin-study-1/image-3_huc44826355b0dcfe6db5d93780f7f411f_3185427_400x0_resize_q75_lanczos.jpeg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">基于D2admin定制化微服务前端应用的开发方法</h2>
+    <p class="card-text">D2Admin 是一个完全 开源免费 的企业中后台产品前端集成方案，使用最新的前端技术栈，小于 60kb 的本地首屏 js 加载，已经做好大部分项目前期准备工作，并且带有大量示例代码，助力管理系统快速开发。本文介绍基于D2admin框架进行微服务前端开发的基本思路和过程。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-07-12 712:00">Jul 12, 2021</time></p>
+      <p>#vue #d2admin </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>distributed computing - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/distributed-computing/</link>
+    <description>Recent content in distributed computing on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 29 Nov 2021 20:01:45 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/distributed-computing/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>协同计算之数学基础（1）- 偏序关系与逻辑时钟</title>
+      <link>https://taodanfang.github.io/posts/math-study-1-1/</link>
+      <pubDate>Mon, 29 Nov 2021 20:01:45 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/math-study-1-1/</guid>
+      <description>&lt;p&gt;在分布式协同计算系统中，认识到事件的发生顺序只是一个偏序关系是非常重要的。我们认为这个认知对于理解所有多进程系统非常有用。 本文介绍某些与协同计算有关的数学基础知识。&lt;/p&gt;</description>
+    </item><item>
+      <title>缓存技术学习与实践：前端与后端</title>
+      <link>https://taodanfang.github.io/posts/go-cache-study-1/</link>
+      <pubDate>Sun, 22 Aug 2021 13:10:51 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-cache-study-1/</guid>
+      <description>&lt;p&gt;Caching has an important role to play in a system design. It is primarily used to speed up information retrieval from a service and reduce the load on a database engine, the primary source of truth for a service. Data that is frequently requested by users are stored in a in-memory key-value store, like &lt;a href=&#34;https://redis.io/&#34;&gt;Redis&lt;/a&gt;, to speed up subsequent look up of the same data.&lt;/p&gt;</description>
+    </item><item>
+      <title>CRDT协议基础知识(2) - Logoot原理</title>
+      <link>https://taodanfang.github.io/posts/crdt-2-1/</link>
+      <pubDate>Thu, 28 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-2-1/</guid>
+      <description>&lt;p&gt;尝试将CRDT应用于基于块(block)的协同文档(xml)编辑场景，提供了一个详细的原型系统实现参考，原型系统基于Logoot项目扩展，提供了block操作。系统的客户端是Fonto，一款支持XML编辑的工具软件。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

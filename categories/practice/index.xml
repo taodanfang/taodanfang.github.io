@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>practice - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/practice/</link>
+    <description>Recent content in practice on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 23 Nov 2021 23:55:41 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/practice/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Golang 并发开发实践（2）- 用户并发注册开发实践</title>
+      <link>https://taodanfang.github.io/posts/golang-channel-study-2-1/</link>
+      <pubDate>Tue, 23 Nov 2021 23:55:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/golang-channel-study-2-1/</guid>
+      <description>&lt;p&gt;In this post, we&amp;rsquo;ll use goroutines, channels and WaitGroups to process a &amp;ldquo;bulk user registration&amp;rdquo; request.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

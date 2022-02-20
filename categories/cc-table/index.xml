@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cc-table - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/cc-table/</link>
+    <description>Recent content in cc-table on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 20 Jan 2022 19:43:15 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/cc-table/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>熙熙表格-开发进展（2022.2.20）</title>
+      <link>https://taodanfang.github.io/posts/cc-table-progress-1/</link>
+      <pubDate>Thu, 20 Jan 2022 19:43:15 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/cc-table-progress-1/</guid>
+      <description>&lt;p&gt;熙熙表格（CC-Table）： 尝试将社交互动、协同文档、业务管理三者相结合， 提供更加自由、灵活、安全的线上办公与业务体验。我们将通过分享功能截图的方式，来记录CC-Table的开发进展。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

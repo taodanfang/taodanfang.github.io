@@ -1,0 +1,48 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/</link>
+    <description>Recent content in Categories on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>deployment</title>
+      <link>https://taodanfang.github.io/categories/deployment/</link>
+      <pubDate>Tue, 24 Aug 2021 11:20:46 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/deployment/</guid>
+      <description></description>
+    </item><item>
+      <title>microservice</title>
+      <link>https://taodanfang.github.io/categories/microservice/</link>
+      <pubDate>Tue, 24 Aug 2021 11:20:46 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/microservice/</guid>
+      <description></description>
+    </item><item>
+      <title>tree</title>
+      <link>https://taodanfang.github.io/categories/tree/</link>
+      <pubDate>Thu, 19 Aug 2021 15:10:10 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/tree/</guid>
+      <description></description>
+    </item><item>
+      <title>drag and drop</title>
+      <link>https://taodanfang.github.io/categories/drag-and-drop/</link>
+      <pubDate>Wed, 18 Aug 2021 12:13:15 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/drag-and-drop/</guid>
+      <description></description>
+    </item><item>
+      <title>mongodb</title>
+      <link>https://taodanfang.github.io/categories/mongodb/</link>
+      <pubDate>Wed, 11 Aug 2021 18:32:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/mongodb/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

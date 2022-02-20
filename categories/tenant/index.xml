@@ -1,0 +1,21 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tenant - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/tenant/</link>
+    <description>Recent content in tenant on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 26 Jan 2022 22:22:41 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/tenant/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>多租户权限管理技术实践</title>
+      <link>https://taodanfang.github.io/posts/casbin-study/</link>
+      <pubDate>Wed, 26 Jan 2022 22:22:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/casbin-study/</guid>
+      <description>&lt;p&gt;Casbin是一个强大的、高效的开源访问控制框架，其权限管理机制支持多种访问控制模型。Restrict is an authorization library that provides a hybrid of RBAC and ABAC models, allowing to define simple role-based policies while using more fine-grained control when needed. 本文总结了基于这两种技术实现角色授权管理的基本过程和相应实践方法。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;media/16432099894319.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tree - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/tree/</link>
+    <description>Recent content in tree on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 19 Aug 2021 15:10:10 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/tree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>字典树数据结构技术原理与开发实践</title>
+      <link>https://taodanfang.github.io/posts/ties-tree-study-1/</link>
+      <pubDate>Thu, 19 Aug 2021 15:10:10 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/ties-tree-study-1/</guid>
+      <description>&lt;p&gt;协作式系统中对于支持”动态文档结构、嵌套式文档结构“等较为复杂的文档类型，需要引入树形数据结构，本文首先总结了”树形“数据结构的基本情况，然后针对”协作式系统“相关需求分析，着重对”字典树“数据结构的技术原理进行讲解，并给出相应的开发实践方法。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

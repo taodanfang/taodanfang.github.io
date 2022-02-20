@@ -1,0 +1,28 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nats - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/nats/</link>
+    <description>Recent content in nats on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 13 Dec 2021 17:55:24 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/nats/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>NATS 开发文档摘录</title>
+      <link>https://taodanfang.github.io/posts/nats-io-2/</link>
+      <pubDate>Mon, 13 Dec 2021 17:55:24 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/nats-io-2/</guid>
+      <description>&lt;p&gt;本文摘录了NATS官方文档中的重要部分。包括：基本的nats使用，支持持久化的jetstream的使用方法。&lt;/p&gt;</description>
+    </item><item>
+      <title>NATs 技术学习及其开发模式</title>
+      <link>https://taodanfang.github.io/posts/nats-study-1/</link>
+      <pubDate>Wed, 04 Aug 2021 18:04:14 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/nats-study-1/</guid>
+      <description>&lt;p&gt;NATs 是一个开源的、轻量级的高性能消息分发系统。NATs 的消息基于主题进行分发，不依赖于网络位置。&lt;/p&gt;
+&lt;p&gt;NATS的协议是一个简单的、基于文本的发布/订阅风格的协议。客户端连接到 gnatsd（NATS服务器），并与 gnatsd 进行通信，通信基于普通的 TCP/IP 套接字，并定义了很小的操作集，换行表示终止。与传统的、使用了二进制消息格式的消息通信系统不同，使用了基于文本的 NATS 协议，使得客户端实现很简单，可以方便地选择多种编程语言或脚本语言来实现。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

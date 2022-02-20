@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Socket.io 技术及其微服务实现框架 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  Socket.io 技术及其微服务实现框架</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >Socket.io 技术及其微服务实现框架</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-01-29">Jan 29, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/j12_huaf18dfd1b363462b9dc9ccc99213b7ca_336777_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/j12_huaf18dfd1b363462b9dc9ccc99213b7ca_336777_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/j12_huaf18dfd1b363462b9dc9ccc99213b7ca_336777_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/j12_huaf18dfd1b363462b9dc9ccc99213b7ca_336777_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#重连机制">重连机制</a>
+      <ul>
+        <li><a href="#服务器端故障检测">服务器端故障检测</a></li>
+        <li><a href="#客户端断开情况">客户端断开情况</a></li>
+      </ul>
+    </li>
+    <li><a href="#双向通信">双向通信</a></li>
+    <li><a href="#golang-socketio-based-miscroservice">Golang Socket.io-based Miscroservice</a></li>
+    <li><a href="#参考文献">参考文献：</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/crdt-2-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">CRDT协议基础知识(2) - Logoot原理</h2>
+    <p class="card-text">尝试将CRDT应用于基于块(block)的协同文档(xml)编辑场景，提供了一个详细的原型系统实现参考，原型系统基于Logoot项目扩展，提供了block操作。系统的客户端是Fonto，一款支持XML编辑的工具软件。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-01-28 128:00">Jan 28, 2021</time></p>
+      <p>#math #distributed computing </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>介绍Socket.io使用方法，高可用性解决思路，以及基于socket.io构建微服务的基本方法。</p>
+<h2 id="概述">概述</h2>
+<p>Socket.IO is a powerful tool for creating real-time applications with bidirectional communication between the server side and the client side. It leverages the power of WebSockets along with several fallbacks, including JSON long polling and JSONP long polling through a single unified API. It can be used to create bidirectional interactions, such as real-time dashboards, chat applications, and multiplayer games.</p>
+<p>Socket.IO is an open source library created by Guillermo Rauch. It is built with <!-- raw HTML omitted -->Engine.IO<!-- raw HTML omitted -->, which is a lower-level abstraction on top of the WebSocket technology. Socket.IO is used to communicate bidirectionally between the server side and the client side in a syntax that looks as if you are just triggering and listening to events. The WebSocket API protocol was standardized in 2011. It is a Transmission Control Protocol (TCP) that only relies on HTTP for its initial handshake. After the handshake is complete, the connection is left open so that the server and the client can pass messages back and forth as needed.</p>
+<p><img src="img-1.jpeg" alt="image-0"></p>
+<h2 id="重连机制">重连机制</h2>
+<h3 id="服务器端故障检测">服务器端故障检测</h3>
+<p>Socket.IO has some really great built-in functionalities to re-establish the connection once it has been dropped. This is accomplished by creating recurring polling requests to the server until a new connection is found or until the number of reconnection attempts we allow are exceeded.</p>
+<p>Most of the magic in this recipe will take place on the client side, so the server is really not as important as long as it is a functional server that hosts Socket.IO.</p>
+<p>All the connection timeout handling will happen on the client side. Socket.IO gives us several socket life cycle events that we can tap into. We can use these events to know when we lose a connection, when we successfully reconnect, and so on.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#008000;font-weight:bold">script</span> <span style="color:#7d9029">src</span><span style="color:#666">=</span><span style="color:#ba2121">&#34;/socket.io/socket.io.js&#34;</span>&gt;&lt;/<span style="color:#008000;font-weight:bold">script</span>&gt;
+
+&lt;<span style="color:#008000;font-weight:bold">script</span>&gt;
+ <span style="color:#008000;font-weight:bold">var</span> socket <span style="color:#666">=</span> io(<span style="color:#ba2121">&#39;http://localhost:5000&#39;</span>, {
+   <span style="color:#ba2121">&#39;reconnection&#39;</span><span style="color:#666">:</span> <span style="color:#008000;font-weight:bold">true</span>,
+   <span style="color:#ba2121">&#39;reconnectionDelay&#39;</span><span style="color:#666">:</span> <span style="color:#666">500</span>,
+   <span style="color:#ba2121">&#39;reconnectionAttempts&#39;</span><span style="color:#666">:</span> <span style="color:#666">5</span>
+ });
+
+socket.on(<span style="color:#ba2121">&#39;reconnect&#39;</span>, <span style="color:#008000;font-weight:bold">function</span> (number) {
+   console.info(<span style="color:#ba2121">&#39;After attempting &#39;</span> <span style="color:#666">+</span> number <span style="color:#666">+</span> <span style="color:#ba2121">&#39; times, we finally reconnected!&#39;</span>);
+   });
+
+socket.on(<span style="color:#ba2121">&#39;reconnect_attempt&#39;</span>, <span style="color:#008000;font-weight:bold">function</span> (number) {
+   console.info(<span style="color:#ba2121">&#39;Reconnect attempt number &#39;</span> <span style="color:#666">+</span> number);
+   });
+
+socket.on(<span style="color:#ba2121">&#39;connect_error&#39;</span>, <span style="color:#008000;font-weight:bold">function</span> () {
+   console.warn(<span style="color:#ba2121">&#39;Error connecting to Socket.IO&#39;</span>);
+   });
+
+socket.on(<span style="color:#ba2121">&#39;reconnect_failed&#39;</span>, <span style="color:#008000;font-weight:bold">function</span> () {
+   console.error(<span style="color:#ba2121">&#39;We failed to reconnect to Socket.IO. We give up.&#39;</span>);
+   });
+
+&lt;/<span style="color:#008000;font-weight:bold">script</span>&gt;
+</code></pre></div><p>By default, the <code>reconnection</code> option is set to true. If we set reconnection to false, Socket.IO will not attempt to reconnect when a connection is dropped. The <code>reconnectionDelay</code> option specifies how many milliseconds are allowed to pass before we ping the server for a reconnection. The pinging will continue to take place until the number of <code>reconnectionAttempts</code> we specified is satisfied or until the connection is re-established. By default, the reconnection attempts are set to <strong>Infinity</strong>.</p>
+<h3 id="客户端断开情况">客户端断开情况</h3>
+<p>A socket can disconnect for any number of reasons:</p>
+<ul>
+<li>The user may navigate away from the web page that the WebSocket connection is on</li>
+<li>The user&rsquo;s Internet may go down</li>
+</ul>
+<p>When these things happen, we can tap into the disconnect event to notify the client side that the socket is no longer available.</p>
+<p>On the client-side, the <code>connected</code> attribute of the Socket object returns the current state of the connection:</p>
+<p>客户端socket连接状态生命周期图如下：</p>
+<p><img src="client_connection_lifecycle.png" alt="image-1"></p>
+<h2 id="双向通信">双向通信</h2>
+<p>The server-side code will act as a <code>hub</code> for incoming messages.</p>
+<p>Sending messages to all the sockets, except for the sender. This can be accomplished using the <code>socket.broadcast.emit()</code> syntax. The socket.broadcast.emit() method sends the message to every socket, except for the socket that the method is called from.</p>
+<p>Namespaces are a great way to make sure that our Socket.IO events are not emitted globally to all the sockets that are connected to the server. We can send messages to a namespace. Only the sockets listening to this namespace will receive the event.</p>
+<p>On the server side of our application, the <code>io.of()</code> method was used to create a namespace. It took a string with the name of the namespace as the first argument. The namespace name was important because we also used it on the client side.</p>
+<p>On the client side, we just needed to add the namespace to the end of our first argument in the <code>io()</code> method. In our example, we instantiated the namespace with the port number as io.of(&lsquo;http://localhost:5000/my-namespace&rsquo;). However, if we were listening on port 80 instead of port 5000, we could actually just pass the namespace name and not worry about providing the port: io.of('/my-namespace').</p>
+<p>Although each socket can only have a single namespace, these sockets can belong to multiple rooms. You can think of rooms as <code>channels</code> that a socket subscribes to in order to receive specific types of messages.</p>
+<p>Socket.IO can emit messages to any arbitrary room name with the <code>io.to(:room_name).emit()</code> method. It should be noted that you can emit to a room name whether or not the room already exists beforehand, so there is no need to perform any checking to make sure that the room is available.</p>
+<p>Each socket has its own room when it is connected. In Socket.IO, every socket that makes a connection is assigned a default room to emit messages. This default room could be used for a wide variety of purposes.</p>
+<h2 id="golang-socketio-based-miscroservice">Golang Socket.io-based Miscroservice</h2>
+<p>Microservice architecture is important in environments where smaller packagable features are a concern. Generally, microservices are called using RPC, but GOSF connects to microservices using Socket.IO.</p>
+<p>When creating a Socket.IO microservice in another framework or language, remember that GOSF generates standard messages using the <a href="http://gosf.io/#message-protocol">GOSF Message Protocol</a>.</p>
+<p>Because microservices are expected to communicate with the same <a href="http://gosf.io/#message-protocol">GOSF Message Protocol</a>, there&rsquo;s no need to worry about any of the traditional microservice protocol buffers. If you prefer strict typing, you can convert <code>Body</code> and <code>Meta</code> maps in the incoming <code>Message</code> using <a href="http://gosf.io/#maptostruct">MapToStruct</a> and in the outgoing message using <a href="http://gosf.io/#structtomap">StructToMap</a>.</p>
+<h2 id="参考文献">参考文献：</h2>
+<blockquote>
+<ul>
+<li><a href="https://socket.io">https://socket.io</a></li>
+<li><a href="http://gosf.io">http://gosf.io</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/crdt-2-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/crdt-2-1/img-1_hu6869e2fbd1c45097e86bb3b7805c872b_70971_400x0_resize_q75_lanczos.jpeg 1x, https://taodanfang.github.io/posts/crdt-2-1/img-1_hu6869e2fbd1c45097e86bb3b7805c872b_70971_800x0_resize_q75_lanczos.jpeg 2x, https://taodanfang.github.io/posts/crdt-2-1/img-1_hu6869e2fbd1c45097e86bb3b7805c872b_70971_1200x0_resize_q75_lanczos.jpeg 3x">
+      <img src="https://taodanfang.github.io/posts/crdt-2-1/img-1_hu6869e2fbd1c45097e86bb3b7805c872b_70971_400x0_resize_q75_lanczos.jpeg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">CRDT协议基础知识(2) - Logoot原理</h2>
+    <p class="card-text">尝试将CRDT应用于基于块(block)的协同文档(xml)编辑场景，提供了一个详细的原型系统实现参考，原型系统基于Logoot项目扩展，提供了block操作。系统的客户端是Fonto，一款支持XML编辑的工具软件。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-01-28 128:00">Jan 28, 2021</time></p>
+      <p>#math #distributed computing </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

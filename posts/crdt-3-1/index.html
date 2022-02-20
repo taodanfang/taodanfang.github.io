@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CRDT协议基础知识(3) - 通信实现框架 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  CRDT协议基础知识(3) - 通信实现框架</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >CRDT协议基础知识(3) - 通信实现框架</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-02-01">Feb 1, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/crdt-3-1/img-1_huf7100e6daff4667ed4fd5e1a47d7a2e2_145738_711x0_resize_q75_lanczos.jpeg 1x, https://taodanfang.github.io/posts/crdt-3-1/img-1_huf7100e6daff4667ed4fd5e1a47d7a2e2_145738_1422x0_resize_q75_lanczos.jpeg 2x, https://taodanfang.github.io/posts/crdt-3-1/img-1_huf7100e6daff4667ed4fd5e1a47d7a2e2_145738_2133x0_resize_q75_lanczos.jpeg 3x">
+            <img src="https://taodanfang.github.io/posts/crdt-3-1/img-1_huf7100e6daff4667ed4fd5e1a47d7a2e2_145738_711x0_resize_q75_lanczos.jpeg" >
+          </picture>
+          
+
+
+          
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">Socket.io 技术及其微服务实现框架</h2>
+    <p class="card-text">介绍Socket.io使用方法，高可用性解决思路，以及基于socket.io构建微服务的基本方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-01-29 129:00">Jan 29, 2021</time></p>
+      <p>#socket.io </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <h2 id="cap-理论">CAP 理论</h2>
+<p>CAP 定理指出对于一个分布式计算系统来说，不可能同时满足以下三点：</p>
+<ul>
+<li>一致性 (Consistency): Every read receives the most recent write or an error</li>
+<li>可用性 (Availability): Every request receives a (non-error) response, without the guarantee that it contains the most recent write</li>
+<li>分区容错性 (Partition tolerance): The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes</li>
+</ul>
+<p>由于网络固有的不可靠性， 分布式系统往往优先考虑实现<code>分区容错性</code>, 然后在<code>一致性</code>和<code>可用性</code>之间进行折中，从而实现CP系统，或者AP系统。
+There are protocols that enable such systems. One of them is <code>Raft</code> which enables a CP system while another is <code>CRDT</code>s which enables an AP system。</p>
+<h2 id="一致性">一致性</h2>
+<p>正确性 (Correctness)</p>
+<ul>
+<li>我们说一个系统是由状态和一些导致状态转移的操作组成的</li>
+<li>系统的正确性：给定一些涉及状态与操作的规则，随着操作的演进，系统将一直遵循这些规则。我们把这样的规则成为一致性模型</li>
+<li>更加正式地说，一致性模型是所有被允许的操作记录的集合。如果任意可能执行的操作都在这个被允许的操作集合内，那么系统就满足一致性模型</li>
+</ul>
+<p>光锥 (Light cones)</p>
+<ul>
+<li>读写不是一个瞬时的过程，而是一个类似 光传播(调用) -&gt; 反射面(执行) -&gt; 反向传播(完成) 的过程</li>
+<li>因此，调用的先后顺序并不等于操作真实执行的先后顺序</li>
+</ul>
+<p>线性一致性 (Linearizability)</p>
+<ul>
+<li>每个操作会在它调用和完成之间的某个时间点原子地生效.</li>
+<li>对于观察者来说，所有的读和写都在一个单调递增的时间线上串行地向前推进</li>
+<li>所有的读总能返回最近写操作的值</li>
+</ul>
+<p>顺序一致性 (Sequential consistency)</p>
+<ul>
+<li>如果我们允许进程在时间维度发生偏移，从而它们的操作可能会在调用之前或是完成之后生效，但仍然保证一个约束 —— 任意进程中的操作必须按照进程中定义的顺序 (即编程的定义的逻辑顺序) 发生。这样我们就得到了一个稍弱的一致性模型：顺序一致性。</li>
+<li>不要求操作按照真实的时间顺序发生 (可能读到过期数据)</li>
+<li>不同进程间的操作执行先后顺序没有强制要求，但必须是原子的</li>
+<li>单个进程内的操作顺序必须和编码时的顺序一致</li>
+</ul>
+<p>因果一致性 (Casual consistency)</p>
+<ul>
+<li>不对一个进程中的每个操作都施加顺序约束。只有因果相关的操作必须按顺序发生。</li>
+</ul>
+<p>串行一致性 (Serializable consistency)</p>
+<ul>
+<li>串行一致性是事务的隔离属性，每个事务可以读写多个对象 (行，文档，记录)。它确保事务的行为，与它们按照某种顺序依次执行的结果相同 (每个事务在下一个事务开始之前运行完成)。这种执行顺序可以与事务实际执行的顺序不同，和调用时间与完成时间无关。</li>
+<li>串行一致性是对多操作，多对象的保证，对总体的操作顺序无要求</li>
+<li>线性一致性是对单操作，单对象的保证，所有操作遵循真实时间序</li>
+</ul>
+<h2 id="raft-分布式系统">RAFT 分布式系统</h2>
+<p>RAFT is a leader-based consensus algorithm. It makes use of a single leader for all its decisions. The leader can change depending on circumstances: network partitions, and so on.</p>
+<ul>
+<li>On each of the server nodes in the network, there is a state machine, a log and a
+consensus module.</li>
+<li>On each of the client nodes of this network, there is a consensus module.</li>
+<li>The state machine can be seen as a composition of state-encoding variables and commands that
+change those variables, thereby changing its state.</li>
+<li>The logs on the server nodes store the commands from the client nodes in this network, in a particular order which the state machine faithfully follows.</li>
+<li>It is the responsibility of the consensus module to keep the logs consistent. In order for the system to appear to be highly reliable, these logs are replicas of the master log on the leader, so the state machines at each server are processing the logs in the exact same way.</li>
+<li>The algorithm used by the consensus module is divided into leader election, log replication and the safety component.</li>
+</ul>
+<p>In a cluster of servers that use RAFT, each server at any point in time is in either of these states: follower, candidate or leader.</p>
+<ul>
+<li>The modes change based on the RPCs sent between these nodes.</li>
+<li>A follower is a state where a node is passive, that is, the node cannot issue requests but acts as a recipient for them.</li>
+<li>A candidate is a transition state where a node in a follower state enters into, on its way to the leader state or a where, a node in a leader state enters into, on its way to the follower state.</li>
+<li>A follower becomes a candidate by issuing a RequestVoteRPC on its way to being elected a leader.</li>
+<li>A candidate becomes a follower if it failed to become a leader.</li>
+<li>A leader is in charge of the cluster and is the only interface to the outside world for the cluster.
+All communication in the cluster is only between the leader and the followers and is initiated only by the leader.</li>
+</ul>
+<p>RAFT does not make any assumption of the state of global synchronization. To this end, the log is partially ordered by a value known as the term which increases monotonically. The term can also be infinitely large. This provides some form of synchronization as each server node stores a version of the term on the node itself. Messages in the RPCs carry the source’s term.</p>
+<h2 id="crdt-分布式系统">CRDT 分布式系统</h2>
+<p>CRDTs are systems that try to achieve consistency without explicit synchronization (synchronization when needed).</p>
+<h2 id="分布式系统通信问题">分布式系统通信问题</h2>
+<p>Current large enterprise software in the cloud are becoming <code>microservices-based</code>. A microservice is a modular approach to building software where different parts of the application are split on business function(services) and communicate over HTTP or RPC. This pipeline might be <code>asynchronous</code> (a message queue) or <code>synchronous</code> (an RPC protocol).</p>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<p>Consensus in Distributed Systems: RAFT vs CRDTs</p>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/j12_huaf18dfd1b363462b9dc9ccc99213b7ca_336777_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/j12_huaf18dfd1b363462b9dc9ccc99213b7ca_336777_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/j12_huaf18dfd1b363462b9dc9ccc99213b7ca_336777_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/socketio-%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%85%B6%E5%BE%AE%E6%9C%8D%E5%8A%A1-1/j12_huaf18dfd1b363462b9dc9ccc99213b7ca_336777_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">Socket.io 技术及其微服务实现框架</h2>
+    <p class="card-text">介绍Socket.io使用方法，高可用性解决思路，以及基于socket.io构建微服务的基本方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-01-29 129:00">Jan 29, 2021</time></p>
+      <p>#socket.io </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

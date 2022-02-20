@@ -1,0 +1,27 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kit - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/kit/</link>
+    <description>Recent content in kit on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 27 Jul 2021 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/kit/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>基于Go-kit 框架定制微服务应用的开发流程</title>
+      <link>https://taodanfang.github.io/posts/go-kit-microservice-1/</link>
+      <pubDate>Tue, 27 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-kit-microservice-1/</guid>
+      <description>&lt;p&gt;本文总结了基于go-kit定制微服务框架的基本方法和开发流程。&lt;/p&gt;</description>
+    </item><item>
+      <title>Go Kit 官方示例学习及其 API Gateway 实现</title>
+      <link>https://taodanfang.github.io/posts/go-kit-example-study-1/</link>
+      <pubDate>Wed, 07 Jul 2021 16:09:28 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-kit-example-study-1/</guid>
+      <description>&lt;p&gt;该文是Go kit 官方示例的学习笔记，并总结了结合stringsvc实现 API Gateway 的方法&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

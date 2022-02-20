@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>基于GOSF的Websocket微服务框架开发方法 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  基于GOSF的Websocket微服务框架开发方法</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >基于GOSF的Websocket微服务框架开发方法</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-08-09">Aug 9, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/gosf-study-1/6_hu3d03a01dcc18bc5be0e67db3d8d209a6_5203290_711x0_resize_lanczos_3.png 1x, https://taodanfang.github.io/posts/gosf-study-1/6_hu3d03a01dcc18bc5be0e67db3d8d209a6_5203290_1422x0_resize_lanczos_3.png 2x, https://taodanfang.github.io/posts/gosf-study-1/6_hu3d03a01dcc18bc5be0e67db3d8d209a6_5203290_2133x0_resize_lanczos_3.png 3x">
+            <img src="https://taodanfang.github.io/posts/gosf-study-1/6_hu3d03a01dcc18bc5be0e67db3d8d209a6_5203290_711x0_resize_lanczos_3.png" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基本特性">基本特性</a></li>
+    <li><a href="#使用方法">使用方法</a></li>
+    <li><a href="#核心对象">核心对象</a>
+      <ul>
+        <li><a href="#app">App</a></li>
+        <li><a href="#clientchannel">Client/Channel</a></li>
+        <li><a href="#request">Request</a></li>
+        <li><a href="#message">Message</a></li>
+        <li><a href="#endpoint">Endpoint</a></li>
+      </ul>
+    </li>
+    <li><a href="#心跳重连机制">心跳重连机制</a></li>
+    <li><a href="#todo">TODO</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/nats-study-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">NATs 技术学习及其开发模式</h2>
+    <p class="card-text">NATs 是一个开源的、轻量级的高性能消息分发系统。NATs 的消息基于主题进行分发，不依赖于网络位置。
+NATS的协议是一个简单的、基于文本的发布/订阅风格的协议。客户端连接到 gnatsd（NATS服务器），并与 gnatsd 进行通信，通信基于普通的 TCP/IP 套接字，并定义了很小的操作集，换行表示终止。与传统的、使用了二进制消息格式的消息通信系统不同，使用了基于文本的 NATS 协议，使得客户端实现很简单，可以方便地选择多种编程语言或脚本语言来实现。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-04 84:00">Aug 4, 2021</time></p>
+      <p>#golang #nats #pubsub </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>Go Socket.IO Framework or GOSF is an easy-to-use framework for developing Socket.IO APIs in Google&rsquo;s Go programming language (GoLang). GOSF 对Websocket进行了封装，实现了一个websocket服务器，并提供了一个Socket.io风格的前端接口，同时也可以基于websocket风格的前端接口进行连接和操作。</p>
+<p>WebSocket 协议本质上是一个基于 TCP 的协议。为了建立一个 WebSocket 连接，客户端浏览器首先要向服务器发起一个 HTTP 请求，这个请求和通常的 HTTP 请求不同，包含了一些附加头信息，其中附加头信息&quot;Upgrade: WebSocket&quot;表明这是一个申请协议升级的 HTTP 请求，服务器端解析这些附加的头信息然后产生应答信息返回给客户端，客户端和服务器端的 WebSocket 连接就建立起来了，双方就可以通过这个连接通道自由的传递信息，并且这个连接会持续存在直到客户端或者服务器端的某一方主动的关闭连接。</p>
+<h2 id="基本特性">基本特性</h2>
+<blockquote>
+<ul>
+<li>Socket.IO v2 Support （支持 Socket.io V2 风格接口）</li>
+<li>Request/Response Acknowledgement-Based Cycle （支持R/R 模式）</li>
+<li>Broadcast/Room Support （支持广播，聊天室）</li>
+<li>Microservices Using Socket.IO（支持Socket.io风格的微服务操作接口）</li>
+<li>Plugable Architecture （支持插件扩展）</li>
+<li>App, Client, and Request Contexts（核心对象）</li>
+<li>Standardized Message Format（消息结构标准化）</li>
+</ul>
+</blockquote>
+<h2 id="使用方法">使用方法</h2>
+<blockquote>
+<p>socket.io 发送消息的方法如下：</p>
+</blockquote>
+<ul>
+<li>socket.send([&hellip;args] [, ack])</li>
+<li>socket.emit(event_name [, &hellip; args] [, ack])</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">socket.emit(<span style="color:#ba2121">&#34;hello&#34;</span>, <span style="color:#ba2121">&#34;world&#34;</span>);
+socket.emit(<span style="color:#ba2121">&#34;with-binary&#34;</span>, <span style="color:#666">1</span>, <span style="color:#ba2121">&#34;2&#34;</span>, { <span style="color:#666">3</span><span style="color:#666">:</span> <span style="color:#ba2121">&#34;4&#34;</span>, <span style="color:#666">5</span><span style="color:#666">:</span> Buffer.from([<span style="color:#666">6</span>, <span style="color:#666">7</span>, <span style="color:#666">8</span>]) });
+socket.emit(<span style="color:#ba2121">&#34;ferret&#34;</span>, <span style="color:#ba2121">&#34;tobi&#34;</span>, (data) =&gt; {
+  console.log(data); <span style="color:#408080;font-style:italic">// data will be &#34;woot&#34;
+</span><span style="color:#408080;font-style:italic"></span>});
+</code></pre></div><blockquote>
+<p>GOSF中，将event_name称为 endpoint</p>
+</blockquote>
+<h2 id="核心对象">核心对象</h2>
+<h3 id="app">App</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// AppSettings holds global settings for the application
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> AppSettings <span style="color:#008000;font-weight:bold">struct</span> {
+	Env           <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#b00040">string</span>
+	Config        <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#008000;font-weight:bold">interface</span>{}
+	Microservices <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#666">*</span>Microservice
+}
+</code></pre></div><h3 id="clientchannel">Client/Channel</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// Client represents a single connected client
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> Client <span style="color:#008000;font-weight:bold">struct</span> {
+	channel <span style="color:#666">*</span>io.Channel
+	Rooms   []<span style="color:#b00040">string</span>
+}
+</code></pre></div><h3 id="request">Request</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// Request represents a single request over an active connection
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> Request <span style="color:#008000;font-weight:bold">struct</span> {
+	Endpoint <span style="color:#b00040">string</span>
+	Message  <span style="color:#666">*</span>Message
+}
+</code></pre></div><h3 id="message">Message</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#408080;font-style:italic">// Message - Standard message type for Socket communications
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> Message <span style="color:#008000;font-weight:bold">struct</span> {
+	<span style="color:#408080;font-style:italic">//ID   int    `json:&#34;id,omitempty&#34;`
+</span><span style="color:#408080;font-style:italic"></span>	ID <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;id,omitempty&#34;`</span>
+
+	GUID <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;guid,omitempty&#34;`</span>
+	UUID <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;uuid,omitempty&#34;`</span>
+
+	Success <span style="color:#b00040">bool</span>   <span style="color:#ba2121">`json:&#34;success&#34;`</span>
+	Text    <span style="color:#b00040">string</span> <span style="color:#ba2121">`json:&#34;text,omitempty&#34;`</span>
+
+	Meta <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#008000;font-weight:bold">interface</span>{} <span style="color:#ba2121">`json:&#34;meta,omitempty&#34;`</span>
+	Body <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#008000;font-weight:bold">interface</span>{} <span style="color:#ba2121">`json:&#34;body,omitempty&#34;`</span>
+}
+</code></pre></div><h3 id="endpoint">Endpoint</h3>
+<blockquote>
+<p>Endpoint 是一个 websocket</p>
+</blockquote>
+<h2 id="心跳重连机制">心跳重连机制</h2>
+<blockquote>
+<p>websocket是前后端交互的长连接，前后端也都可能因为一些情况导致连接失效并且相互之间没有反馈提醒。因此为了保证连接的可持续性和稳定性，websocket心跳重连就应运而生。在使用原生websocket的时候，如果设备网络断开，不会立刻触发websocket的任何事件，前端也就无法得知当前连接是否已经断开。这个时候如果调用websocket.send方法，浏览器才会发现链接断开了，便会立刻或者一定短时间后（不同浏览器或者浏览器版本可能表现不同）触发onclose函数。后端websocket服务也可能出现异常，造成连接断开，这时前端也并没有收到断开通知，因此需要前端定时发送心跳消息ping，后端收到ping类型的消息，立马返回pong消息，告知前端连接正常。如果一定时间没收到pong消息，就说明连接不正常，前端便会执行重连。为了解决以上两个问题，以前端作为主动方，定时发送ping消息，用于检测网络和前后端连接问题。一旦发现异常，前端持续执行重连逻辑，直到重连成功。</p>
+</blockquote>
+<h2 id="todo">TODO</h2>
+<blockquote>
+<p>说明：gosf目前仅作为服务端支持较好，面向web前端的接口，目前仅仅测试了ws风格的接口，socketio风格的接口还未充分测试（其对心跳机制的处理不太理想）</p>
+</blockquote>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="http://gosf.io/#getting-started">http://gosf.io/#getting-started</a></li>
+<li><a href="https://juejin.cn/post/6844903977457287181">https://juejin.cn/post/6844903977457287181</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/nats-study-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/nats-study-1/j9_hu9457979eecaa8d4ccc22c66440e72066_344904_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/nats-study-1/j9_hu9457979eecaa8d4ccc22c66440e72066_344904_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/nats-study-1/j9_hu9457979eecaa8d4ccc22c66440e72066_344904_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/nats-study-1/j9_hu9457979eecaa8d4ccc22c66440e72066_344904_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">NATs 技术学习及其开发模式</h2>
+    <p class="card-text">NATs 是一个开源的、轻量级的高性能消息分发系统。NATs 的消息基于主题进行分发，不依赖于网络位置。
+NATS的协议是一个简单的、基于文本的发布/订阅风格的协议。客户端连接到 gnatsd（NATS服务器），并与 gnatsd 进行通信，通信基于普通的 TCP/IP 套接字，并定义了很小的操作集，换行表示终止。与传统的、使用了二进制消息格式的消息通信系统不同，使用了基于文本的 NATS 协议，使得客户端实现很简单，可以方便地选择多种编程语言或脚本语言来实现。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-08-04 84:00">Aug 4, 2021</time></p>
+      <p>#golang #nats #pubsub </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

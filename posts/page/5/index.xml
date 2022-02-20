@@ -1,0 +1,48 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/posts/</link>
+    <description>Recent content in Posts on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>基于Go语言开发物联网项目(数传网关)相关基础</title>
+      <link>https://taodanfang.github.io/posts/iot-study-1/</link>
+      <pubDate>Mon, 02 Aug 2021 16:59:28 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/iot-study-1/</guid>
+      <description>&lt;p&gt;本文介绍了基于go开发物联网相关项目过程中涉及到的基本技术，包括：数据编解码，基础通信协议设计与运行等等。在物联网项目开发过程中，一般均涉及到定制协议的设计与开发，同时一般均以二进制数据进行传送，根据一般的需求，本文提供了相应的软件模板。&lt;/p&gt;</description>
+    </item><item>
+      <title>基于Go-kit 框架定制微服务应用的开发流程</title>
+      <link>https://taodanfang.github.io/posts/go-kit-microservice-1/</link>
+      <pubDate>Tue, 27 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-kit-microservice-1/</guid>
+      <description>&lt;p&gt;本文总结了基于go-kit定制微服务框架的基本方法和开发流程。&lt;/p&gt;</description>
+    </item><item>
+      <title>基于D2admin定制化微服务前端应用的开发方法</title>
+      <link>https://taodanfang.github.io/posts/d2admin-study-1/</link>
+      <pubDate>Mon, 12 Jul 2021 10:28:06 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/d2admin-study-1/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/d2-projects/d2-admin&#34;&gt;D2Admin &lt;/a&gt;是一个完全 &lt;strong&gt;开源免费&lt;/strong&gt; 的企业中后台产品前端集成方案，使用最新的前端技术栈，小于 60kb 的本地首屏 js 加载，已经做好大部分项目前期准备工作，并且带有大量示例代码，助力管理系统快速开发。本文介绍基于D2admin框架进行微服务前端开发的基本思路和过程。&lt;/p&gt;</description>
+    </item><item>
+      <title>Go Kit 官方示例学习及其 API Gateway 实现</title>
+      <link>https://taodanfang.github.io/posts/go-kit-example-study-1/</link>
+      <pubDate>Wed, 07 Jul 2021 16:09:28 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/go-kit-example-study-1/</guid>
+      <description>&lt;p&gt;该文是Go kit 官方示例的学习笔记，并总结了结合stringsvc实现 API Gateway 的方法&lt;/p&gt;</description>
+    </item><item>
+      <title>CRDT协议基础知识(5) - 安全隐私处理</title>
+      <link>https://taodanfang.github.io/posts/crdt-5-1/</link>
+      <pubDate>Wed, 03 Feb 2021 14:22:46 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-5-1/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Privacy focused&lt;/strong&gt; means the application developers never get to see the content their users are creating - your data is yours only. &lt;strong&gt;Powerful&lt;/strong&gt; means real-time collaboration between multiple users, search, notifications. &lt;strong&gt;User friendly&lt;/strong&gt; means it’s easy to access or recover your data on a new device and easy to invite collaborators.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>NATS 开发文档摘录 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  NATS 开发文档摘录</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >NATS 开发文档摘录</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-12-13">Dec 13, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/nats-io-2/media/16396294181403_hubaae0ff782c8b75f8b806f4834290463_247132_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/nats-io-2/media/16396294181403_hubaae0ff782c8b75f8b806f4834290463_247132_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/nats-io-2/media/16396294181403_hubaae0ff782c8b75f8b806f4834290463_247132_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/nats-io-2/media/16396294181403_hubaae0ff782c8b75f8b806f4834290463_247132_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#core-nats-基本用法">Core NATS 基本用法</a>
+      <ul>
+        <li><a href="#连接选项设置">连接（选项设置）</a></li>
+        <li><a href="#接收消息">接收消息</a></li>
+        <li><a href="#发布消息">发布消息</a></li>
+        <li><a href="#状态监控">状态监控</a></li>
+      </ul>
+    </li>
+    <li><a href="#jetstream-基本用法">JetStream 基本用法</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/math-study-1-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">协同计算之数学基础（1）- 偏序关系与逻辑时钟</h2>
+    <p class="card-text">在分布式协同计算系统中，认识到事件的发生顺序只是一个偏序关系是非常重要的。我们认为这个认知对于理解所有多进程系统非常有用。 本文介绍某些与协同计算有关的数学基础知识。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-29 1129:00">Nov 29, 2021</time></p>
+      <p>#math #distributed computing </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>本文摘录了NATS官方文档中的重要部分。包括：基本的nats使用，支持持久化的jetstream的使用方法。</p>
+<h2 id="core-nats-基本用法">Core NATS 基本用法</h2>
+<p>Core NATs 基于 pub/sub 模式，提供了基本的最多一次（at most once）保证消息分发机制。其基本的使用方法如下所示：</p>
+<h3 id="连接选项设置">连接（选项设置）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#408080;font-style:italic">// Set Ping Interval to 20 seconds
+</span><span style="color:#408080;font-style:italic"></span>nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>, 
+nats.<span style="color:#00f">Name</span>(<span style="color:#ba2121">&#34;API Ping Example&#34;</span>), 
+nats.<span style="color:#00f">Timeout</span>(<span style="color:#666">10</span><span style="color:#666">*</span>time.Second),
+nats.<span style="color:#00f">PingInterval</span>(<span style="color:#666">20</span><span style="color:#666">*</span>time.Second), 
+nats.<span style="color:#00f">MaxPingsOutstanding</span>(<span style="color:#666">5</span>),
+nats.<span style="color:#00f">NoEcho</span>(),
+nats.<span style="color:#00f">NoReconnect</span>(),
+nats.<span style="color:#00f">MaxReconnects</span>(<span style="color:#666">10</span>),
+nats.<span style="color:#00f">ReconnectWait</span>(<span style="color:#666">10</span><span style="color:#666">*</span>time.Second),
+nats.<span style="color:#00f">DisconnectErrHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(nc <span style="color:#666">*</span>nats.Conn, err <span style="color:#b00040">error</span>) {
+        <span style="color:#408080;font-style:italic">// handle disconnect error event
+</span><span style="color:#408080;font-style:italic"></span>    }),
+nats.<span style="color:#00f">ReconnectHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(nc <span style="color:#666">*</span>nats.Conn) {
+        <span style="color:#408080;font-style:italic">// handle reconnect event
+</span><span style="color:#408080;font-style:italic"></span>    }),
+nats.<span style="color:#00f">ReconnectBufSize</span>(<span style="color:#666">5</span><span style="color:#666">*</span><span style="color:#666">1024</span><span style="color:#666">*</span><span style="color:#666">1024</span>)
+)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+mp <span style="color:#666">:=</span> nc.<span style="color:#00f">MaxPayload</span>()
+log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Maximum payload is %v bytes&#34;</span>, mp)
+
+<span style="color:#408080;font-style:italic">// Do something with the connection
+</span><span style="color:#408080;font-style:italic"></span>
+</code></pre></div><h3 id="接收消息">接收消息</h3>
+<blockquote>
+<p>同步接收</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Subscribe
+</span><span style="color:#408080;font-style:italic"></span>sub, err <span style="color:#666">:=</span> nc.<span style="color:#00f">SubscribeSync</span>(<span style="color:#ba2121">&#34;updates&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Wait for a message (阻塞）
+</span><span style="color:#408080;font-style:italic"></span>msg, err <span style="color:#666">:=</span> sub.<span style="color:#00f">NextMsg</span>(<span style="color:#666">10</span> <span style="color:#666">*</span> time.Second)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Use the response
+</span><span style="color:#408080;font-style:italic"></span>log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Reply: %s&#34;</span>, msg.Data)
+
+</code></pre></div><blockquote>
+<p>异步接收</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Use a WaitGroup to wait for a message to arrive
+</span><span style="color:#408080;font-style:italic"></span>wg <span style="color:#666">:=</span> sync.WaitGroup{}
+wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+
+<span style="color:#408080;font-style:italic">// Subscribe
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> _, err <span style="color:#666">:=</span> nc.<span style="color:#00f">Subscribe</span>(<span style="color:#ba2121">&#34;updates&#34;</span>, <span style="color:#008000;font-weight:bold">func</span>(m <span style="color:#666">*</span>nats.Msg) {
+    wg.<span style="color:#00f">Done</span>()
+}); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Wait for a message to come in （阻塞）
+</span><span style="color:#408080;font-style:italic"></span>wg.<span style="color:#00f">Wait</span>()
+
+</code></pre></div><blockquote>
+<p>取消订阅</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Sync Subscription
+</span><span style="color:#408080;font-style:italic"></span>sub, err <span style="color:#666">:=</span> nc.<span style="color:#00f">SubscribeSync</span>(<span style="color:#ba2121">&#34;updates&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> sub.<span style="color:#00f">Unsubscribe</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Async Subscription
+</span><span style="color:#408080;font-style:italic"></span>sub, err = nc.<span style="color:#00f">Subscribe</span>(<span style="color:#ba2121">&#34;updates&#34;</span>, <span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Msg) {})
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> sub.<span style="color:#00f">Unsubscribe</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+</code></pre></div><blockquote>
+<p>自动取消（指出接收到几个消息之后）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Sync Subscription
+</span><span style="color:#408080;font-style:italic"></span>sub, err <span style="color:#666">:=</span> nc.<span style="color:#00f">SubscribeSync</span>(<span style="color:#ba2121">&#34;updates&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> sub.<span style="color:#00f">AutoUnsubscribe</span>(<span style="color:#666">1</span>); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Async Subscription
+</span><span style="color:#408080;font-style:italic"></span>sub, err = nc.<span style="color:#00f">Subscribe</span>(<span style="color:#ba2121">&#34;updates&#34;</span>, <span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Msg) {})
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> sub.<span style="color:#00f">AutoUnsubscribe</span>(<span style="color:#666">1</span>); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+</code></pre></div><blockquote>
+<p>响应消息 (request/response)</p>
+</blockquote>
+<p>Incoming messages have an optional reply-to field. If that field is set, it will contain a subject to which a reply is expected.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Subscribe
+</span><span style="color:#408080;font-style:italic"></span>sub, err <span style="color:#666">:=</span> nc.<span style="color:#00f">SubscribeSync</span>(<span style="color:#ba2121">&#34;time&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Read a message
+</span><span style="color:#408080;font-style:italic"></span>msg, err <span style="color:#666">:=</span> sub.<span style="color:#00f">NextMsg</span>(<span style="color:#666">10</span> <span style="color:#666">*</span> time.Second)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Get the time
+</span><span style="color:#408080;font-style:italic"></span>timeAsBytes <span style="color:#666">:=</span> []<span style="color:#008000">byte</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">String</span>())
+
+<span style="color:#408080;font-style:italic">// Send the time as the response. (响应，基于msg中的inbox主题）
+</span><span style="color:#408080;font-style:italic"></span>msg.<span style="color:#00f">Respond</span>(timeAsBytes)
+
+</code></pre></div><blockquote>
+<p>基于通配符，批量接收消息</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Use a WaitGroup to wait for 4 messages to arrive
+</span><span style="color:#408080;font-style:italic"></span>wg <span style="color:#666">:=</span> sync.WaitGroup{}
+wg.<span style="color:#00f">Add</span>(<span style="color:#666">4</span>)
+
+<span style="color:#408080;font-style:italic">// Subscribe (通配符）
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> _, err <span style="color:#666">:=</span> nc.<span style="color:#00f">Subscribe</span>(<span style="color:#ba2121">&#34;time.&gt;&#34;</span>, <span style="color:#008000;font-weight:bold">func</span>(m <span style="color:#666">*</span>nats.Msg) {
+    log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;%s: %s&#34;</span>, m.Subject, m.Data)
+    wg.<span style="color:#00f">Done</span>()
+}); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Wait for the 4 messages to come in
+</span><span style="color:#408080;font-style:italic"></span>wg.<span style="color:#00f">Wait</span>()
+
+<span style="color:#408080;font-style:italic">// Close the connection
+</span><span style="color:#408080;font-style:italic"></span>nc.<span style="color:#00f">Close</span>()
+
+</code></pre></div><blockquote>
+<p>消息队列（queue group）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Use a WaitGroup to wait for 10 messages to arrive
+</span><span style="color:#408080;font-style:italic"></span>wg <span style="color:#666">:=</span> sync.WaitGroup{}
+wg.<span style="color:#00f">Add</span>(<span style="color:#666">10</span>)
+
+<span style="color:#408080;font-style:italic">// Create a queue subscription on &#34;updates&#34; with queue name &#34;workers&#34;
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> _, err <span style="color:#666">:=</span> nc.<span style="color:#00f">QueueSubscribe</span>(<span style="color:#ba2121">&#34;updates&#34;</span>, <span style="color:#ba2121">&#34;workers&#34;</span>, <span style="color:#008000;font-weight:bold">func</span>(m <span style="color:#666">*</span>nats.Msg) {
+    wg.<span style="color:#00f">Done</span>()
+}); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Wait for messages to come in
+</span><span style="color:#408080;font-style:italic"></span>wg.<span style="color:#00f">Wait</span>()
+
+</code></pre></div><blockquote>
+<p>清空正在发送（或接收）的消息（inflight, cached or pending messages）后断开（或取消订阅）</p>
+</blockquote>
+<ul>
+<li>清空后自动断开连接</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+wg <span style="color:#666">:=</span> sync.WaitGroup{}
+wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+
+errCh <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">error</span>, <span style="color:#666">1</span>)
+
+<span style="color:#408080;font-style:italic">// To simulate a timeout, you would set the DrainTimeout()
+</span><span style="color:#408080;font-style:italic">// to a value less than the time spent in the message callback,
+</span><span style="color:#408080;font-style:italic">// so say: nats.DrainTimeout(10*time.Millisecond).
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#408080;font-style:italic">// 务必设置一个清空超时，并小于接收消息后处理消息的时间。
+</span><span style="color:#408080;font-style:italic"></span>
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>,
+
+    <span style="color:#408080;font-style:italic">// 清空超时
+</span><span style="color:#408080;font-style:italic"></span>    nats.<span style="color:#00f">DrainTimeout</span>(<span style="color:#666">10</span><span style="color:#666">*</span>time.Second),
+    nats.<span style="color:#00f">ErrorHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Conn, _ <span style="color:#666">*</span>nats.Subscription, err <span style="color:#b00040">error</span>) {
+        errCh <span style="color:#666">&lt;-</span> err
+    }),
+    nats.<span style="color:#00f">ClosedHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Conn) {
+        wg.<span style="color:#00f">Done</span>()
+    }))
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Just to not collide using the demo server with other users.
+</span><span style="color:#408080;font-style:italic"></span>subject <span style="color:#666">:=</span> nats.<span style="color:#00f">NewInbox</span>()
+
+<span style="color:#408080;font-style:italic">// Subscribe, but add some delay while processing.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> _, err <span style="color:#666">:=</span> nc.<span style="color:#00f">Subscribe</span>(subject, <span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Msg) {
+
+    <span style="color:#408080;font-style:italic">// 处理时间
+</span><span style="color:#408080;font-style:italic"></span>    time.<span style="color:#00f">Sleep</span>(<span style="color:#666">200</span> <span style="color:#666">*</span> time.Millisecond)
+}); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Publish a message
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> nc.<span style="color:#00f">Publish</span>(subject, []<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;hello&#34;</span>)); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Drain the connection, which will close it when done.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> nc.<span style="color:#00f">Drain</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Wait for the connection to be closed.
+</span><span style="color:#408080;font-style:italic"></span>wg.<span style="color:#00f">Wait</span>()
+
+<span style="color:#408080;font-style:italic">// Check if there was an error
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">select</span> {
+<span style="color:#008000;font-weight:bold">case</span> e <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>errCh:
+    log.<span style="color:#00f">Fatal</span>(e)
+<span style="color:#008000;font-weight:bold">default</span>:
+}
+
+</code></pre></div><ul>
+<li>清空后自动取消订阅</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+    nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+    <span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+        log.<span style="color:#00f">Fatal</span>(err)
+    }
+    <span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+    done <span style="color:#666">:=</span> sync.WaitGroup{}
+    done.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+
+    count <span style="color:#666">:=</span> <span style="color:#666">0</span>
+    errCh <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">error</span>, <span style="color:#666">1</span>)
+
+    msgAfterDrain <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;not this one&#34;</span>
+
+    <span style="color:#408080;font-style:italic">// Just to not collide using the demo server with other users.
+</span><span style="color:#408080;font-style:italic"></span>    subject <span style="color:#666">:=</span> nats.<span style="color:#00f">NewInbox</span>()
+
+    <span style="color:#408080;font-style:italic">// This callback will process each message slowly
+</span><span style="color:#408080;font-style:italic"></span>    sub, err <span style="color:#666">:=</span> nc.<span style="color:#00f">Subscribe</span>(subject, <span style="color:#008000;font-weight:bold">func</span>(m <span style="color:#666">*</span>nats.Msg) {
+        <span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">string</span>(m.Data) <span style="color:#666">==</span> msgAfterDrain {
+            errCh <span style="color:#666">&lt;-</span> fmt.<span style="color:#00f">Errorf</span>(<span style="color:#ba2121">&#34;Should not have received this message&#34;</span>)
+            <span style="color:#008000;font-weight:bold">return</span>
+        }
+        time.<span style="color:#00f">Sleep</span>(<span style="color:#666">100</span> <span style="color:#666">*</span> time.Millisecond)
+        count<span style="color:#666">++</span>
+        <span style="color:#008000;font-weight:bold">if</span> count <span style="color:#666">==</span> <span style="color:#666">2</span> {
+            done.<span style="color:#00f">Done</span>()
+        }
+    })
+
+    <span style="color:#408080;font-style:italic">// Send 2 messages
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i &lt; <span style="color:#666">2</span>; i<span style="color:#666">++</span> {
+        nc.<span style="color:#00f">Publish</span>(subject, []<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;hello&#34;</span>))
+    }
+
+    <span style="color:#408080;font-style:italic">// Call Drain on the subscription. It unsubscribes but
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// wait for all pending messages to be processed.
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> sub.<span style="color:#00f">Drain</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+        log.<span style="color:#00f">Fatal</span>(err)
+    }
+
+    <span style="color:#408080;font-style:italic">// Send one more message, this message should not be received
+</span><span style="color:#408080;font-style:italic"></span>    nc.<span style="color:#00f">Publish</span>(subject, []<span style="color:#008000">byte</span>(msgAfterDrain))
+
+    <span style="color:#408080;font-style:italic">// Wait for the subscription to have processed the 2 messages.
+</span><span style="color:#408080;font-style:italic"></span>    done.<span style="color:#00f">Wait</span>()
+
+    <span style="color:#408080;font-style:italic">// Now check that the 3rd message was not received
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#008000;font-weight:bold">select</span> {
+    <span style="color:#008000;font-weight:bold">case</span> e <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>errCh:
+        log.<span style="color:#00f">Fatal</span>(e)
+    <span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>time.<span style="color:#00f">After</span>(<span style="color:#666">200</span> <span style="color:#666">*</span> time.Millisecond):
+        <span style="color:#408080;font-style:italic">// OK!
+</span><span style="color:#408080;font-style:italic"></span>    }
+    
+</code></pre></div><blockquote>
+<p>接收JSON数据</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>,
+    nats.<span style="color:#00f">ErrorHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(nc <span style="color:#666">*</span>nats.Conn, s <span style="color:#666">*</span>nats.Subscription, err <span style="color:#b00040">error</span>) {
+        <span style="color:#008000;font-weight:bold">if</span> s <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+        log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Async error in %q/%q: %v&#34;</span>, s.Subject, s.Queue, err)
+        } <span style="color:#008000;font-weight:bold">else</span> {
+        log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Async error outside subscription: %v&#34;</span>, err)
+        }
+    }))
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+ec, err <span style="color:#666">:=</span> nats.<span style="color:#00f">NewEncodedConn</span>(nc, nats.JSON_ENCODER)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> ec.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Define the object
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> stock <span style="color:#008000;font-weight:bold">struct</span> {
+    Symbol <span style="color:#b00040">string</span>
+    Price  <span style="color:#b00040">int</span>
+}
+
+wg <span style="color:#666">:=</span> sync.WaitGroup{}
+wg.<span style="color:#00f">Add</span>(<span style="color:#666">1</span>)
+
+<span style="color:#408080;font-style:italic">// Subscribe
+</span><span style="color:#408080;font-style:italic">// Decoding errors will be passed to the function supplied via
+</span><span style="color:#408080;font-style:italic">// nats.ErrorHandler above, and the callback supplied here will
+</span><span style="color:#408080;font-style:italic">// not be invoked.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> _, err <span style="color:#666">:=</span> ec.<span style="color:#00f">Subscribe</span>(<span style="color:#ba2121">&#34;updates&#34;</span>, <span style="color:#008000;font-weight:bold">func</span>(s <span style="color:#666">*</span>stock) {
+    log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Stock: %s - Price: %v&#34;</span>, s.Symbol, s.Price)
+    wg.<span style="color:#00f">Done</span>()
+}); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Wait for a message to come in
+</span><span style="color:#408080;font-style:italic"></span>wg.<span style="color:#00f">Wait</span>()
+
+</code></pre></div><h3 id="发布消息">发布消息</h3>
+<p>NATS sends and receives messages using a protocol that includes a target subject, an optional reply subject and an array of bytes. NATS server will treat all messages as opaque byte arrays.</p>
+<blockquote>
+<p>基本用法</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>, nats.<span style="color:#00f">Name</span>(<span style="color:#ba2121">&#34;API PublishBytes Example&#34;</span>))
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> nc.<span style="color:#00f">Publish</span>(<span style="color:#ba2121">&#34;updates&#34;</span>, []<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;All is Well&#34;</span>)); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+</code></pre></div><blockquote>
+<p>PublishRequest (携带 Reply 主题）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Create a unique subject name for replies. (创建一个唯一的主题名称，用于接收响应）
+</span><span style="color:#408080;font-style:italic"></span>uniqueReplyTo <span style="color:#666">:=</span> nats.<span style="color:#00f">NewInbox</span>()
+
+<span style="color:#408080;font-style:italic">// Listen for a single response
+</span><span style="color:#408080;font-style:italic"></span>sub, err <span style="color:#666">:=</span> nc.<span style="color:#00f">SubscribeSync</span>(uniqueReplyTo)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Send the request.
+</span><span style="color:#408080;font-style:italic">// If processing is synchronous, use Request() which returns the response message.
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#408080;font-style:italic">// PublishRequest（异步发送）
+</span><span style="color:#408080;font-style:italic">// Request（同步发送）
+</span><span style="color:#408080;font-style:italic"></span>
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> nc.<span style="color:#00f">PublishRequest</span>(<span style="color:#ba2121">&#34;time&#34;</span>, uniqueReplyTo, <span style="color:#008000;font-weight:bold">nil</span>); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Read the reply（接收响应）
+</span><span style="color:#408080;font-style:italic"></span>msg, err <span style="color:#666">:=</span> sub.<span style="color:#00f">NextMsg</span>(time.Second)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Use the response
+</span><span style="color:#408080;font-style:italic"></span>log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Reply: %s&#34;</span>, msg.Data)
+
+</code></pre></div><blockquote>
+<p>Request-Reply 模式</p>
+</blockquote>
+<p>The primary difference between the request method and publishing with a reply-to is that the library is only going to accept one response, and in most libraries the request will be treated as a synchronous action. You can think of request-reply in the library as a subscribe, get one message, unsubscribe pattern. (你可以认为 RR 模式，相当于一对一的同步对话）</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Send the request (阻塞）
+</span><span style="color:#408080;font-style:italic"></span>msg, err <span style="color:#666">:=</span> nc.<span style="color:#00f">Request</span>(<span style="color:#ba2121">&#34;time&#34;</span>, <span style="color:#008000;font-weight:bold">nil</span>, time.Second)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+<span style="color:#408080;font-style:italic">// Use the response
+</span><span style="color:#408080;font-style:italic"></span>log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Reply: %s&#34;</span>, msg.Data)
+
+<span style="color:#408080;font-style:italic">// Close the connection
+</span><span style="color:#408080;font-style:italic"></span>nc.<span style="color:#00f">Close</span>()
+
+</code></pre></div><blockquote>
+<p>Scatter-Gather 模式</p>
+</blockquote>
+<p>You can expand the request-reply pattern into something often called scatter-gather. To receive multiple messages, with a timeout, you could do something like the following, where the loop getting messages is using time as the limitation, not the receipt of a single message。（你可以认为 SG 模式，是一对多的同步对话）</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+sub, err <span style="color:#666">:=</span> nc.<span style="color:#00f">SubscribeSync</span>(replyTo)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+nc.<span style="color:#00f">Flush</span>()
+
+<span style="color:#408080;font-style:italic">// Send the request
+</span><span style="color:#408080;font-style:italic"></span>nc.<span style="color:#00f">PublishRequest</span>(subject, replyTo, []<span style="color:#008000">byte</span>(input))
+
+<span style="color:#408080;font-style:italic">// Wait for a single response
+</span><span style="color:#408080;font-style:italic"></span>max <span style="color:#666">:=</span> <span style="color:#666">500</span> <span style="color:#666">*</span> time.Millisecond
+start <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+<span style="color:#008000;font-weight:bold">for</span> time.<span style="color:#00f">Now</span>().<span style="color:#00f">Sub</span>(start) &lt; max {
+    msg, err <span style="color:#666">:=</span> sub.<span style="color:#00f">NextMsg</span>(<span style="color:#666">1</span> <span style="color:#666">*</span> time.Second)
+    <span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+        <span style="color:#008000;font-weight:bold">break</span>
+    }
+
+    responses = <span style="color:#008000">append</span>(responses, <span style="color:#008000">string</span>(msg.Data))
+
+    <span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">len</span>(responses) <span style="color:#666">&gt;=</span> minResponses {
+        <span style="color:#008000;font-weight:bold">break</span>
+    }
+}
+sub.<span style="color:#00f">Unsubscribe</span>()
+
+</code></pre></div><blockquote>
+<p>缓存发送</p>
+</blockquote>
+<p>For performance reasons, most if not all, of the client libraries will buffer outgoing data so that bigger chunks can be written to the network at one time. This may be as simple as a byte buffer that stores a few messages before being pushed to the network.</p>
+<p>为了性能考虑，客户端库往往在将消息发送到网络中时，会先缓存要发送的消息。可以通过 Flush 缓冲的方式，确保NATS 服务收到了全部缓存的消息。</p>
+<p>Many of the client libraries use the PING/PONG interaction built into the NATS protocol to ensure that flush pushed all of the buffered messages to the server. When an application calls flush, most libraries will put a PING on the outgoing queue of messages, and wait for the server to respond with a PONG before saying that the flush was successful.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Just to not collide using the demo server with other users.
+</span><span style="color:#408080;font-style:italic"></span>subject <span style="color:#666">:=</span> nats.<span style="color:#00f">NewInbox</span>()
+
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> nc.<span style="color:#00f">Publish</span>(subject, []<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;All is Well&#34;</span>)); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#408080;font-style:italic">// Sends a PING and wait for a PONG from the server, up to the given timeout.
+</span><span style="color:#408080;font-style:italic">// This gives guarantee that the server has processed the above message.
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> nc.<span style="color:#00f">FlushTimeout</span>(time.Second); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+</code></pre></div><blockquote>
+<p>发送 JSON 数据</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+ec, err <span style="color:#666">:=</span> nats.<span style="color:#00f">NewEncodedConn</span>(nc, nats.JSON_ENCODER)
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> ec.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Define the object
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">type</span> stock <span style="color:#008000;font-weight:bold">struct</span> {
+    Symbol <span style="color:#b00040">string</span>
+    Price  <span style="color:#b00040">int</span>
+}
+
+<span style="color:#408080;font-style:italic">// Publish the message
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> ec.<span style="color:#00f">Publish</span>(<span style="color:#ba2121">&#34;updates&#34;</span>, <span style="color:#666">&amp;</span>stock{Symbol: <span style="color:#ba2121">&#34;GOOG&#34;</span>, Price: <span style="color:#666">1200</span>}); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+
+</code></pre></div><h3 id="状态监控">状态监控</h3>
+<blockquote>
+<p>检查连接状态</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>, nats.<span style="color:#00f">Name</span>(<span style="color:#ba2121">&#34;API Example&#34;</span>))
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+getStatusTxt <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(nc <span style="color:#666">*</span>nats.Conn) <span style="color:#b00040">string</span> {
+    <span style="color:#008000;font-weight:bold">switch</span> nc.<span style="color:#00f">Status</span>() {
+    <span style="color:#008000;font-weight:bold">case</span> nats.CONNECTED:
+        <span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;Connected&#34;</span>
+    <span style="color:#008000;font-weight:bold">case</span> nats.CLOSED:
+        <span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;Closed&#34;</span>
+    <span style="color:#008000;font-weight:bold">default</span>:
+        <span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;Other&#34;</span>
+    }
+}
+log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;The connection is %v\n&#34;</span>, <span style="color:#00f">getStatusTxt</span>(nc))
+
+nc.<span style="color:#00f">Close</span>()
+
+log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;The connection is %v\n&#34;</span>, <span style="color:#00f">getStatusTxt</span>(nc))
+
+</code></pre></div><blockquote>
+<p>监听连接事件</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#408080;font-style:italic">// There is not a single listener for connection events in the NATS Go Client.
+</span><span style="color:#408080;font-style:italic">// Instead, you can set individual event handlers using:
+</span><span style="color:#408080;font-style:italic"></span>nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>,
+    nats.<span style="color:#00f">DisconnectErrHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Conn, err <span style="color:#b00040">error</span>) {
+        log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;client disconnected: %v&#34;</span>, err)
+    }),
+    nats.<span style="color:#00f">ReconnectHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Conn) {
+        log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;client reconnected&#34;</span>)
+    }),
+    nats.<span style="color:#00f">ClosedHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Conn) {
+        log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;client closed&#34;</span>)
+    }))
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+</code></pre></div><blockquote>
+<p>监听错误事件</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#408080;font-style:italic">// Set the callback that will be invoked when an asynchronous error occurs.
+</span><span style="color:#408080;font-style:italic"></span>nc, err <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(<span style="color:#ba2121">&#34;demo.nats.io&#34;</span>,
+    nats.<span style="color:#00f">ErrorHandler</span>(<span style="color:#008000;font-weight:bold">func</span>(_ <span style="color:#666">*</span>nats.Conn, _ <span style="color:#666">*</span>nats.Subscription, err <span style="color:#b00040">error</span>) {
+        log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Error: %v&#34;</span>, err)
+    }))
+<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+    log.<span style="color:#00f">Fatal</span>(err)
+}
+<span style="color:#008000;font-weight:bold">defer</span> nc.<span style="color:#00f">Close</span>()
+
+<span style="color:#408080;font-style:italic">// Do something with the connection
+</span><span style="color:#408080;font-style:italic"></span>
+</code></pre></div><h2 id="jetstream-基本用法">JetStream 基本用法</h2>
+<blockquote>
+<p>JetStream 应用场景（往往用于数据平面）</p>
+</blockquote>
+<ul>
+<li>A historical record of a stream is required. This is when a replay of data is required by a consumer. （消息重放）</li>
+<li>The last message produced on a stream is required for initialization and the producer may be offline.</li>
+<li>A-priori knowledge of consumers is not available, but consumers must receive messages. This is often a false assumption.</li>
+<li>Data producers and consumers are highly decoupled. They may be online at different times and consumers must receive messages.（生成者和消费者往往是解耦的，在线时间不一致）</li>
+<li>The data in messages being sent have a lifespan beyond that of the intended application lifespan.</li>
+<li>Applications need to consume data at their own pace.（发送方和接收方处理消息的节奏不一致）</li>
+<li>You want de-coupled flow control between the publishers and the consumers of the stream</li>
+<li>You need &lsquo;exactly-once&rsquo; quality of service with de-duplication of publications and double-acknowledged consumption</li>
+</ul>
+<blockquote>
+<p>Core NATS 应用场景（往往用于控制平面）</p>
+</blockquote>
+<blockquote>
+<p>Stream 管理</p>
+</blockquote>
+<ul>
+<li>You can use &lsquo;AddStream&rsquo; to idempotently define streams and their attributes (i.e. source subjects, retention and storage policies, limits)（创建）</li>
+<li>You can use &lsquo;Purge&rsquo; to purge the messages in a stream（情况消息）</li>
+<li>You can use &lsquo;Delete&rsquo; to delete a stream（删除)</li>
+</ul>
+<blockquote>
+<p>Consumer 管理</p>
+</blockquote>
+<p>You can create push or pull consumers:</p>
+<ul>
+<li>Push consumers (specifically ordered push consumers) are the best way for an application to receive its own complete copy of the selected messages in the stream.</li>
+<li>Pull consumers are the best way to scale horizontally the processing (or consuming) of the selected messages in the stream using multiple client applications sharing the same pull consumer, and allow for the processing of messages in batches.</li>
+</ul>
+<blockquote>
+<p>消息管理</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#ba2121">&#34;github.com/nats-io/nats.go&#34;</span>
+
+<span style="color:#408080;font-style:italic">// Connect to NATS
+</span><span style="color:#408080;font-style:italic"></span>nc, _ <span style="color:#666">:=</span> nats.<span style="color:#00f">Connect</span>(nats.DefaultURL)
+
+<span style="color:#408080;font-style:italic">// Create JetStream Context
+</span><span style="color:#408080;font-style:italic"></span>js, _ <span style="color:#666">:=</span> nc.<span style="color:#00f">JetStream</span>(nats.<span style="color:#00f">PublishAsyncMaxPending</span>(<span style="color:#666">256</span>))
+
+<span style="color:#408080;font-style:italic">// Simple Stream Publisher
+</span><span style="color:#408080;font-style:italic"></span>js.<span style="color:#00f">Publish</span>(<span style="color:#ba2121">&#34;ORDERS.scratch&#34;</span>, []<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;hello&#34;</span>))
+
+<span style="color:#408080;font-style:italic">// Simple Async Stream Publisher
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i &lt; <span style="color:#666">500</span>; i<span style="color:#666">++</span> {
+	js.<span style="color:#00f">PublishAsync</span>(<span style="color:#ba2121">&#34;ORDERS.scratch&#34;</span>, []<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;hello&#34;</span>))
+}
+<span style="color:#008000;font-weight:bold">select</span> {
+<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>js.<span style="color:#00f">PublishAsyncComplete</span>():
+<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>time.<span style="color:#00f">After</span>(<span style="color:#666">5</span> <span style="color:#666">*</span> time.Second):
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Did not resolve in time&#34;</span>)
+}
+
+<span style="color:#408080;font-style:italic">// Simple Async Ephemeral Consumer
+</span><span style="color:#408080;font-style:italic"></span>js.<span style="color:#00f">Subscribe</span>(<span style="color:#ba2121">&#34;ORDERS.*&#34;</span>, <span style="color:#008000;font-weight:bold">func</span>(m <span style="color:#666">*</span>nats.Msg) {
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;Received a JetStream message: %s\n&#34;</span>, <span style="color:#008000">string</span>(m.Data))
+})
+
+<span style="color:#408080;font-style:italic">// Simple Sync Durable Consumer (optional SubOpts at the end)
+</span><span style="color:#408080;font-style:italic"></span>sub, err <span style="color:#666">:=</span> js.<span style="color:#00f">SubscribeSync</span>(<span style="color:#ba2121">&#34;ORDERS.*&#34;</span>, nats.<span style="color:#00f">Durable</span>(<span style="color:#ba2121">&#34;MONITOR&#34;</span>), nats.<span style="color:#00f">MaxDeliver</span>(<span style="color:#666">3</span>))
+m, err <span style="color:#666">:=</span> sub.<span style="color:#00f">NextMsg</span>(timeout)
+
+<span style="color:#408080;font-style:italic">// Simple Pull Consumer
+</span><span style="color:#408080;font-style:italic"></span>sub, err <span style="color:#666">:=</span> js.<span style="color:#00f">PullSubscribe</span>(<span style="color:#ba2121">&#34;ORDERS.*&#34;</span>, <span style="color:#ba2121">&#34;MONITOR&#34;</span>)
+msgs, err <span style="color:#666">:=</span> sub.<span style="color:#00f">Fetch</span>(<span style="color:#666">10</span>)
+
+<span style="color:#408080;font-style:italic">// Unsubscribe
+</span><span style="color:#408080;font-style:italic"></span>sub.<span style="color:#00f">Unsubscribe</span>()
+
+<span style="color:#408080;font-style:italic">// Drain
+</span><span style="color:#408080;font-style:italic"></span>sub.<span style="color:#00f">Drain</span>()
+
+</code></pre></div>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/math-study-1-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/math-study-1-1/media/16382831312989_hubaae0ff782c8b75f8b806f4834290463_146089_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/math-study-1-1/media/16382831312989_hubaae0ff782c8b75f8b806f4834290463_146089_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/math-study-1-1/media/16382831312989_hubaae0ff782c8b75f8b806f4834290463_146089_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/math-study-1-1/media/16382831312989_hubaae0ff782c8b75f8b806f4834290463_146089_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">协同计算之数学基础（1）- 偏序关系与逻辑时钟</h2>
+    <p class="card-text">在分布式协同计算系统中，认识到事件的发生顺序只是一个偏序关系是非常重要的。我们认为这个认知对于理解所有多进程系统非常有用。 本文介绍某些与协同计算有关的数学基础知识。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-29 1129:00">Nov 29, 2021</time></p>
+      <p>#math #distributed computing </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

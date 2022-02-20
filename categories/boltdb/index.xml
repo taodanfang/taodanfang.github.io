@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>boltdb - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/boltdb/</link>
+    <description>Recent content in boltdb on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 16 Dec 2021 12:34:57 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/boltdb/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>全文搜索引擎库（Bleve）学习实践</title>
+      <link>https://taodanfang.github.io/posts/bleve-study-1/</link>
+      <pubDate>Thu, 16 Dec 2021 12:34:57 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/bleve-study-1/</guid>
+      <description>&lt;p&gt;Bleve is an open-sourced text indexing and search library implemented in Go, developed in-house at Couchbase.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

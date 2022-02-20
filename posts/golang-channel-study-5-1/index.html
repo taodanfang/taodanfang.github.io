@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Golang 并发开发实践（5）- Channel 原理与模式 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  Golang 并发开发实践（5）- Channel 原理与模式</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >Golang 并发开发实践（5）- Channel 原理与模式</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-11-27">Nov 27, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/golang-channel-study-5-1/image-11_hu1732efa3771f9a4d339e501e24c789b6_9663617_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/golang-channel-study-5-1/image-11_hu1732efa3771f9a4d339e501e24c789b6_9663617_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/golang-channel-study-5-1/image-11_hu1732efa3771f9a4d339e501e24c789b6_9663617_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/golang-channel-study-5-1/image-11_hu1732efa3771f9a4d339e501e24c789b6_9663617_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#要点">要点</a></li>
+    <li><a href="#开发过程">开发过程</a></li>
+    <li><a href="#常见并发模式">常见并发模式</a>
+      <ul>
+        <li><a href="#永不停止">永不停止</a></li>
+        <li><a href="#异步请求与响应promise">异步请求与响应（Promise）</a></li>
+        <li><a href="#各种通知">各种通知</a></li>
+        <li><a href="#实现互斥信号量mutex">实现互斥信号量（Mutex）</a></li>
+        <li><a href="#实现计数信号量">实现计数信号量</a></li>
+        <li><a href="#实现心跳对话pingpong">实现心跳对话（PingPong）</a></li>
+        <li><a href="#并发检测各种-select-尝试">并发检测（各种 Select 尝试）</a></li>
+        <li><a href="#数据流处理">数据流处理</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-4-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（4）- 爬虫服务的并发优化</h2>
+    <p class="card-text">In this post, we will look at a small I/O intensive problem and explore different ways of doing this operation concurrently using the Go programming language, as a practical way of using concurrency in practice.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-26 1126:00">Nov 26, 2021</time></p>
+      <p>#golang #channel </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>本文是对Go 101中关于“并发开发”内容的梳理。请借鉴操作系统中的“管程”概念对channel的内部工作原理进行理解。</p>
+<h2 id="要点">要点</h2>
+<ul>
+<li>双向通道chan T的值可以被隐式转换为单向通道类型chan&lt;- T和&lt;-chan T，但反之不行（即使显式也不行）。 类型chan&lt;- T和&lt;-chan T的值也不能相互转换。</li>
+<li>close(ch)：传给close函数调用的实参必须为一个通道值，并且此通道值不能为单向接收的（即 &lt;-chan）</li>
+<li>len(ch)：一个通道的长度是指当前有多少个已被发送到此通道但还未被接收出去的元素值。我们很少使用内置函数len的原因是一个len调用的结果并不能总能准确地反映出的一个通道的当前长度。</li>
+<li>如果被查询的通道为一个nil零值通道，则cap和len函数调用都返回0。</li>
+<li>请重点注意对nil通道的操作规则</li>
+</ul>
+<p><img src="media/16379808109516.jpg" alt=""></p>
+<ul>
+<li>管程（通道）内部原理图</li>
+</ul>
+<p><img src="media/16379969263167.jpg" alt=""></p>
+<h2 id="开发过程">开发过程</h2>
+<blockquote>
+<p>根据需求绘制并发模型图，并在图中标出阻塞顺序 &ldquo;(x)“ 和启动顺序 &ldquo;&lt; x &gt;&quot;，（如下图）</p>
+</blockquote>
+<p><img src="media/16379965009752.jpg" alt=""></p>
+<blockquote>
+<p>代码中关注协程与通道的组织（在代码中标出执行顺序，并通过运行进行验证是否与模型图一致）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;hello&#34;</span>)
+
+	ch <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>(ch <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#b00040">int</span>, x <span style="color:#b00040">int</span>) {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;03. func1() blocked on sleep&#34;</span>)
+		time.<span style="color:#00f">Sleep</span>(time.Second)
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;04. func1() wake-up on sleep&#34;</span>)
+		ch <span style="color:#666">&lt;-</span> x<span style="color:#666">*</span>x
+	}(ch, <span style="color:#666">3</span>)
+
+	done <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">struct</span>{})
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>(ch <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int</span>) {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;02. func2() blocked on ch&#34;</span>)
+		n <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> ch
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;05. func2() wake-up on ch&#34;</span>)
+
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;result: &#34;</span>, n)
+
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;06. func2() blocked on sleep&#34;</span>)
+		time.<span style="color:#00f">Sleep</span>(time.Second)
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;07. func2() wake-up on sleep&#34;</span>)
+		done <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">struct</span>{}{}
+	}(ch)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;01. main() blocked on done&#34;</span>)
+	<span style="color:#666">&lt;-</span> done
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;08. main() wake-up on done&#34;</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;bye&#34;</span>)
+
+}
+</code></pre></div><p><img src="media/16379843167914.jpg" alt=""></p>
+<h2 id="常见并发模式">常见并发模式</h2>
+<h3 id="永不停止">永不停止</h3>
+<blockquote>
+<p>通过读取nil通道</p>
+</blockquote>
+<p><img src="media/16379955127354.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	<span style="color:#008000;font-weight:bold">var</span> ball = <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>)
+	kickBall <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(playerName <span style="color:#b00040">string</span>) {
+		<span style="color:#008000;font-weight:bold">for</span> {
+			fmt.<span style="color:#00f">Print</span>(playerName, <span style="color:#ba2121">&#34;，接到(&#34;</span>, <span style="color:#666">&lt;-</span>ball, <span style="color:#ba2121">&#34;)传球&#34;</span>, <span style="color:#ba2121">&#34;\n&#34;</span>)
+			time.<span style="color:#00f">Sleep</span>(time.Second)
+			fmt.<span style="color:#00f">Println</span>(playerName <span style="color:#666">+</span> <span style="color:#ba2121">&#34;，踢球&#34;</span>)
+			ball <span style="color:#666">&lt;-</span> playerName
+		}
+	}
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">kickBall</span>(<span style="color:#ba2121">&#34;张三&#34;</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">kickBall</span>(<span style="color:#ba2121">&#34;李四&#34;</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">kickBall</span>(<span style="color:#ba2121">&#34;王二&#34;</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">kickBall</span>(<span style="color:#ba2121">&#34;刘大&#34;</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;裁判，开球&#34;</span>)
+	ball <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;裁判&#34;</span>   <span style="color:#408080;font-style:italic">// 开球
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">var</span> c <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">bool</span> <span style="color:#408080;font-style:italic">// 一个零值nil通道
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#666">&lt;-</span>c             <span style="color:#408080;font-style:italic">// 永久阻塞在此
+</span><span style="color:#408080;font-style:italic"></span>}
+</code></pre></div><p><img src="media/16379906595861.jpg" alt=""></p>
+<blockquote>
+<p>通过 select{} 实现</p>
+</blockquote>
+<p>一般，select{}用在主协程中以防止程序退出。注意：main中一定启动了其他协程，否则会发出”死锁“异常</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">DoSomething</span>() {
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;do ...&#34;</span>)
+
+		runtime.<span style="color:#00f">Gosched</span>() <span style="color:#408080;font-style:italic">// 防止本协程霸占CPU不放
+</span><span style="color:#408080;font-style:italic"></span>	}
+}
+
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">DoSomething</span>()
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">DoSomething</span>()
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Do not stop for ever.&#34;</span>)
+	<span style="color:#008000;font-weight:bold">select</span>{}
+}
+
+
+</code></pre></div><h3 id="异步请求与响应promise">异步请求与响应（Promise）</h3>
+<blockquote>
+<p>模拟 await/async (1): 返回单向接收通道做为函数返回结果</p>
+</blockquote>
+<p><img src="media/16379958279988.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">async_long_time_request</span>() (await_rq <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int32</span>) {
+	rq <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int32</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">3</span>)
+		v <span style="color:#666">:=</span> rand.<span style="color:#00f">Int31n</span>(<span style="color:#666">100</span>)
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;rq: &#34;</span>, v)
+		rq <span style="color:#666">&lt;-</span> v
+	}()
+
+	<span style="color:#008000;font-weight:bold">return</span> rq
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">async_sum_squares</span>(a, b <span style="color:#b00040">int32</span>) <span style="color:#b00040">int32</span> {
+	<span style="color:#008000;font-weight:bold">return</span> a<span style="color:#666">*</span>a <span style="color:#666">+</span> b<span style="color:#666">*</span>b
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	rand.<span style="color:#00f">Seed</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>())
+
+	await_a, await_b <span style="color:#666">:=</span> <span style="color:#00f">async_long_time_request</span>(), <span style="color:#00f">async_long_time_request</span>()
+	await_sum <span style="color:#666">:=</span> <span style="color:#00f">async_sum_squares</span>(<span style="color:#666">&lt;-</span>await_a, <span style="color:#666">&lt;-</span>await_b)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;sum: &#34;</span>, await_sum)
+}
+
+</code></pre></div><p><img src="media/16379929517133.jpg" alt=""></p>
+<blockquote>
+<p>模拟 await/async (2): 将单向发送通道类型用做函数实参</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Async_long_time_request</span>(rq <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#b00040">int32</span>) {
+	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">3</span>)
+	rq <span style="color:#666">&lt;-</span> rand.<span style="color:#00f">Int31n</span>(<span style="color:#666">100</span>)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Async_sum_squares</span>(a, b <span style="color:#b00040">int32</span>) <span style="color:#b00040">int32</span> {
+	<span style="color:#008000;font-weight:bold">return</span> a<span style="color:#666">*</span>a <span style="color:#666">+</span> b<span style="color:#666">*</span>b
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	rand.<span style="color:#00f">Seed</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>())
+
+	await_ch1, await_ch2 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int32</span>), <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int32</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Async_long_time_request</span>(await_ch1)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Async_long_time_request</span>(await_ch2)
+
+	await_sum <span style="color:#666">:=</span> <span style="color:#00f">Async_sum_squares</span>(<span style="color:#666">&lt;-</span>await_ch1, <span style="color:#666">&lt;-</span>await_ch2)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;sum: &#34;</span>, await_sum)
+}
+
+</code></pre></div><blockquote>
+<p>模拟 await/async (3): 缓冲通道版</p>
+</blockquote>
+<p><img src="media/16379959356397.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	rand.<span style="color:#00f">Seed</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>())
+
+	await_ch <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">int32</span>, <span style="color:#666">2</span>)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Async_long_time_request</span>(await_ch)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Async_long_time_request</span>(await_ch)
+
+	await_sum <span style="color:#666">:=</span> <span style="color:#00f">Async_sum_squares</span>(<span style="color:#666">&lt;-</span>await_ch, <span style="color:#666">&lt;-</span>await_ch)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;sum: &#34;</span>, await_sum)
+}
+
+</code></pre></div><blockquote>
+<p>多数据源获取响应，最快响应优先</p>
+</blockquote>
+<p>一份数据可能同时从多个数据源获取。这些数据源将返回相同的数据。 因为各种因素，这些数据源的回应速度参差不一，甚至某个特定数据源的多次回应速度之间也可能相差很大。 同时从多个数据源获取一份相同的数据可以有效保障低延迟。我们只需采用最快的回应并舍弃其它较慢回应。（注意：如果有N个数据源，为了防止被舍弃的回应对应的协程永久阻塞，则传输数据用的通道必须为一个容量至少为N-1的缓冲通道。）</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> async_request <span style="color:#008000;font-weight:bold">struct</span> {
+	data_source_index <span style="color:#b00040">int</span>
+	data_value <span style="color:#b00040">int32</span>
+	data_delay time.Duration
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">async_data_source</span>(result <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> async_request, start_time time.Time, source_index <span style="color:#b00040">int</span>) {
+	await_value <span style="color:#666">:=</span> rand.<span style="color:#00f">Int31n</span>(<span style="color:#666">10</span>)
+	await_duration <span style="color:#666">:=</span> rand.<span style="color:#00f">Int31n</span>(<span style="color:#666">10</span>) <span style="color:#666">+</span> <span style="color:#666">1</span>
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;go datasource&#34;</span>, source_index, <span style="color:#ba2121">&#34; till &#34;</span>, await_duration, <span style="color:#ba2121">&#34;seconds&#34;</span>)
+
+	time.<span style="color:#00f">Sleep</span>(time.<span style="color:#00f">Duration</span>(await_duration) <span style="color:#666">*</span> time.Second)
+
+	await_delay <span style="color:#666">:=</span> time.<span style="color:#00f">Since</span>(start_time)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;datasource&#34;</span>, source_index, <span style="color:#ba2121">&#34;, delay&#34;</span>, await_delay, <span style="color:#ba2121">&#34;, value&#34;</span>, await_value)
+
+	a_request <span style="color:#666">:=</span> async_request{
+		data_source_index: source_index,
+		data_value: await_value,
+		data_delay: await_delay,
+	}
+	result <span style="color:#666">&lt;-</span> a_request
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	rand.<span style="color:#00f">Seed</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>())
+
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	requests <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> async_request, <span style="color:#666">5</span>)
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#008000">cap</span>(requests); i<span style="color:#666">++</span> {
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">async_data_source</span>(requests, start_time, i)
+	}
+
+	got_first <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> requests
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;got_first: %#v\n&#34;</span>, got_first)
+}
+
+
+</code></pre></div><p><img src="media/16379948793669.jpg" alt=""></p>
+<h3 id="各种通知">各种通知</h3>
+<p>在一个通知用例中，我们并不关心回应的值，我们只关心回应是否已发生。 所以我们常常使用空结构体类型struct{}来做为通道的元素类型，因为空结构体类型的尺寸为零，能够节省一些内存（虽然常常很少量）。</p>
+<blockquote>
+<p>一对一通知（向一个通道发送一个值）：子协程通知主协程，它已结束</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	values <span style="color:#666">:=</span> <span style="color:#008000">make</span>([]<span style="color:#b00040">byte</span>, <span style="color:#666">32</span> <span style="color:#666">*</span> <span style="color:#666">1024</span> <span style="color:#666">*</span> <span style="color:#666">1024</span>)
+	<span style="color:#008000;font-weight:bold">if</span> _, err <span style="color:#666">:=</span> rand.<span style="color:#00f">Read</span>(values); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		fmt.<span style="color:#00f">Println</span>(err)
+		os.<span style="color:#00f">Exit</span>(<span style="color:#666">1</span>)
+	}
+
+	done <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">struct</span>{})
+
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		sort.<span style="color:#00f">Slice</span>(values, <span style="color:#008000;font-weight:bold">func</span>(i, j <span style="color:#b00040">int</span>) <span style="color:#b00040">bool</span> {
+			<span style="color:#008000;font-weight:bold">return</span> values[i] &lt; values[j]
+		})
+
+		done <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">struct</span>{}{}
+	}()
+
+	<span style="color:#666">&lt;-</span> done
+
+	fmt.<span style="color:#00f">Println</span>(values[<span style="color:#666">0</span>], values[<span style="color:#008000">len</span>(values)<span style="color:#666">-</span><span style="color:#666">1</span>], time.<span style="color:#00f">Since</span>(start_time))
+}
+
+
+</code></pre></div><blockquote>
+<p>一对一通知（从一个通道接收一个值）；主协程通知子协程可以结束了</p>
+</blockquote>
+<p>一般我们使用非缓冲通道来实现这样的通知。（使用的较少）</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	done <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">struct</span>{})
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		fmt.<span style="color:#00f">Print</span>(<span style="color:#ba2121">&#34;hello&#34;</span>)
+		<span style="color:#008000;font-weight:bold">for</span> {
+			<span style="color:#008000;font-weight:bold">select</span> {
+			<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span> time.<span style="color:#00f">After</span>(time.Nanosecond):
+					<span style="color:#666">&lt;-</span> done
+					<span style="color:#008000;font-weight:bold">return</span>
+			<span style="color:#008000;font-weight:bold">default</span>:
+				fmt.<span style="color:#00f">Print</span>(<span style="color:#ba2121">&#34;...&#34;</span>)
+			}
+		}
+	}()
+
+	done <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">struct</span>{}{}
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34; world!&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16379986996675.jpg" alt=""></p>
+<blockquote>
+<p>多对单和单对多通知</p>
+</blockquote>
+<p>多对单和单对多通知实现方式在实践中用的并不多。 在实践中，我们多使用sync.WaitGroup来实现多对单通知，使用关闭一个通道的方式来实现单对多通知</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> T = <span style="color:#008000;font-weight:bold">struct</span> {}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Worker</span>(start_time time.Time, id <span style="color:#b00040">int</span>, ready <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> T, done <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> T) {
+	<span style="color:#666">&lt;-</span>ready        <span style="color:#408080;font-style:italic">// 等等主协程通知开始（1-N)
+</span><span style="color:#408080;font-style:italic"></span>
+	dur <span style="color:#666">:=</span> rand.<span style="color:#00f">Int31n</span>(<span style="color:#666">10</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Got ready, Worker&#34;</span>, id, <span style="color:#ba2121">&#34;started, last for&#34;</span>, dur, <span style="color:#ba2121">&#34;seconds&#34;</span>)
+
+	time.<span style="color:#00f">Sleep</span>(time.<span style="color:#00f">Duration</span>(dur) <span style="color:#666">*</span> time.Second)    <span style="color:#408080;font-style:italic">// 模拟一个工作负载
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Worker&#34;</span>, id, <span style="color:#ba2121">&#34;stopped, after&#34;</span>, time.<span style="color:#00f">Since</span>(start_time))
+
+	done <span style="color:#666">&lt;-</span> T{}    <span style="color:#408080;font-style:italic">// 通知主协程（N-1）
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main started&#34;</span>)
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	ready, done <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> T), <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> T)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Worker</span>(start_time, <span style="color:#666">1</span>, ready, done)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Worker</span>(start_time, <span style="color:#666">2</span>, ready, done)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Worker</span>(start_time, <span style="color:#666">3</span>, ready, done)
+
+   <span style="color:#408080;font-style:italic">// 模拟一个初始化过程
+</span><span style="color:#408080;font-style:italic"></span>	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">3</span> <span style="color:#666">/</span> <span style="color:#666">2</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main send ready at&#34;</span>, time.<span style="color:#00f">Since</span>(start_time))
+
+   <span style="color:#408080;font-style:italic">// 1-N 通知
+</span><span style="color:#408080;font-style:italic"></span>	ready <span style="color:#666">&lt;-</span> T{}
+	ready <span style="color:#666">&lt;-</span> T{}
+	ready <span style="color:#666">&lt;-</span> T{}
+
+   <span style="color:#408080;font-style:italic">// N-1 通知
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#666">&lt;-</span> done
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Got done&#34;</span>)
+	<span style="color:#666">&lt;-</span> done
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Got done&#34;</span>)
+	<span style="color:#666">&lt;-</span> done
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Got done&#34;</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stopped&#34;</span>)
+}
+</code></pre></div><p><img src="media/16380000483789.jpg" alt=""></p>
+<blockquote>
+<p>通过关闭一个通道来实现群发通知(1-N)</p>
+</blockquote>
+<p>通过关闭一个通道的方式在来实现单对多通知的方式更简单。 我们已经知道，从一个已关闭的通道可以接收到无穷个值，我们可以利用这一特性来实现群发通知。事实上，关闭通道来是实践中用得最多通知实现方式。比如，context标准库包使用了此特性来传达操作取消消息。</p>
+<p><img src="media/16380014665605.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main started&#34;</span>)
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	ready, done <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> T), <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> T)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Worker</span>(start_time, <span style="color:#666">1</span>, ready, done)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Worker</span>(start_time, <span style="color:#666">2</span>, ready, done)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Worker</span>(start_time, <span style="color:#666">3</span>, ready, done)
+
+	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">3</span> <span style="color:#666">/</span> <span style="color:#666">2</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main send ready at&#34;</span>, time.<span style="color:#00f">Since</span>(start_time))
+
+	<span style="color:#408080;font-style:italic">//ready &lt;- T{}
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">//ready &lt;- T{}
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#408080;font-style:italic">//ready &lt;- T{}
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000">close</span>(ready)   <span style="color:#408080;font-style:italic">// 注意：ready不能是 nil，务必使用make创建
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#666">&lt;-</span> done
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Got done&#34;</span>)
+	<span style="color:#666">&lt;-</span> done
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Got done&#34;</span>)
+	<span style="color:#666">&lt;-</span> done
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Got done&#34;</span>)
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stopped&#34;</span>)
+}
+
+</code></pre></div><blockquote>
+<p>定时通知</p>
+</blockquote>
+<p>操作&lt;-time.After(aDuration)将使当前协程进入阻塞状态，而一个time.Sleep(aDuration)函数调用不会如此。
+&lt;-time.After(aDuration) 也经常被使用在超时机制场景中。</p>
+<p><img src="media/16380016032903.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Hi !&#34;</span>)
+
+	<span style="color:#666">&lt;-</span> time.<span style="color:#00f">After</span>(time.Second)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Hello !&#34;</span>)
+
+	<span style="color:#666">&lt;-</span> time.<span style="color:#00f">After</span>(time.Second)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Bye !&#34;</span>)
+}
+
+</code></pre></div><p><img src="media/16380007546062.jpg" alt=""></p>
+<h3 id="实现互斥信号量mutex">实现互斥信号量（Mutex）</h3>
+<p>容量为1的缓冲通道也可以用做多次性二元信号量（即互斥锁）尽管这样的互斥锁效率不如sync标准库包中提供的互斥锁高效。注意：非缓冲通道的容量为0，默认为满状态，阻塞态。</p>
+<blockquote>
+<p>通过发送操作来加锁，通过接收操作来解锁</p>
+</blockquote>
+<p><img src="media/16380025087965.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> TT <span style="color:#008000;font-weight:bold">struct</span> {}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	mutex <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> TT, <span style="color:#666">1</span>)  <span style="color:#408080;font-style:italic">// 容量务必为 1, 默认为开锁状态·
+</span><span style="color:#408080;font-style:italic"></span>
+	counter <span style="color:#666">:=</span> <span style="color:#666">0</span>
+
+	increase <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		mutex <span style="color:#666">&lt;-</span> TT{}     <span style="color:#408080;font-style:italic">// 上锁（P)
+</span><span style="color:#408080;font-style:italic"></span>		counter<span style="color:#666">++</span>
+		<span style="color:#666">&lt;-</span>mutex           <span style="color:#408080;font-style:italic">// 解锁（V）
+</span><span style="color:#408080;font-style:italic"></span>	}
+
+	test_increase <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(done <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> TT) {
+		<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">1000</span>; i<span style="color:#666">++</span> {
+			<span style="color:#00f">increase</span>()
+		}
+
+		done <span style="color:#666">&lt;-</span> TT{}
+	}
+
+	done <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> TT)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">test_increase</span>(done)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">test_increase</span>(done)
+
+	<span style="color:#666">&lt;-</span>done
+	<span style="color:#666">&lt;-</span>done
+
+	fmt.<span style="color:#00f">Println</span>(counter)   <span style="color:#408080;font-style:italic">// 2000
+</span><span style="color:#408080;font-style:italic"></span>}
+
+
+</code></pre></div><blockquote>
+<p>通过接收操作来加锁，通过发送操作来解锁</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	mutex <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> TT, <span style="color:#666">1</span>)  <span style="color:#408080;font-style:italic">// 务必为 1
+</span><span style="color:#408080;font-style:italic"></span>	mutex <span style="color:#666">&lt;-</span> TT{}              <span style="color:#408080;font-style:italic">// 初始解锁
+</span><span style="color:#408080;font-style:italic"></span>
+	counter <span style="color:#666">:=</span> <span style="color:#666">0</span>
+
+	increase <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#666">&lt;-</span> mutex          <span style="color:#408080;font-style:italic">// 上锁
+</span><span style="color:#408080;font-style:italic"></span>		counter<span style="color:#666">++</span>
+		mutex <span style="color:#666">&lt;-</span> TT{}     <span style="color:#408080;font-style:italic">// 解锁
+</span><span style="color:#408080;font-style:italic"></span>	}
+
+	test_increase <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(done <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> TT) {
+		<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;<span style="color:#666">1000</span>; i<span style="color:#666">++</span> {
+			<span style="color:#00f">increase</span>()
+		}
+
+		done <span style="color:#666">&lt;-</span> TT{}
+	}
+
+	done <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> TT)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">test_increase</span>(done)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">test_increase</span>(done)
+
+	<span style="color:#666">&lt;-</span>done
+	<span style="color:#666">&lt;-</span>done
+
+	fmt.<span style="color:#00f">Println</span>(counter)   <span style="color:#408080;font-style:italic">// 2000
+</span><span style="color:#408080;font-style:italic"></span>}
+
+</code></pre></div><h3 id="实现计数信号量">实现计数信号量</h3>
+<p>计数信号量可以被视为多主锁。如果一个缓冲通道的容量为N，那么它可以被看作是一个在任何时刻最多可有N个主人的锁。 上面提到的二元信号量是特殊的计数信号量，每个二元信号量在任一时刻最多只能有一个主人。</p>
+<p>计数信号量经常被使用于限制最大并发数。</p>
+<blockquote>
+<p>控制同时处于非阻塞的协程数量（例如不超过计数）</p>
+</blockquote>
+<p><img src="media/16380054307257.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Seat <span style="color:#b00040">int</span>
+<span style="color:#008000;font-weight:bold">type</span> Bar <span style="color:#008000;font-weight:bold">chan</span> Seat
+
+<span style="color:#008000;font-weight:bold">func</span> (bar Bar) <span style="color:#00f">Serve_customer</span>(idx <span style="color:#b00040">int</span>) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;顾客#&#34;</span>, idx, <span style="color:#ba2121">&#34;进入酒吧&#34;</span>)
+
+	seat <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> bar     <span style="color:#408080;font-style:italic">// bar的容量，限制了同时处于就绪的协程的数量
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;... 顾客#&#34;</span>, idx, <span style="color:#ba2121">&#34;坐在#&#34;</span>, seat, <span style="color:#ba2121">&#34;座位，喝酒 ...&#34;</span>)
+
+	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> time.<span style="color:#00f">Duration</span>(<span style="color:#666">2</span> <span style="color:#666">+</span> rand.<span style="color:#00f">Intn</span>(<span style="color:#666">6</span>)))
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;顾客#&#34;</span>, idx, <span style="color:#ba2121">&#34;离开了#&#34;</span>, seat, <span style="color:#ba2121">&#34;座位。&#34;</span>)
+
+	bar <span style="color:#666">&lt;-</span> seat
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	rand.<span style="color:#00f">Seed</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>())
+
+	bar_24x7 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(Bar, <span style="color:#666">10</span>)
+
+	<span style="color:#008000;font-weight:bold">for</span> seat_id <span style="color:#666">:=</span> <span style="color:#666">0</span>; seat_id &lt; <span style="color:#008000">cap</span>(bar_24x7); seat_id<span style="color:#666">++</span> {
+		bar_24x7 <span style="color:#666">&lt;-</span> <span style="color:#00f">Seat</span>(seat_id)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> customer_id <span style="color:#666">:=</span> <span style="color:#666">0</span>; ; customer_id<span style="color:#666">++</span> {
+		time.<span style="color:#00f">Sleep</span>(time.Second)
+		<span style="color:#008000;font-weight:bold">go</span> bar_24x7.<span style="color:#00f">Serve_customer</span>(customer_id)
+		<span style="color:#408080;font-style:italic">// 实际创建的协程数量可能超过通道容量，未获得seat的协程（处于阻塞状态）
+</span><span style="color:#408080;font-style:italic"></span>	}
+
+   <span style="color:#408080;font-style:italic">// 防止主协程退出
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">for</span> {
+		time.<span style="color:#00f">Sleep</span>(time.Second)  <span style="color:#408080;font-style:italic">// 注意，sleep 操作不会阻塞协程
+</span><span style="color:#408080;font-style:italic"></span>	}
+
+}
+
+</code></pre></div><p><img src="media/16380050082989.jpg" alt=""></p>
+<blockquote>
+<p>减少处于阻塞状态的协程数量</p>
+</blockquote>
+<p>在上例中，每个顾客对应着一个协程。虽然协程的开销比系统线程小得多，但是如果协程的数量很多，则它们的总体开销还是不能忽略不计的。 所以，最好当有空位的时候才创建顾客协程。</p>
+<p><img src="media/16380060650648.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> (bar Bar) <span style="color:#00f">Serve_customer_with_seat</span>(idx <span style="color:#b00040">int</span>, seat Seat) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;顾客#&#34;</span>, idx, <span style="color:#ba2121">&#34;进入酒吧&#34;</span>)
+
+	<span style="color:#408080;font-style:italic">//seat := &lt;- bar
+</span><span style="color:#408080;font-style:italic"></span>
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;... 顾客#&#34;</span>, idx, <span style="color:#ba2121">&#34;坐在#&#34;</span>, seat, <span style="color:#ba2121">&#34;座位，喝酒 ...&#34;</span>)
+
+	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> time.<span style="color:#00f">Duration</span>(<span style="color:#666">2</span> <span style="color:#666">+</span> rand.<span style="color:#00f">Intn</span>(<span style="color:#666">6</span>)))
+
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;顾客#&#34;</span>, idx, <span style="color:#ba2121">&#34;离开了#&#34;</span>, seat, <span style="color:#ba2121">&#34;座位。&#34;</span>)
+
+	bar <span style="color:#666">&lt;-</span> seat
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	rand.<span style="color:#00f">Seed</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>())
+
+	bar_24x7 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(Bar, <span style="color:#666">3</span>)
+
+	<span style="color:#008000;font-weight:bold">for</span> seat_id <span style="color:#666">:=</span> <span style="color:#666">0</span>; seat_id &lt; <span style="color:#008000">cap</span>(bar_24x7); seat_id<span style="color:#666">++</span> {
+		bar_24x7 <span style="color:#666">&lt;-</span> <span style="color:#00f">Seat</span>(seat_id)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> customer_id <span style="color:#666">:=</span> <span style="color:#666">0</span>; ; customer_id<span style="color:#666">++</span> {
+		time.<span style="color:#00f">Sleep</span>(time.Second)
+		seat <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> bar_24x7
+		<span style="color:#008000;font-weight:bold">go</span> bar_24x7.<span style="color:#00f">Serve_customer_with_seat</span>(customer_id, seat)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		time.<span style="color:#00f">Sleep</span>(time.Second)
+	}
+
+}
+</code></pre></div><p><img src="media/16380061056828.jpg" alt=""></p>
+<blockquote>
+<p>不关心座位号的情况下，控制并发协程数量</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Customer <span style="color:#008000;font-weight:bold">struct</span>{id <span style="color:#b00040">int</span>}
+<span style="color:#008000;font-weight:bold">type</span> BigBar <span style="color:#008000;font-weight:bold">chan</span> Customer
+
+<span style="color:#008000;font-weight:bold">func</span> (bar BigBar) <span style="color:#00f">Server_customer</span>(cs Customer) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;顾客#&#34;</span>, cs.id, <span style="color:#ba2121">&#34;进店饮酒...&#34;</span>)
+	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> time.<span style="color:#00f">Duration</span>(<span style="color:#666">3</span> <span style="color:#666">+</span> rand.<span style="color:#00f">Intn</span>(<span style="color:#666">15</span>)))
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;顾客#&#34;</span>, cs.id, <span style="color:#ba2121">&#34;离开了.&#34;</span>)
+	<span style="color:#666">&lt;-</span> bar
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	rand.<span style="color:#00f">Seed</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>())
+
+	bar_24x7 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(BigBar, <span style="color:#666">10</span>) <span style="color:#408080;font-style:italic">// 控制最多同时运行的协程数量
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">for</span> customer_id <span style="color:#666">:=</span><span style="color:#666">0</span>; ; customer_id<span style="color:#666">++</span> {
+		time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> <span style="color:#666">2</span>)
+		customer <span style="color:#666">:=</span> Customer{customer_id}
+		bar_24x7 <span style="color:#666">&lt;-</span> customer
+		<span style="color:#008000;font-weight:bold">go</span> bar_24x7.<span style="color:#00f">Server_customer</span>(customer)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> {time.<span style="color:#00f">Sleep</span>(time.Second)}
+}
+
+</code></pre></div><p><img src="media/16380067152310.jpg" alt=""></p>
+<h3 id="实现心跳对话pingpong">实现心跳对话（PingPong）</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">type</span> Ball <span style="color:#b00040">string</span>
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Play</span>(playerName <span style="color:#b00040">string</span>, table <span style="color:#008000;font-weight:bold">chan</span> Ball) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		ball <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> table <span style="color:#408080;font-style:italic">// 接球
+</span><span style="color:#408080;font-style:italic"></span>		fmt.<span style="color:#00f">Println</span>(playerName, ball)
+
+		<span style="color:#008000;font-weight:bold">if</span> ball <span style="color:#666">==</span> <span style="color:#00f">Ball</span>(<span style="color:#ba2121">&#34;ping&#34;</span>) {
+			ball = <span style="color:#00f">Ball</span>(<span style="color:#ba2121">&#34;pong&#34;</span>)
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			ball = <span style="color:#00f">Ball</span>(<span style="color:#ba2121">&#34;ping&#34;</span>)
+		}
+
+		table <span style="color:#666">&lt;-</span> ball <span style="color:#408080;font-style:italic">// 回球
+</span><span style="color:#408080;font-style:italic"></span>		time.<span style="color:#00f">Sleep</span>(time.Second)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	table <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> Ball)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Play</span>(<span style="color:#ba2121">&#34;Child:&#34;</span>, table)
+
+	table <span style="color:#666">&lt;-</span> <span style="color:#ba2121">&#34;ping&#34;</span>
+	<span style="color:#00f">Play</span>(<span style="color:#ba2121">&#34;Main:&#34;</span>, table)
+}
+
+</code></pre></div><p><img src="media/16380074672928.jpg" alt=""></p>
+<h3 id="并发检测各种-select-尝试">并发检测（各种 Select 尝试）</h3>
+<p>通过灵活应用select可以实现许多并发检测操作。</p>
+<blockquote>
+<p>尝试读写</p>
+</blockquote>
+<p>含有一个default分支和一个case分支的select代码块可以被用做一个尝试发送或者尝试接收操作，取决于case关键字后跟随的是一个发送操作还是一个接收操作。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>, <span style="color:#666">2</span>)
+
+	try_send <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(v <span style="color:#b00040">string</span>, ch <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#b00040">string</span>) {
+		<span style="color:#008000;font-weight:bold">select</span> {
+			<span style="color:#008000;font-weight:bold">case</span> c <span style="color:#666">&lt;-</span> v:
+				fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;send:&#34;</span>, v)
+			<span style="color:#008000;font-weight:bold">default</span>:
+				fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;ch busy, please try again.&#34;</span>)
+		}
+	}
+
+	try_receive <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(ch <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">string</span>) <span style="color:#b00040">string</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> v <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> c:
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;receive: &#34;</span>, v)
+			<span style="color:#008000;font-weight:bold">return</span> v
+		<span style="color:#008000;font-weight:bold">default</span>:
+			fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;ch busy, please try again.&#34;</span>)
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#ba2121">&#34;_&#34;</span>
+		}
+	}
+
+	<span style="color:#00f">try_send</span>(<span style="color:#ba2121">&#34;Hello!&#34;</span>, c)
+	<span style="color:#00f">try_send</span>(<span style="color:#ba2121">&#34;Hi!&#34;</span>, c)
+	<span style="color:#00f">try_send</span>(<span style="color:#ba2121">&#34;Bye!&#34;</span>, c)
+
+	<span style="color:#00f">try_receive</span>(c)
+	<span style="color:#00f">try_receive</span>(c)
+	<span style="color:#00f">try_receive</span>(c)
+}
+
+</code></pre></div><p><img src="media/16379911758396.jpg" alt=""></p>
+<blockquote>
+<p>尝试关闭</p>
+</blockquote>
+<p>我们可以使用下面的代码来（并发安全地）检查此通道是否已经关闭，此检查不会阻塞当前协程。常用来查看某个期待中的通知是否已经来临。此通知将由另一个协程通过关闭一个通道来发送。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">IsClosed</span>(c <span style="color:#008000;font-weight:bold">chan</span> T) <span style="color:#b00040">bool</span> {
+	<span style="color:#008000;font-weight:bold">select</span> {
+	<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>c:
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">true</span>
+	<span style="color:#008000;font-weight:bold">default</span>:
+	}
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">false</span>
+}
+
+</code></pre></div><blockquote>
+<p>峰值检测</p>
+</blockquote>
+<p>将通道用做计数信号量用例和通道尝试（发送或者接收）操作结合起来可用实现峰值限制。 峰值限制的目的是防止过大的并发请求数。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+	bar24x7 <span style="color:#666">:=</span> <span style="color:#008000">make</span>(Bar, <span style="color:#666">10</span>) <span style="color:#408080;font-style:italic">// 此酒吧只能同时招待10个顾客
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">for</span> customerId <span style="color:#666">:=</span> <span style="color:#666">0</span>; ; customerId<span style="color:#666">++</span> {
+		time.<span style="color:#00f">Sleep</span>(time.Second)
+		consumer <span style="color:#666">:=</span> Consumer{customerId}
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> bar24x7 <span style="color:#666">&lt;-</span> consumer: <span style="color:#408080;font-style:italic">// 试图进入此酒吧
+</span><span style="color:#408080;font-style:italic"></span>			<span style="color:#008000;font-weight:bold">go</span> bar24x7.<span style="color:#00f">ServeConsumer</span>(consumer)
+		<span style="color:#008000;font-weight:bold">default</span>:
+			log.<span style="color:#00f">Print</span>(<span style="color:#ba2121">&#34;顾客#&#34;</span>, customerId, <span style="color:#ba2121">&#34;不愿等待而离去&#34;</span>)
+		}
+	}
+
+</code></pre></div><blockquote>
+<p>超时机制（timeout）</p>
+</blockquote>
+<p>利用select实现对一个可能超时的异步协程进行封装</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> Request <span style="color:#008000;font-weight:bold">struct</span> {
+	input <span style="color:#b00040">int</span>
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Response <span style="color:#008000;font-weight:bold">struct</span> {
+	output <span style="color:#b00040">int</span>
+	err <span style="color:#b00040">error</span>
+	delay time.Duration
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Async_goroutine</span>(request Request, result <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> Response) {
+
+	rq <span style="color:#666">:=</span> request
+	fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;got request: %#v\n&#34;</span>, rq)
+
+	time.<span style="color:#00f">Sleep</span>(time.Second <span style="color:#666">*</span> time.<span style="color:#00f">Duration</span>(<span style="color:#666">1</span> <span style="color:#666">+</span> rand.<span style="color:#00f">Intn</span>(<span style="color:#666">10</span>)))
+
+	rs <span style="color:#666">:=</span> Response{
+		output: <span style="color:#666">10</span>,
+		err: <span style="color:#008000;font-weight:bold">nil</span>,
+	}
+
+	result <span style="color:#666">&lt;-</span> rs
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Await_goroutine_with_timeout</span>(
+	request Request, start_time time.Time, timeout <span style="color:#b00040">int</span>) (<span style="color:#666">*</span>Response, <span style="color:#b00040">error</span>) {
+
+	result <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> Response)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Async_goroutine</span>(request, result)
+
+	rs <span style="color:#666">:=</span> Response{}
+
+	<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> rs = <span style="color:#666">&lt;-</span> result:
+			rs.delay = time.<span style="color:#00f">Since</span>(start_time)
+			<span style="color:#008000;font-weight:bold">break</span>
+
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>time.<span style="color:#00f">After</span>(time.Second <span style="color:#666">*</span> time.<span style="color:#00f">Duration</span>(timeout)):
+			msg <span style="color:#666">:=</span> <span style="color:#ba2121">&#34;timeout after &#34;</span> <span style="color:#666">+</span> strconv.<span style="color:#00f">Itoa</span>(timeout) <span style="color:#666">+</span> <span style="color:#ba2121">&#34; seconds&#34;</span>
+			<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, errors.<span style="color:#00f">New</span>(msg)
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>rs, <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	rand.<span style="color:#00f">Seed</span>(time.<span style="color:#00f">Now</span>().<span style="color:#00f">UnixNano</span>())
+
+	rq <span style="color:#666">:=</span> Request{
+		input: <span style="color:#666">1</span>,
+	}
+
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	rs, err <span style="color:#666">:=</span> <span style="color:#00f">Await_goroutine_with_timeout</span>(rq, start_time,<span style="color:#666">5</span>)
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		fmt.<span style="color:#00f">Println</span>(err)
+	} <span style="color:#008000;font-weight:bold">else</span> {
+		fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;rs.output: %#v\n&#34;</span>, rs.output)
+		fmt.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;rs.delay: %v\n&#34;</span>, rs.delay.<span style="color:#00f">Seconds</span>())
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> {time.<span style="color:#00f">Sleep</span>(time.Second)}
+}
+
+
+</code></pre></div><p><img src="media/16380200891188.jpg" alt=""></p>
+<blockquote>
+<p>脉搏器（ticker)</p>
+</blockquote>
+<p>可以使用尝试发送操作来实现一个每隔一定时间发送一个信号的脉搏器。
+事实上，time标准库包中的Tick函数提供了同样的功能，但效率更高。 我们应该尽量使用标准库包中的实现。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Tick</span>(d time.Duration) <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">struct</span>{} {
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">struct</span>{}, <span style="color:#666">1</span>) <span style="color:#408080;font-style:italic">// 容量最好为1
+</span><span style="color:#408080;font-style:italic"></span>	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		<span style="color:#008000;font-weight:bold">for</span> {
+			time.<span style="color:#00f">Sleep</span>(d)
+			<span style="color:#008000;font-weight:bold">select</span> {
+			<span style="color:#008000;font-weight:bold">case</span> c <span style="color:#666">&lt;-</span> <span style="color:#008000;font-weight:bold">struct</span>{}{}:
+			<span style="color:#008000;font-weight:bold">default</span>:
+			}
+		}
+	}()
+	<span style="color:#008000;font-weight:bold">return</span> c
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	t <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+	<span style="color:#008000;font-weight:bold">for</span> <span style="color:#008000;font-weight:bold">range</span> <span style="color:#00f">Tick</span>(time.Second) {
+		fmt.<span style="color:#00f">Println</span>(time.<span style="color:#00f">Since</span>(t))
+	}
+}
+
+
+</code></pre></div><p><img src="media/16380202702095.jpg" alt=""></p>
+<blockquote>
+<p>速率限制（rate limiting）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Request <span style="color:#008000;font-weight:bold">interface</span> {
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">handle</span>(r Request) {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[handle] to handle#&#34;</span>, r.(<span style="color:#b00040">int</span>))
+}
+
+<span style="color:#008000;font-weight:bold">const</span> Ratelimit_period = time.Minute
+<span style="color:#008000;font-weight:bold">const</span> Ratelimit = <span style="color:#666">100</span>
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">handle_requests</span>(requests <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> Request) {
+
+	quotas <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> time.Time, Ratelimit)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		tick <span style="color:#666">:=</span> time.<span style="color:#00f">NewTicker</span>(Ratelimit_period <span style="color:#666">/</span> Ratelimit)
+		<span style="color:#008000;font-weight:bold">defer</span> tick.<span style="color:#00f">Stop</span>()
+
+		<span style="color:#008000;font-weight:bold">for</span> t <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> tick.C {
+			<span style="color:#008000;font-weight:bold">select</span> {
+			<span style="color:#008000;font-weight:bold">case</span> quotas <span style="color:#666">&lt;-</span> t:
+				fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[handle_request.ticker] sent a quota&#34;</span>)
+			<span style="color:#008000;font-weight:bold">default</span>:
+			}
+		}
+	}()
+
+	<span style="color:#008000;font-weight:bold">for</span> r <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> requests {
+		<span style="color:#666">&lt;-</span> quotas
+
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[handle_request] got a quota to handle&#34;</span>)
+
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">handle</span>(r)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] started&#34;</span>)
+
+	requests <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> Request)
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">handle_requests</span>(requests)
+
+	<span style="color:#408080;font-style:italic">//time.Sleep(time.Second)
+</span><span style="color:#408080;font-style:italic"></span>
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; ; i<span style="color:#666">++</span> {
+		requests <span style="color:#666">&lt;-</span> i
+		fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;[main] sent a request#&#34;</span>, i)
+	}
+}
+
+
+</code></pre></div><p>通过测试，可以看到，不同RateLimit值，输出&quot;handle#”的速度不一样（RateLimit越大，速度越快）</p>
+<p><img src="media/16380219192055.jpg" alt=""></p>
+<blockquote>
+<p>开关（轮换）</p>
+</blockquote>
+<p>向一个nil通道发送数据或者从中接收数据都属于阻塞操作。 利用这一事实，我们可以将一个select流程控制中的case操作中涉及的通道设置为不同的值，以使此select流程控制选择执行不同的分支。</p>
+<p>下面使用了选择机制。在此例子中，两个case操作中的通道有且只有一个为nil，所以只能是不为nil的通道对应的分支被选中。 每个循环步将对调这两个case操作中的通道，从而改变两个分支的可被选中状态。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">type</span> Statement <span style="color:#b00040">string</span>
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Say</span>(playerName <span style="color:#b00040">string</span>, dialog <span style="color:#008000;font-weight:bold">chan</span> Statement, parent <span style="color:#b00040">bool</span>) {
+
+	<span style="color:#008000;font-weight:bold">var</span> receive, send <span style="color:#008000;font-weight:bold">chan</span> Statement
+	<span style="color:#008000;font-weight:bold">if</span> parent {
+		receive, send = <span style="color:#008000;font-weight:bold">nil</span>, dialog
+	} <span style="color:#008000;font-weight:bold">else</span> {
+		receive, send = dialog, <span style="color:#008000;font-weight:bold">nil</span>
+	}
+
+	<span style="color:#008000;font-weight:bold">var</span> last_statement Statement = <span style="color:#ba2121">&#34;hi&#34;</span>
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+			<span style="color:#008000;font-weight:bold">case</span> send <span style="color:#666">&lt;-</span> last_statement:
+			<span style="color:#008000;font-weight:bold">case</span> value <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> receive:
+				fmt.<span style="color:#00f">Println</span>(playerName, value)
+				last_statement = value
+		}
+
+		receive, send = send, receive
+		time.<span style="color:#00f">Sleep</span>(time.Second)
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	dialog <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> Statement)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Say</span>(<span style="color:#ba2121">&#34;Child:&#34;</span>, dialog, <span style="color:#008000;font-weight:bold">false</span>)
+
+	<span style="color:#00f">Say</span>(<span style="color:#ba2121">&#34;Main:&#34;</span>, dialog, <span style="color:#008000;font-weight:bold">true</span>)
+}
+
+</code></pre></div><p><img src="media/16380229906211.jpg" alt=""></p>
+<blockquote>
+<p>控制代码被执行的几率</p>
+</blockquote>
+<p>可以通过在一个select流程控制中使用重复的case操作来增加对应分支中的代码的执行几率。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	foo, bar <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">struct</span>{}), <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#008000;font-weight:bold">struct</span>{})
+	<span style="color:#008000">close</span>(foo); <span style="color:#008000">close</span>(bar) <span style="color:#408080;font-style:italic">// 仅为演示目的
+</span><span style="color:#408080;font-style:italic"></span>	x, y <span style="color:#666">:=</span> <span style="color:#666">0.0</span>, <span style="color:#666">0.0</span>
+	f <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(){x<span style="color:#666">++</span>}
+	g <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">func</span>(){y<span style="color:#666">++</span>}
+	<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#666">:=</span> <span style="color:#666">0</span>; i &lt; <span style="color:#666">100000</span>; i<span style="color:#666">++</span> {
+		<span style="color:#008000;font-weight:bold">select</span> {
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>foo: <span style="color:#00f">f</span>()
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>foo: <span style="color:#00f">f</span>()
+		<span style="color:#008000;font-weight:bold">case</span> <span style="color:#666">&lt;-</span>bar: <span style="color:#00f">g</span>()
+		}
+	}
+	fmt.<span style="color:#00f">Println</span>(x<span style="color:#666">/</span>y) <span style="color:#408080;font-style:italic">// 大致为2
+</span><span style="color:#408080;font-style:italic"></span>}
+
+</code></pre></div><p>通过测试，可以看到，调用f()的次数大约是调用g()的两倍</p>
+<p><img src="media/16380232407676.jpg" alt=""></p>
+<h3 id="数据流处理">数据流处理</h3>
+<blockquote>
+<p>数据流处理系统概述</p>
+</blockquote>
+<p>一般来说，一个数据流处理程序由多个模块组成。不同的模块执行分配给它们的不同的任务。 每个模块由一个或者数个并行工作的协程组成。一个模块中的工作协程从一些其它模块接收数据做为输入，并向另一些模块发送输出数据。 换句话数，一个模块可能同时兼任数据消费者和数据产生者的角色。多个模块一起组成了一个数据流处理系统。</p>
+<blockquote>
+<p>数据生成、搜集、加载</p>
+</blockquote>
+<p>一个数据产生者可能通过以下途径生成数据：</p>
+<pre><code>- 加载一个文件、或者读取一个数据库、或者用爬虫抓取网页数据；
+- 从一个软件或者硬件系统搜集各种数据；
+- 产生一系列随机数；等等
+</code></pre>
+<blockquote>
+<p>一个随机数生成器</p>
+</blockquote>
+<p>一个数据产生者可以在任何时刻关闭返回的通道以结束数据生成。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Random_generator</span>() <span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">uint16</span> {
+	c <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#b00040">uint16</span>)
+
+	<span style="color:#008000;font-weight:bold">go</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		rnds <span style="color:#666">:=</span> <span style="color:#008000">make</span>([]<span style="color:#b00040">byte</span>, <span style="color:#666">2</span>)
+		<span style="color:#008000;font-weight:bold">for</span> {
+			_, err <span style="color:#666">:=</span> rand.<span style="color:#00f">Read</span>(rnds)
+			<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+				<span style="color:#008000">close</span>(c)
+				<span style="color:#008000;font-weight:bold">break</span>
+			}
+			c <span style="color:#666">&lt;-</span> binary.BigEndian.<span style="color:#00f">Uint16</span>(rnds)
+		}
+	}()
+
+	<span style="color:#008000;font-weight:bold">return</span> c
+}
+
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main started&#34;</span>)
+
+	g <span style="color:#666">:=</span> <span style="color:#00f">Random_generator</span>()
+
+	rd <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> g
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;got a random: &#34;</span>, rd)
+
+	rd = <span style="color:#666">&lt;-</span> g
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;got a random: &#34;</span>, rd)
+
+   <span style="color:#008000">close</span>(g)
+	fmt.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;main stopped&#34;</span>)
+
+}
+</code></pre></div><p><img src="media/16380278605377.jpg" alt=""></p>
+<h2 id="参考文献">参考文献</h2>
+<blockquote>
+<ul>
+<li><a href="https://go101.org/article/channel.html">https://go101.org/article/channel.html</a></li>
+<li><a href="https://go101.org/article/channel-use-cases.html">https://go101.org/article/channel-use-cases.html</a></li>
+</ul>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-4-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/golang-channel-study-4-1/image-10_hu9cfa87666c67183220c1d6ff67af66a4_10833693_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/golang-channel-study-4-1/image-10_hu9cfa87666c67183220c1d6ff67af66a4_10833693_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/golang-channel-study-4-1/image-10_hu9cfa87666c67183220c1d6ff67af66a4_10833693_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/golang-channel-study-4-1/image-10_hu9cfa87666c67183220c1d6ff67af66a4_10833693_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（4）- 爬虫服务的并发优化</h2>
+    <p class="card-text">In this post, we will look at a small I/O intensive problem and explore different ways of doing this operation concurrently using the Go programming language, as a practical way of using concurrency in practice.
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-26 1126:00">Nov 26, 2021</time></p>
+      <p>#golang #channel </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

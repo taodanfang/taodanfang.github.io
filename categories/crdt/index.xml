@@ -1,0 +1,44 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CRDT - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/crdt/</link>
+    <description>Recent content in CRDT on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 03 Feb 2021 14:22:46 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/crdt/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CRDT协议基础知识(5) - 安全隐私处理</title>
+      <link>https://taodanfang.github.io/posts/crdt-5-1/</link>
+      <pubDate>Wed, 03 Feb 2021 14:22:46 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-5-1/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Privacy focused&lt;/strong&gt; means the application developers never get to see the content their users are creating - your data is yours only. &lt;strong&gt;Powerful&lt;/strong&gt; means real-time collaboration between multiple users, search, notifications. &lt;strong&gt;User friendly&lt;/strong&gt; means it’s easy to access or recover your data on a new device and easy to invite collaborators.&lt;/p&gt;</description>
+    </item><item>
+      <title>CRDT协议基础知识(4) - 实例研究</title>
+      <link>https://taodanfang.github.io/posts/crdt-4-1/</link>
+      <pubDate>Tue, 02 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-4-1/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.conclave.tech/&#34;&gt;Conclave&lt;/a&gt; is a peer-to-peer, real-time, collaborative text editor built from scratch in JavaScript.&lt;/p&gt;</description>
+    </item><item>
+      <title>CRDT协议基础知识(3) - 通信实现框架</title>
+      <link>https://taodanfang.github.io/posts/crdt-3-1/</link>
+      <pubDate>Mon, 01 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-3-1/</guid>
+      <description>&lt;h2 id=&#34;cap-理论&#34;&gt;CAP 理论&lt;/h2&gt;
+&lt;p&gt;CAP 定理指出对于一个分布式计算系统来说，不可能同时满足以下三点：&lt;/p&gt;</description>
+    </item><item>
+      <title>CRDT协议基础知识(1) - 基本实现框架</title>
+      <link>https://taodanfang.github.io/posts/crdt-1-1/</link>
+      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/crdt-1-1/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;2016年3月，Google上线的Google Docs，协同文档的诞生，无疑给基于互联网的沟通协作带来了一场革命。&lt;/p&gt;
+&lt;p&gt;1984 年，MIT 的科学家提出了计算机支持的协同工作（Computer Supported Cooperative Work，缩写为 CSCW），使得人们可以借助计算机和互联网去完成协同工作。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

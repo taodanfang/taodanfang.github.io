@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Golang 并发开发实践（4）- 爬虫服务的并发优化 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  Golang 并发开发实践（4）- 爬虫服务的并发优化</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >Golang 并发开发实践（4）- 爬虫服务的并发优化</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-11-26">Nov 26, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/golang-channel-study-4-1/image-10_hu9cfa87666c67183220c1d6ff67af66a4_10833693_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/golang-channel-study-4-1/image-10_hu9cfa87666c67183220c1d6ff67af66a4_10833693_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/golang-channel-study-4-1/image-10_hu9cfa87666c67183220c1d6ff67af66a4_10833693_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/golang-channel-study-4-1/image-10_hu9cfa87666c67183220c1d6ff67af66a4_10833693_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#需求说明">需求说明</a></li>
+    <li><a href="#并发模型设计">并发模型设计</a></li>
+    <li><a href="#系统实现">系统实现</a>
+      <ul>
+        <li><a href="#数据模型定义">数据模型定义</a></li>
+        <li><a href="#串行同步模型">串行同步模型</a></li>
+        <li><a href="#page-级别的并发优化">Page 级别的并发优化</a></li>
+        <li><a href="#resource-级别的并发优化">Resource 级别的并发优化</a></li>
+        <li><a href="#host-级别的并发优化">Host 级别的并发优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#附录代码">附录代码</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-3-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（3）- 详解</h2>
+    <p class="card-text">掌握channel的关键是，时刻把握操作的阻塞情况，协程一旦阻塞，将会让出执行，系统会选择其他协程投入运行。系统一旦发现所有协程都处于阻塞状态，则抛出“死锁”异常！因此，这种基于channel的消息通信机制，完全在用户的控制之下实现了安全的程序逻辑（从而尽量避免了传统基于锁的安全保护机制）。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-25 1125:00">Nov 25, 2021</time></p>
+      <p>#golang #channel </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>In this post, we will look at a small I/O intensive problem and explore different ways of doing this operation concurrently using the Go programming language, as a practical way of using concurrency in practice.</p>
+<h2 id="需求说明">需求说明</h2>
+<p>Supposed, we have a list of webpage URLs, and we want to find out what the size of the webpage is. We can define the size of the webpage as the size of the original HTML for the page, along with the size of all the assets it references, namely, css, image and js files in link, img and script tags respectively. So the idea is that given a webpage URL, fetch the page, parse the HTML to find the references as above, download those resources and finally sum the total size of the bytes received to get the total page weight.</p>
+<p>假设，我们有一个网页列表，我希望获得这些网页的尺寸。这里的尺寸定义为，一个网页本身，及其包含的所有链接的尺寸。因此，需要对网页进行解析，从而获得其中的所有链接资源，并下载进行计算。最后，获得该网页的总尺寸。</p>
+<h2 id="并发模型设计">并发模型设计</h2>
+<p><img src="media/16379142190114.jpg" alt=""></p>
+<p>可以采用的并发模型包括以下几种：</p>
+<ul>
+<li>串行同步模型（S)：This is the simplest model where we fetch everything sychronously. We loop through every web page URL, and for each URL, we then fetch and parse the HTML, indentify the external resources and then iteratively fetch them to find the final page size.</li>
+<li>网页级别的并发模型（P)：This is the first step up from the synchronous model, wherein we take each input webpage and then resolve it in it’s own go routine. So each of the web pages run concurrently, but for any given pages, the resources are fetched synchronously one after the other as above.</li>
+<li>资源级别的并发模型（R)：This extends model (P), but having a pool of go routine “workers” for doing the HTTP GET operations. Like above, each web page run’s in it’s own go routine, but in order to do the HTTP operations, it hands it off to a pool. The workers in the pool concurrently do the fetch and once data is received, it’s sent back to the page level go routine for processing.</li>
+<li>主机级别的并发模型（H)：This further builds on model (R), by having a pool of concurrent routines per host instead of a global pool of workers. In this model, the page level go routine, instead of handing it of directly to a pool, hands it to a router instead which then multiplexes it across the different pools based on the host name in the request.</li>
+</ul>
+<h2 id="系统实现">系统实现</h2>
+<h3 id="数据模型定义">数据模型定义</h3>
+<blockquote>
+<p>resource.go</p>
+</blockquote>
+<p>resource 代表网页中包含的各种资源（例如html文本、css代码、script脚本、image图片链接等等）</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> ResourceType <span style="color:#b00040">int</span>
+
+<span style="color:#008000;font-weight:bold">const</span> (
+	NotRemoteResource ResourceType = <span style="color:#008000;font-weight:bold">iota</span>
+	HtmlResource
+	CssResource
+	ScriptResource
+	ImageResource
+)
+
+<span style="color:#008000;font-weight:bold">type</span> Resource <span style="color:#008000;font-weight:bold">struct</span> {
+	resType ResourceType
+	url     <span style="color:#b00040">string</span>
+	size <span style="color:#b00040">int</span>
+	err <span style="color:#b00040">error</span>
+	timeToken time.Duration
+}
+
+</code></pre></div><blockquote>
+<p>page.go</p>
+</blockquote>
+<p>page 是构建在 resource 之上的网页对象</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Page <span style="color:#008000;font-weight:bold">struct</span> {
+	Url  <span style="color:#666">*</span>url.URL
+	base <span style="color:#666">*</span>Resource
+	assets    <span style="color:#008000;font-weight:bold">map</span>[ResourceType]<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#666">*</span>Resource
+	Total     <span style="color:#b00040">int</span>
+	TimeTaken time.Duration
+	TimeParse time.Duration
+	err       <span style="color:#b00040">error</span>
+}
+
+</code></pre></div><blockquote>
+<p>关键操作</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#408080;font-style:italic">// 计算网页全部尺寸
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (p <span style="color:#666">*</span>Page) <span style="color:#00f">Resolve</span>() <span style="color:#b00040">error</span> {
+	startTime <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() {p.TimeTaken = time.<span style="color:#00f">Since</span>(startTime)}()
+
+	body, err <span style="color:#666">:=</span> p.base.<span style="color:#00f">get</span>()
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	p.Total <span style="color:#666">+=</span> p.base.size
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> p.<span style="color:#00f">parseResources</span>(body); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> p.<span style="color:#00f">resolveResources</span>()
+}
+
+</code></pre></div><h3 id="串行同步模型">串行同步模型</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">resolveSync</span>(urls []<span style="color:#b00040">string</span>) []<span style="color:#666">*</span>common.Page {
+	pages <span style="color:#666">:=</span> []<span style="color:#666">*</span>common.Page{}
+
+	<span style="color:#008000;font-weight:bold">for</span> _, url <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> urls {
+		p, err <span style="color:#666">:=</span> common.<span style="color:#00f">NewPage</span>(url)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			log.<span style="color:#00f">Println</span>(err)
+			<span style="color:#008000;font-weight:bold">continue</span>
+		}
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> p.<span style="color:#00f">Resolve</span>(); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			log.<span style="color:#00f">Println</span>(err)
+		}
+
+		pages = <span style="color:#008000">append</span>(pages, p)
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> pages
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	urls <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{
+		<span style="color:#ba2121">&#34;http://k.sina.com.cn/article_1699540307_654ced5304001295p.html&#34;</span>,
+		<span style="color:#ba2121">&#34;https://baijiahao.baidu.com/s?id=1717478104450049705&amp;wfr=spider&amp;for=pc&#34;</span>,
+	}
+	<span style="color:#008000;font-weight:bold">var</span> pages []<span style="color:#666">*</span>common.Page
+
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	pages = <span style="color:#00f">resolveSync</span>(urls)
+
+	end_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	<span style="color:#008000;font-weight:bold">for</span> _, p <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> pages {
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Page: &#34;</span>, p.Url, <span style="color:#ba2121">&#34;\nTotal_size: &#34;</span>, p.Total, <span style="color:#ba2121">&#34;, TimeTaken: &#34;</span>, p.TimeTaken)
+	}
+
+	log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;total time taken: %v\n&#34;</span>, end_time.<span style="color:#00f">Sub</span>(start_time))
+}
+
+</code></pre></div><p><img src="media/16379330379993.jpg" alt=""></p>
+<h3 id="page-级别的并发优化">Page 级别的并发优化</h3>
+<blockquote>
+<p>对每一个Page的resolve操作，通过生成一个协程来完成，并在 main 协程与page协程之间建立通道</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">resolve_page</span>(result <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#666">*</span>common.Page, p <span style="color:#666">*</span>common.Page) {
+	_ = p.<span style="color:#00f">Resolve</span>()
+	result <span style="color:#666">&lt;-</span> p
+}
+
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">resolve_with_page_goroutine</span>(urls []<span style="color:#b00040">string</span>) []<span style="color:#666">*</span>common.Page {
+	pages <span style="color:#666">:=</span> []<span style="color:#666">*</span>common.Page{}
+
+	result <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>common.Page)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000">close</span>(result)
+	
+	num_pages <span style="color:#666">:=</span> <span style="color:#666">0</span>
+
+	<span style="color:#008000;font-weight:bold">for</span> _, url <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> urls {
+		p, err <span style="color:#666">:=</span> common.<span style="color:#00f">NewPage</span>(url)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			log.<span style="color:#00f">Println</span>(err)
+			<span style="color:#008000;font-weight:bold">continue</span>
+		}
+
+		num_pages<span style="color:#666">++</span>
+		<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">resolve_page</span>(result, p)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;num_pages; i<span style="color:#666">++</span> {
+		<span style="color:#008000;font-weight:bold">if</span> p, opening <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>result; opening {
+			pages = <span style="color:#008000">append</span>(pages, p)
+		}
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> pages
+}
+
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	urls <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{
+		<span style="color:#ba2121">&#34;http://k.sina.com.cn/article_1699540307_654ced5304001295p.html&#34;</span>,
+		<span style="color:#ba2121">&#34;https://baijiahao.baidu.com/s?id=1717478104450049705&amp;wfr=spider&amp;for=pc&#34;</span>,
+	}
+	<span style="color:#008000;font-weight:bold">var</span> pages []<span style="color:#666">*</span>common.Page
+
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	pages = <span style="color:#00f">resolve_with_page_goroutine</span>(urls)
+
+	end_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	<span style="color:#008000;font-weight:bold">for</span> _, p <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> pages {
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Page: &#34;</span>, p.Url, <span style="color:#ba2121">&#34;\nTotal_size: &#34;</span>, p.Total, <span style="color:#ba2121">&#34;, TimeTaken: &#34;</span>, p.TimeTaken)
+	}
+
+	log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;total time taken: %v\n&#34;</span>, end_time.<span style="color:#00f">Sub</span>(start_time))
+}
+
+</code></pre></div><p>测试后，可见时间已经有所减少</p>
+<p><img src="media/16379339956216.jpg" alt=""></p>
+<h3 id="resource-级别的并发优化">Resource 级别的并发优化</h3>
+<blockquote>
+<p>通过启动多个 worker 协程负责处理 resource，每个url生成一个 page 协程
+引入多个通道：</p>
+</blockquote>
+<ul>
+<li>resource_request_chan: page 协程向该通道写入 request，worker 协程从该通道读取 request</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> ResourceRequest <span style="color:#008000;font-weight:bold">struct</span> {
+	res <span style="color:#666">*</span>Resource
+	result_chan <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#666">*</span>ResourceResult
+}
+
+<span style="color:#008000;font-weight:bold">type</span> ResourceResult <span style="color:#008000;font-weight:bold">struct</span> {
+	res <span style="color:#666">*</span>Resource
+	body []<span style="color:#b00040">byte</span>
+	err <span style="color:#b00040">error</span>
+}
+
+<span style="color:#408080;font-style:italic">// 资源处理
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Worker</span>(req <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>ResourceRequest) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">if</span> rq, opening <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>req; opening {
+			body, err <span style="color:#666">:=</span> rq.res.<span style="color:#00f">get</span>()
+			rq.result_chan <span style="color:#666">&lt;-</span> <span style="color:#666">&amp;</span>ResourceResult{res: rq.res, body: body, err: err}
+		}
+	}
+}
+
+</code></pre></div><ul>
+<li>resource_result_chan: page 协程负责创建该通道，并从通道中读取 worker 写入的 response</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> (p <span style="color:#666">*</span>Page) <span style="color:#00f">Resolve_page_resources_with_worker</span>(req_chan <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#666">*</span>ResourceRequest) {
+
+	n_resources <span style="color:#666">:=</span> p.<span style="color:#00f">NumResources</span>()
+	resources_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>ResourceResult, n_resources)
+
+	<span style="color:#008000;font-weight:bold">for</span> _, a <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> p.assets {
+		<span style="color:#008000;font-weight:bold">for</span> _, r <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> a {
+			req_chan <span style="color:#666">&lt;-</span> <span style="color:#666">&amp;</span>ResourceRequest{res: r, result_chan: resources_chan}
+		}
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;n_resources; i<span style="color:#666">++</span> {
+		resp <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> resources_chan
+		p.Total <span style="color:#666">+=</span> resp.res.size
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (p <span style="color:#666">*</span>Page) <span style="color:#00f">Resolve_page_with_resource_request</span>(req_chan <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#666">*</span>ResourceRequest, page_chan <span style="color:#008000;font-weight:bold">chan</span><span style="color:#666">&lt;-</span> <span style="color:#666">*</span>Page) {
+
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() {p.TimeTaken = time.<span style="color:#00f">Since</span>(start_time)}()
+
+	page_rsp_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>ResourceResult)
+
+	req_chan <span style="color:#666">&lt;-</span> <span style="color:#666">&amp;</span>ResourceRequest{res: p.base, result_chan: page_rsp_chan}
+
+	rsp <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> page_rsp_chan
+	<span style="color:#008000;font-weight:bold">if</span> rsp.err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		p.err = rsp.err
+		page_chan <span style="color:#666">&lt;-</span> p
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> p.<span style="color:#00f">parseResources</span>(rsp.body); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		p.err = err
+		page_chan <span style="color:#666">&lt;-</span> p
+		<span style="color:#008000;font-weight:bold">return</span>
+	}
+
+	p.Total <span style="color:#666">+=</span> p.base.size
+
+	p.<span style="color:#00f">Resolve_page_resources_with_worker</span>(req_chan)
+
+	page_chan <span style="color:#666">&lt;-</span> p
+}
+
+</code></pre></div><ul>
+<li>page_chan: page 协程向该通道写入处理后的 page 结果</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">resolve_urls_with_resource_worker</span>(urls []<span style="color:#b00040">string</span>) []<span style="color:#666">*</span>common.Page {
+
+	req_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>common.ResourceRequest)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000">close</span>(req_chan)
+
+	worker_pool_size <span style="color:#666">:=</span> <span style="color:#666">5</span>
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;worker_pool_size; i<span style="color:#666">++</span> {
+		<span style="color:#008000;font-weight:bold">go</span> common.<span style="color:#00f">Worker</span>(req_chan)
+	}
+
+	pages <span style="color:#666">:=</span> []<span style="color:#666">*</span>common.Page{}
+
+	page_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>common.Page)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000">close</span>(page_chan)
+
+	num_pages <span style="color:#666">:=</span> <span style="color:#666">0</span>
+	<span style="color:#008000;font-weight:bold">for</span> _, url <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> urls {
+		p, err <span style="color:#666">:=</span> common.<span style="color:#00f">NewPage</span>(url)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			log.<span style="color:#00f">Println</span>(err)
+			<span style="color:#008000;font-weight:bold">continue</span>
+		}
+
+		num_pages<span style="color:#666">++</span>
+
+		<span style="color:#008000;font-weight:bold">go</span> p.<span style="color:#00f">Resolve_page_with_resource_request</span>(req_chan, page_chan)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;num_pages; i<span style="color:#666">++</span> {
+		<span style="color:#008000;font-weight:bold">if</span> p, opening <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>page_chan; opening {
+			pages = <span style="color:#008000">append</span>(pages, p)
+		}
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> pages
+}
+
+</code></pre></div><blockquote>
+<p>测试</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	urls <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{
+		<span style="color:#ba2121">&#34;http://k.sina.com.cn/article_1699540307_654ced5304001295p.html&#34;</span>,
+		<span style="color:#ba2121">&#34;https://baijiahao.baidu.com/s?id=1717478104450049705&amp;wfr=spider&amp;for=pc&#34;</span>,
+	}
+	<span style="color:#008000;font-weight:bold">var</span> pages []<span style="color:#666">*</span>common.Page
+
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	pages = <span style="color:#00f">resolve_urls_with_resource_worker</span>(urls)
+
+	end_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	<span style="color:#008000;font-weight:bold">for</span> _, p <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> pages {
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Page: &#34;</span>, p.Url, <span style="color:#ba2121">&#34;\nTotal_size: &#34;</span>, p.Total, <span style="color:#ba2121">&#34;, TimeTaken: &#34;</span>, p.TimeTaken)
+	}
+
+	log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;total time taken: %v\n&#34;</span>, end_time.<span style="color:#00f">Sub</span>(start_time))
+}
+
+</code></pre></div><p>可见处理时间，进一步缩短</p>
+<p><img src="media/16379384489006.jpg" alt=""></p>
+<h3 id="host-级别的并发优化">Host 级别的并发优化</h3>
+<blockquote>
+<p>优化思路： To build host level concurrency, we just need to change the behavior of the pool such that each request is routed to a pool maintained per host instead of one global worker pool as above. We can do this quite easily by introducing a go routine that maintains a map of hosts to a request channel that is backed by a pool of workers. We can lazily create this channel and it’s pool as we see each new host. Modifications to this map are inherently safe as they are internal to and accessed only by this routine. The go rotine takes one request channel as input to read from for new resource requests and routes it to the appropriate host based pool by writing to that pool’s channel.</p>
+</blockquote>
+<blockquote>
+<p>只需要创建一个新的协程 router，读取 request，并将其按照 host 归属到一个 worker_pool，worker 从 router 创建的通道中，读取 request, 处理后，将结果写入到 request.result_chan</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#408080;font-style:italic">// 资源处理
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Worker</span>(req <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>ResourceRequest) {
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">if</span> rq, opening <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>req; opening {
+			body, err <span style="color:#666">:=</span> rq.res.<span style="color:#00f">get</span>()
+			rq.result_chan <span style="color:#666">&lt;-</span> <span style="color:#666">&amp;</span>ResourceResult{res: rq.res, body: body, err: err}
+		}
+	}
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">Router</span>(req <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>ResourceRequest, worker_pool_size <span style="color:#b00040">int</span>) {
+	route_table_by_host <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>ResourceRequest{}
+
+	<span style="color:#008000;font-weight:bold">for</span> {
+		<span style="color:#008000;font-weight:bold">if</span> rq, opening <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span> req; opening {
+			host <span style="color:#666">:=</span> rq.res.<span style="color:#00f">host</span>()
+			<span style="color:#008000;font-weight:bold">if</span> _, found <span style="color:#666">:=</span> route_table_by_host[host]; !found {
+				new_req <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>ResourceRequest)
+				route_table_by_host[host] = new_req
+
+				<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;worker_pool_size; i<span style="color:#666">++</span> {
+					<span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">Worker</span>(new_req)
+				}
+			}
+
+			route_table_by_host[host] <span style="color:#666">&lt;-</span> rq
+		}
+	}
+}
+
+</code></pre></div><blockquote>
+<p>测试</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+
+	urls <span style="color:#666">:=</span> []<span style="color:#b00040">string</span>{
+		<span style="color:#ba2121">&#34;http://k.sina.com.cn/article_1699540307_654ced5304001295p.html&#34;</span>,
+		<span style="color:#ba2121">&#34;https://baijiahao.baidu.com/s?id=1717478104450049705&amp;wfr=spider&amp;for=pc&#34;</span>,
+	}
+	<span style="color:#008000;font-weight:bold">var</span> pages []<span style="color:#666">*</span>common.Page
+
+	start_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	pages = <span style="color:#00f">resolve_urls_with_route_to_resource_worker</span>(urls)
+
+	end_time <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	<span style="color:#008000;font-weight:bold">for</span> _, p <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> pages {
+		log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;Page: &#34;</span>, p.Url, <span style="color:#ba2121">&#34;\nTotal_size: &#34;</span>, p.Total, <span style="color:#ba2121">&#34;, TimeTaken: &#34;</span>, p.TimeTaken)
+	}
+
+	log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;total time taken: %v\n&#34;</span>, end_time.<span style="color:#00f">Sub</span>(start_time))
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">resolve_urls_with_route_to_resource_worker</span>(urls []<span style="color:#b00040">string</span>) []<span style="color:#666">*</span>common.Page {
+
+	req_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>common.ResourceRequest)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000">close</span>(req_chan)
+
+	worker_pool_size <span style="color:#666">:=</span> <span style="color:#666">5</span>
+	<span style="color:#008000;font-weight:bold">go</span> common.<span style="color:#00f">Router</span>(req_chan, worker_pool_size)
+
+	pages <span style="color:#666">:=</span> []<span style="color:#666">*</span>common.Page{}
+
+	page_chan <span style="color:#666">:=</span> <span style="color:#008000">make</span>(<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>common.Page)
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000">close</span>(page_chan)
+
+	num_pages <span style="color:#666">:=</span> <span style="color:#666">0</span>
+	<span style="color:#008000;font-weight:bold">for</span> _, url <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> urls {
+		p, err <span style="color:#666">:=</span> common.<span style="color:#00f">NewPage</span>(url)
+		<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+			log.<span style="color:#00f">Println</span>(err)
+			<span style="color:#008000;font-weight:bold">continue</span>
+		}
+
+		num_pages<span style="color:#666">++</span>
+
+		<span style="color:#008000;font-weight:bold">go</span> p.<span style="color:#00f">Resolve_page_with_resource_request</span>(req_chan, page_chan)
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> i<span style="color:#666">:=</span><span style="color:#666">0</span>; i&lt;num_pages; i<span style="color:#666">++</span> {
+		<span style="color:#008000;font-weight:bold">if</span> p, opening <span style="color:#666">:=</span> <span style="color:#666">&lt;-</span>page_chan; opening {
+			pages = <span style="color:#008000">append</span>(pages, p)
+		}
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> pages
+}
+
+
+</code></pre></div><p>可见，处理时间已经缩减到 ms 级别</p>
+<p><img src="media/16379413772582.jpg" alt=""></p>
+<h2 id="总结">总结</h2>
+<ul>
+<li>根据并发需求，思考需要创建的协程数量，及其各个协程之间的通道关系，最好先画出并发模型图</li>
+<li>注意所有的协程都是对所有的通道可见的，要注意区分通道的创建者、写入者、读取者，并在协程参数中选择合适的单向、双向通道类型</li>
+<li>对于存在多个协程共享数据的情况，要注意结合waitgroup、mux等保护工具，确保逻辑正确性（无死锁）</li>
+</ul>
+<h2 id="附录代码">附录代码</h2>
+<blockquote>
+<p>node.go</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">package</span> common
+
+<span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;golang.org/x/net/html&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">type</span> LinkNode html.Node
+<span style="color:#008000;font-weight:bold">type</span> ScriptNode html.Node
+<span style="color:#008000;font-weight:bold">type</span> ImgNode html.Node
+
+<span style="color:#008000;font-weight:bold">type</span> ResourceRef <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Reference</span>() (<span style="color:#b00040">string</span>, ResourceType)
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (l <span style="color:#666">*</span>LinkNode) <span style="color:#00f">Reference</span>() (url <span style="color:#b00040">string</span>, resType ResourceType) {
+	<span style="color:#008000;font-weight:bold">for</span> _, a <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> l.Attr {
+		<span style="color:#008000;font-weight:bold">if</span> a.Key <span style="color:#666">==</span> <span style="color:#ba2121">&#34;rel&#34;</span> {
+			<span style="color:#008000;font-weight:bold">switch</span> a.Val {
+			<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;stylesheet&#34;</span>:
+				resType = CssResource
+			<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;shortcut icon&#34;</span>:
+				<span style="color:#008000;font-weight:bold">fallthrough</span>
+			<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;apple-touch-icon-precomposed&#34;</span>:
+				<span style="color:#008000;font-weight:bold">fallthrough</span>
+			<span style="color:#008000;font-weight:bold">case</span> <span style="color:#ba2121">&#34;icon&#34;</span>:
+				resType = ImageResource
+			}
+		}
+		<span style="color:#008000;font-weight:bold">if</span> a.Key <span style="color:#666">==</span> <span style="color:#ba2121">&#34;href&#34;</span> {
+			url = a.Val
+		}
+	}
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (s <span style="color:#666">*</span>ScriptNode) <span style="color:#00f">Reference</span>() (url <span style="color:#b00040">string</span>, resType ResourceType) {
+	<span style="color:#008000;font-weight:bold">for</span> _, a <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> s.Attr {
+		<span style="color:#008000;font-weight:bold">if</span> a.Key <span style="color:#666">==</span> <span style="color:#ba2121">&#34;src&#34;</span> {
+			resType = ScriptResource
+			url = a.Val
+		}
+	}
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (i <span style="color:#666">*</span>ImgNode) <span style="color:#00f">Reference</span>() (url <span style="color:#b00040">string</span>, resType ResourceType) {
+	<span style="color:#008000;font-weight:bold">for</span> _, a <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> i.Attr {
+		<span style="color:#008000;font-weight:bold">if</span> a.Key <span style="color:#666">==</span> <span style="color:#ba2121">&#34;src&#34;</span> {
+			resType = ImageResource
+			url = a.Val
+		}
+	}
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+
+</code></pre></div><blockquote>
+<p>page.go</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">package</span> common
+
+<span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;net/url&#34;</span>
+	<span style="color:#ba2121">&#34;time&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">type</span> Page <span style="color:#008000;font-weight:bold">struct</span> {
+	Url  <span style="color:#666">*</span>url.URL
+	base <span style="color:#666">*</span>Resource
+	assets    <span style="color:#008000;font-weight:bold">map</span>[ResourceType]<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#666">*</span>Resource
+	Total     <span style="color:#b00040">int</span>
+	TimeTaken time.Duration
+	TimeParse time.Duration
+	err       <span style="color:#b00040">error</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">NewPage</span>(rawURL <span style="color:#b00040">string</span>) (<span style="color:#666">*</span>Page, <span style="color:#b00040">error</span>) {
+	url_o, err <span style="color:#666">:=</span> url.<span style="color:#00f">Parse</span>(rawURL)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#666">&amp;</span>Page{
+		Url: url_o,
+		base: <span style="color:#666">&amp;</span>Resource{
+			url:     rawURL,
+			resType: HtmlResource,
+		},
+		assets: <span style="color:#008000;font-weight:bold">map</span>[ResourceType]<span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#666">*</span>Resource{},
+	}, <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#408080;font-style:italic">// 计算网页全部尺寸
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (p <span style="color:#666">*</span>Page) <span style="color:#00f">Resolve</span>() <span style="color:#b00040">error</span> {
+	startTime <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() {p.TimeTaken = time.<span style="color:#00f">Since</span>(startTime)}()
+
+	body, err <span style="color:#666">:=</span> p.base.<span style="color:#00f">get</span>()
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	p.Total <span style="color:#666">+=</span> p.base.size
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> p.<span style="color:#00f">parseResources</span>(body); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> p.<span style="color:#00f">resolveResources</span>()
+}
+
+
+<span style="color:#408080;font-style:italic">// 解析网页内容
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (p <span style="color:#666">*</span>Page) <span style="color:#00f">parseResources</span>(body []<span style="color:#b00040">byte</span>) <span style="color:#b00040">error</span> {
+	startTime <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() {p.TimeParse = time.<span style="color:#00f">Since</span>(startTime)}()
+
+	resources, err <span style="color:#666">:=</span> <span style="color:#00f">extractResources</span>(p.Url.Scheme, p.Url.Host, body)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> err
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> _, r <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> resources {
+		<span style="color:#008000;font-weight:bold">if</span> _, found <span style="color:#666">:=</span> p.assets[r.resType]; found {
+			p.assets[r.resType][r.url] = r
+		} <span style="color:#008000;font-weight:bold">else</span> {
+			p.assets[r.resType] = <span style="color:#008000;font-weight:bold">map</span>[<span style="color:#b00040">string</span>]<span style="color:#666">*</span>Resource{
+				r.url: r,
+			}
+		}
+	}
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#408080;font-style:italic">// 计算资源尺寸
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (p <span style="color:#666">*</span>Page) <span style="color:#00f">resolveResources</span>() <span style="color:#b00040">error</span> {
+	<span style="color:#008000;font-weight:bold">for</span> _, a <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> p.assets {
+		<span style="color:#008000;font-weight:bold">for</span> _, r <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> a {
+			<span style="color:#008000;font-weight:bold">if</span> _, err <span style="color:#666">:=</span> r.<span style="color:#00f">get</span>(); err <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">nil</span> {
+				p.Total <span style="color:#666">+=</span> r.size
+			}
+		}
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#408080;font-style:italic">// 获取网页包含资源个数
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> (p <span style="color:#666">*</span>Page) <span style="color:#00f">NumResources</span>() (nResources <span style="color:#b00040">int</span>) {
+	<span style="color:#008000;font-weight:bold">for</span> _, a <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> p.assets {
+		nResources <span style="color:#666">+=</span> <span style="color:#008000">len</span>(a)
+	}
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+
+</code></pre></div><blockquote>
+<p>resource.go</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">package</span> common
+
+<span style="color:#008000;font-weight:bold">import</span> (
+	<span style="color:#ba2121">&#34;bytes&#34;</span>
+	<span style="color:#ba2121">&#34;net/url&#34;</span>
+	<span style="color:#ba2121">&#34;strings&#34;</span>
+
+	<span style="color:#ba2121">&#34;golang.org/x/net/html&#34;</span>
+	<span style="color:#ba2121">&#34;golang.org/x/net/html/atom&#34;</span>
+
+	<span style="color:#ba2121">&#34;io/ioutil&#34;</span>
+	<span style="color:#ba2121">&#34;net/http&#34;</span>
+	<span style="color:#ba2121">&#34;time&#34;</span>
+)
+
+<span style="color:#008000;font-weight:bold">type</span> ResourceType <span style="color:#b00040">int</span>
+
+<span style="color:#008000;font-weight:bold">const</span> (
+	NotRemoteResource ResourceType = <span style="color:#008000;font-weight:bold">iota</span>
+	HtmlResource
+	CssResource
+	ScriptResource
+	ImageResource
+)
+
+<span style="color:#008000;font-weight:bold">type</span> Resource <span style="color:#008000;font-weight:bold">struct</span> {
+	resType ResourceType
+	url     <span style="color:#b00040">string</span>
+	size <span style="color:#b00040">int</span>
+	err <span style="color:#b00040">error</span>
+	timeToken time.Duration
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (r <span style="color:#666">*</span>Resource) <span style="color:#00f">get</span>() ([]<span style="color:#b00040">byte</span>, <span style="color:#b00040">error</span>) {
+	startTime <span style="color:#666">:=</span> time.<span style="color:#00f">Now</span>()
+
+	<span style="color:#008000;font-weight:bold">defer</span> <span style="color:#008000;font-weight:bold">func</span>() {
+		r.timeToken = time.<span style="color:#00f">Since</span>(startTime)
+	}()
+
+	resp, err <span style="color:#666">:=</span> <span style="color:#00f">httpGet</span>(r.url)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		r.err = err
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+	}
+	<span style="color:#008000;font-weight:bold">defer</span> resp.Body.<span style="color:#00f">Close</span>()
+
+	body, err <span style="color:#666">:=</span> ioutil.<span style="color:#00f">ReadAll</span>(resp.Body)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		r.err = err
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+	}
+
+	r.size = <span style="color:#008000">len</span>(body)
+	<span style="color:#008000;font-weight:bold">return</span> body, <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#008000;font-weight:bold">func</span> (r <span style="color:#666">*</span>Resource) <span style="color:#00f">host</span>() (host <span style="color:#b00040">string</span>) {
+	<span style="color:#008000;font-weight:bold">if</span> url, err <span style="color:#666">:=</span> url.<span style="color:#00f">Parse</span>(r.url); err <span style="color:#666">==</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		host = url.Host
+	}
+	<span style="color:#008000;font-weight:bold">return</span>
+}
+
+
+<span style="color:#408080;font-style:italic">// 获取网页
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">httpGet</span>(url <span style="color:#b00040">string</span>) (<span style="color:#666">*</span>http.Response, <span style="color:#b00040">error</span>) {
+	req, _ <span style="color:#666">:=</span> http.<span style="color:#00f">NewRequest</span>(<span style="color:#ba2121">&#34;GET&#34;</span>, url, <span style="color:#008000;font-weight:bold">nil</span>)
+
+	<span style="color:#008000;font-weight:bold">return</span> http.DefaultClient.<span style="color:#00f">Do</span>(req)
+}
+
+<span style="color:#408080;font-style:italic">// 抽取并解析资源
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">extractResources</span>(schema, host <span style="color:#b00040">string</span>, body []<span style="color:#b00040">byte</span>) ([]<span style="color:#666">*</span>Resource, <span style="color:#b00040">error</span>) {
+	buff <span style="color:#666">:=</span> bytes.<span style="color:#00f">NewBuffer</span>(body)
+	doc, err <span style="color:#666">:=</span> html.<span style="color:#00f">Parse</span>(buff)
+	<span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">nil</span>, err
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">parseResources</span>(schema, host, doc), <span style="color:#008000;font-weight:bold">nil</span>
+}
+
+<span style="color:#408080;font-style:italic">// 解析资源
+</span><span style="color:#408080;font-style:italic"></span><span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">parseResources</span>(schema, host <span style="color:#b00040">string</span>, node <span style="color:#666">*</span>html.Node) []<span style="color:#666">*</span>Resource {
+	resources <span style="color:#666">:=</span> []<span style="color:#666">*</span>Resource{}
+
+	<span style="color:#008000;font-weight:bold">var</span> ref ResourceRef
+	<span style="color:#008000;font-weight:bold">switch</span> node.DataAtom {
+	<span style="color:#008000;font-weight:bold">case</span> atom.Link:
+		ref = (<span style="color:#666">*</span>LinkNode)(node)
+	<span style="color:#008000;font-weight:bold">case</span> atom.Img:
+		ref = (<span style="color:#666">*</span>ImgNode)(node)
+	<span style="color:#008000;font-weight:bold">case</span> atom.Script:
+		ref = (<span style="color:#666">*</span>ScriptNode)(node)
+	}
+
+	<span style="color:#008000;font-weight:bold">if</span> ref <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+		<span style="color:#008000;font-weight:bold">if</span> url, resType <span style="color:#666">:=</span> ref.<span style="color:#00f">Reference</span>(); resType <span style="color:#666">!=</span> NotRemoteResource {
+			<span style="color:#008000;font-weight:bold">if</span> strings.<span style="color:#00f">HasPrefix</span>(url, <span style="color:#ba2121">&#34;//&#34;</span>) {
+				url = schema <span style="color:#666">+</span> <span style="color:#ba2121">&#34;:&#34;</span> <span style="color:#666">+</span> url
+			} <span style="color:#008000;font-weight:bold">else</span> <span style="color:#008000;font-weight:bold">if</span> strings.<span style="color:#00f">HasPrefix</span>(url, <span style="color:#ba2121">&#34;/&#34;</span>) {
+				url = schema <span style="color:#666">+</span> <span style="color:#ba2121">&#34;://&#34;</span> <span style="color:#666">+</span> host <span style="color:#666">+</span> url
+			}
+			resources = <span style="color:#008000">append</span>(resources, <span style="color:#666">&amp;</span>Resource{url: url, resType: resType})
+		}
+	}
+
+	<span style="color:#008000;font-weight:bold">for</span> c <span style="color:#666">:=</span> node.FirstChild; c <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span>; c = c.NextSibling {
+		resources = <span style="color:#008000">append</span>(resources, <span style="color:#00f">parseResources</span>(schema, host, c)<span style="color:#666">...</span>)
+	}
+
+	<span style="color:#008000;font-weight:bold">return</span> resources
+}
+
+</code></pre></div><h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://satyasm.github.io/concurrency/go/practice/2017/11/18/concurrency-practice-golang.html!%5B%5D(media/16379142190114.jpg)">https://satyasm.github.io/concurrency/go/practice/2017/11/18/concurrency-practice-golang.html![](media/16379142190114.jpg)</a></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-3-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/golang-channel-study-3-1/image-9_huf5ca031357abdcbad10ff55b08cff391_140754_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/golang-channel-study-3-1/image-9_huf5ca031357abdcbad10ff55b08cff391_140754_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/golang-channel-study-3-1/image-9_huf5ca031357abdcbad10ff55b08cff391_140754_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/golang-channel-study-3-1/image-9_huf5ca031357abdcbad10ff55b08cff391_140754_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（3）- 详解</h2>
+    <p class="card-text">掌握channel的关键是，时刻把握操作的阻塞情况，协程一旦阻塞，将会让出执行，系统会选择其他协程投入运行。系统一旦发现所有协程都处于阻塞状态，则抛出“死锁”异常！因此，这种基于channel的消息通信机制，完全在用户的控制之下实现了安全的程序逻辑（从而尽量避免了传统基于锁的安全保护机制）。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-25 1125:00">Nov 25, 2021</time></p>
+      <p>#golang #channel </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

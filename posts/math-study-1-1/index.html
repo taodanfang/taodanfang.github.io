@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>协同计算之数学基础（1）- 偏序关系与逻辑时钟 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  协同计算之数学基础（1）- 偏序关系与逻辑时钟</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >协同计算之数学基础（1）- 偏序关系与逻辑时钟</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-11-29">Nov 29, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/math-study-1-1/media/16382831312989_hubaae0ff782c8b75f8b806f4834290463_146089_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/math-study-1-1/media/16382831312989_hubaae0ff782c8b75f8b806f4834290463_146089_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/math-study-1-1/media/16382831312989_hubaae0ff782c8b75f8b806f4834290463_146089_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/math-study-1-1/media/16382831312989_hubaae0ff782c8b75f8b806f4834290463_146089_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-集合">1. 集合</a></li>
+    <li><a href="#2-命题逻辑">2. 命题逻辑</a></li>
+    <li><a href="#3-谓词逻辑">3. 谓词逻辑</a></li>
+    <li><a href="#4-关系">4. 关系</a></li>
+    <li><a href="#5-偏序关系">5. 偏序关系</a></li>
+    <li><a href="#6-happened-before-之前发生关系">6. Happened Before (之前发生）关系</a></li>
+    <li><a href="#7-逻辑时钟">7. 逻辑时钟</a></li>
+    <li><a href="#8-lamport-逻辑时钟代码实现">8. Lamport 逻辑时钟代码实现</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-6-1/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（6）- 微服务与Context</h2>
+    <p class="card-text">A Context carries a deadline, a cancelation signal, and other values across API boundaries. 一个上下文携带着一个到期时间，一个取消信号以及其它的值跨越 API 的界线。
+Google 在内部要求 Go 开发者必须将 Context 作为 API 的第一个参数，无论是提供给别人还是自己调用。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-28 1128:00">Nov 28, 2021</time></p>
+      <p>#golang #channel #context </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>在分布式协同计算系统中，认识到事件的发生顺序只是一个偏序关系是非常重要的。我们认为这个认知对于理解所有多进程系统非常有用。 本文介绍某些与协同计算有关的数学基础知识。</p>
+<h2 id="1-集合">1. 集合</h2>
+<p>集合：将若干个可以确定的，可分辨的对象构成的无序整体称为集合（Set），通常用大写字母表示。</p>
+<blockquote>
+<p>定义 1.1</p>
+</blockquote>
+<p>组成集合的对象称作该集合的元素（element），常用小写字母表示。</p>
+<p>若对象 a 是集合 S 的元素，记作: $$a \in S$$
+若对象 a 不是集合 S 的元素，记作: \[a \notin S\]</p>
+<blockquote>
+<p>定义 1.2</p>
+</blockquote>
+<p>设 A 和 B 是两个集合， 如果 A 的任意一个元素都是 B 的元素，则称 A 为 B 的子集，称 B 为 A 的超集，记作：\[A \subseteq B\] 或者：\[B \supseteq A\]</p>
+<blockquote>
+<p>定义 1.3</p>
+</blockquote>
+<p>一个集合 A 所包含的元素数目称为该集合的基数（或者势），记作：$$|A|$$，或者 card(A)</p>
+<blockquote>
+<p>定义 1.4</p>
+</blockquote>
+<p>假设 A 是集合，A 的所有子集所组成的集合称为 A 的幂集（power set），记作：\[{\rm P}(A)\]，即：</p>
+
+\[{\rm P}(A) = \left\{ {x|x \subseteq A} \right\}\]
+
+<h2 id="2-命题逻辑">2. 命题逻辑</h2>
+<p>数理逻辑的主要研究内容和目标是推理。逻辑语言中仅仅考虑命题与命题之间的形式关系，而不考虑命题内容的实际含义，更不顾及日常自然用语中是否有此说法。</p>
+<blockquote>
+<p>定义 2.1</p>
+</blockquote>
+<p>非真即假的陈述句称为“命题”</p>
+<blockquote>
+<p>定义 2.2</p>
+</blockquote>
+<p>设 p, q 为命题，蕴涵词(implication)  \[ \Rightarrow \] 是二元联结词，\[p \Rightarrow q\] 读作：”若p，则q&quot;，其中，p称作前提词，q称作结论。当且仅当p为真，q为假时，该二元复合命题才为假。</p>
+<blockquote>
+<p>定义 2.3</p>
+</blockquote>
+<p>只有命题公式表示的符号串，才是命题</p>
+<h2 id="3-谓词逻辑">3. 谓词逻辑</h2>
+<p>原子命题是命题逻辑中最基本的组成单元，不能对其进一步分解，也无法反映出原子命题的一些特征和相互关系。为了克服命题逻辑的这一不足，进一步引入了谓词逻辑。</p>
+<p>在谓词逻辑中，一般将原子命题分解为个体词和谓词两部分。</p>
+<blockquote>
+<p>定义 3.1</p>
+</blockquote>
+<p>个体词是一个命题中表示思维对象的词</p>
+<blockquote>
+<p>定义 3.2</p>
+</blockquote>
+<p>在命题中，表示个体词性质或个体词之间的相互关系的词，称为谓词</p>
+<blockquote>
+<p>定义 3.3</p>
+</blockquote>
+<p>用来表示个体数量的词，称为量词</p>
+<blockquote>
+<p>定理 3.4</p>
+</blockquote>
+<p>设论域
+
+\[D = \left\{ {{a_1},{a_2},...,{a_m}} \right\}\]
+
+是有限集合，则有</p>
+
+\[(\forall x)P(x)  \equiv  P({a_1}) \wedge P({a_2}) \wedge ... \wedge P({a_m})\]
+
+\[(\exists x)P(x) \equiv  P({a_1}) \vee P({a_2}) \vee ... \vee P({a_m})\]
+
+<blockquote>
+<p>定理 3.5</p>
+</blockquote>
+<p>设 P(x) 是含有 x 自由出现的公式，则有：</p>
+
+\[\begin{array}{l} \sim (\forall x)P(x) \equiv  (\exists x) \sim P(x)
+ 
+ \\ 
+ \sim (\exists x)P(x) \equiv  (\forall x) \sim P(x)\end{array}\]
+
+
+<h2 id="4-关系">4. 关系</h2>
+<p>描述集合之间的关系，需要引入体现“次序”的数学结构。</p>
+<blockquote>
+<p>定义 4.1</p>
+</blockquote>
+<p>由两个对象 a, b 按照一定次序组成的二元组称为一个有序对（或者序偶），记作：(a, b)</p>
+<blockquote>
+<p>定义 4.2</p>
+</blockquote>
+<p>设 A、B 为两个集合，定义它们的笛卡儿积 AXB 为：</p>
+
+
+\[A \times B = \left\{ {(a,b)|a \in A 且  b \in B} \right\}\]
+
+
+<p>笛卡儿积包含了 A 到 B 之间的全部序偶，对于部分序偶组成的集合，需要进行定义，便引出了“关系”的概念。</p>
+<blockquote>
+<p>定义 4.3</p>
+</blockquote>
+<p>假设 A, B 是集合，AXB 的子集 R 称为 A 到 B 的一个二元关系，简称关系</p>
+<blockquote>
+<p>定义 4.4</p>
+</blockquote>
+<p>设 R 为集合 A 上的关系，若</p>
+<p>(a) 如果</p>
+
+\[\forall a \in A,(a,a) \in R\]
+
+<p>成立，则称 R 是自反的（reflexive)</p>
+<p>(b) 如果</p>
+
+\[\forall a \in A,(a,a) \notin R\]
+
+<p>成立，则称 R 是非自反的（irreflexive)</p>
+<p>(c) 如果</p>
+
+\[\forall a,b \in A,(a,b) \in R \Rightarrow (b,a) \in R\]
+
+<p>成立，则称 R 是对称的（symmetric)</p>
+<p>(d) 如果</p>
+
+\[\forall a,b \in A,(a,b) \in R \Rightarrow (b,a) \notin R\]
+
+<p>成立，则称 R 是非对称的（asymmetric）</p>
+<p>(e) 如果</p>
+
+\[\forall a,b \in A,(a,b) \in R\& (b,a) \in R \Rightarrow a = b\]
+
+<p>成立，则称 R 是反对称的（antisymmetric）</p>
+<p>(f) 如果</p>
+
+\[\forall a,b,c \in A,(a,b) \in R\& (b,c) \in R \Rightarrow (a,c) \in R\]
+
+<p>成立，则称 R 是传递的（transitive）</p>
+<blockquote>
+<p>示例</p>
+</blockquote>
+<ul>
+<li>A 上的空关系满足非自反性，对称性，非对称性，反对称性，传递性</li>
+<li>A 上的“小于等于”关系，是自反的，反对称的，传递的</li>
+<li>A 上的“小于”关系，是非自反的，反对称的，传递的</li>
+<li>A 上的“不等于”关系，是非自反的，对称的</li>
+</ul>
+<blockquote>
+<p>关系特性在“关系图”上的表现</p>
+</blockquote>
+<ul>
+<li>自反：每个顶点都有自环</li>
+<li>非自反：每个顶点都没有自环</li>
+<li>对称：如果两个顶点之间有边，一定是一对方向相反的边</li>
+<li>非对称：两个顶点之间至多存在一条有向边，每个顶点都没有自环</li>
+<li>反对称：两个互异顶点之间至多存在一条有向边，允许存在自环</li>
+<li>传递：如果存在有向边(i,j)和(j,k)，则存在有向边(i,k)</li>
+</ul>
+<blockquote>
+<p>定义 4.5</p>
+</blockquote>
+<p>假设 R 是非空集合 A 上的关系，如果 R 是自反的、对称的和传递的，则称 R 是 A 上的等价关系</p>
+<h2 id="5-偏序关系">5. 偏序关系</h2>
+<p>“次序”是进行对比（compare）的基础，“偏序关系”是一种重要的“次序”关系</p>
+<blockquote>
+<p>定义 5.1</p>
+</blockquote>
+<p>假设 R 是集合 A 上的关系，若 R 是自反的、反对称的和传递的，则称 R 是 A 上的一个偏序(partial order)或半序（semi order）关系，一般记作：\[ \le \]</p>
+<p>集合 A 和偏序关系 R 构成的有序二元组（A, R）称作偏序集（或半序集）</p>
+<blockquote>
+<p>示例</p>
+</blockquote>
+<ul>
+<li>小于等于、大于等于、整除、倍数关系、包含关系都是相应集合上的偏序关系</li>
+</ul>
+<blockquote>
+<p>定理 5.2</p>
+</blockquote>
+
+\[(A, \le ) 是偏序集, B \subseteq A \Rightarrow (B,{ \le _{|B}}) 也是偏序集\]
+
+<blockquote>
+<p>定理 5.3</p>
+</blockquote>
+<p>若 R 为 A 上的偏序关系，则 R 的逆关系也是 A 上的偏序关系</p>
+<blockquote>
+<p>定义 5.4</p>
+</blockquote>
+<p>假设（A, R) 为偏序集，</p>
+
+\[a,b \in A ，如果存在 (a \le b) 或 (b \le a)\] 
+
+<p>则称 a, b 是可比的（comparable)</p>
+<blockquote>
+<p>定义 5.5</p>
+</blockquote>
+<p>假设 (A, R) 是偏序集，如果对于</p>
+
+\[\forall a,b \in A 都有  (a \le b) \wedge (b \le a)\]
+
+<p>则称 R 是线序（linear order）或全序（total order），（A, R) 称作全序集，也称为链（chain）</p>
+<blockquote>
+<p>定义 5.6</p>
+</blockquote>
+<p>假设 R 是集合 A 上的关系，如果 R 是非自反的和传递的，则称 R 是 A 上的一个拟序（quasiorder）关系，一般记作：&lt;</p>
+<blockquote>
+<p>定义 5.7</p>
+</blockquote>
+<p>假设</p>
+<p>\[(A,{ \le _1})\] 和 \[(A,{ \le _2})\]</p>
+<p>可以定义，在 AxB 上的偏序关系</p>
+
+\[(a,b) \le ({a^*},{b^*}) \Leftrightarrow (a{ \le _1}{a^*}) \wedge (b{ \le _2}{b^*})\]
+
+<p>称为积偏序，记作</p>
+
+\[(A \times B, \le ) = (A,{ \le _1}) \times (B,{ \le _2})\]
+
+<blockquote>
+<p>定义 5.8</p>
+</blockquote>
+<p>假设两个偏序集，</p>
+<p>\[(A,{ \le _1})\] 和 \[(B,{ \le _2})\]</p>
+<p>则可以在 AXB上定义偏序关系</p>
+
+\[(a,b) \prec ({a^*},{b^*}) \Leftrightarrow (a{ < _1}{a^*}), 或者(a = {a^*})(b{ \le _2}{b^*})\]
+
+<p>称之为字典序（或者词典序）</p>
+<p>偏序关系是一种序关系，但只是部分元素有序，并不是全部元素都可以比较。全序就是在偏序的基础上，要求全部元素都必须可以比较。总结来看，简短说： 偏序是部分可比较的序关系，全序是全部可比较的序关系。</p>
+<h2 id="6-happened-before-之前发生关系">6. Happened Before (之前发生）关系</h2>
+<blockquote>
+<p>Definition. The relation “-&gt;” on the set of events of a system is the smallest relation satisfying the following three conditions: (1) If a and b are events in the same process, and a comes before b, then a -&gt; b. (2) If a is the sending of a message by one process and b is the receipt of the same message by another process, then a -&gt; b. (3) If a -&gt; b and b -&gt; c then a -&gt; c. Two distinct events a and b are said to be concurrent if a -/-&gt; b and b -/-&gt; a.</p>
+</blockquote>
+<blockquote>
+<p>说明</p>
+</blockquote>
+<p>“事件”是如何分类的：</p>
+<ul>
+<li>进程内自发的事件（如下图中的红色标记的事件）。</li>
+<li>发送一个消息，是一个事件（如下图中的蓝色标记的事件）。</li>
+<li>接收一个消息，是一个事件 （如下图中的黑灰色标记的事件）。</li>
+</ul>
+<p><img src="media/16382844699158.jpg" alt=""></p>
+<blockquote>
+<p>定义 6.1</p>
+</blockquote>
+<p>系统中一组事件之间的 “-&gt;” 关系，是满足以下三个条件的最小关系：</p>
+<p>(1) 如果 a 和 b 是同一进程中的事件(E)，且 a 在 b 之前，则 a -&gt; b；</p>
+
+\[(\exists a,b \in E) \wedge (a 在 b 之前发生) \Rightarrow (a \to b)\]
+
+<p>(2) 如果 a 是一个进程的消息发送事件，b 是另一进程的该消息接收事件，则 a -&gt; b ；</p>
+
+\[(\exists a \in {E_{S1}},\exists b \in {E_{R2}}) \Rightarrow (a \to b)\]
+
+<p>(3) 如果 a -&gt; b 且 b -&gt; c ，则 a -&gt; c。
+
+\[(a \to b) \wedge (b \to c) \Rightarrow (a \to c)\]
+</p>
+<p>我们称之为“之前发生的（happened before）&ldquo;关系</p>
+<blockquote>
+<p>定义 6.2</p>
+</blockquote>
+<p>如果两个独立事件满足 a !-&gt; b 且 b !-&gt; a ，则二者并行（concurrent）；</p>
+
+\[(a - / \to b) \wedge (b - / \to a) \Rightarrow (a||b)\]
+
+<p>假设任意事件 a，a !-&gt; a（事件在自身之前发生的系统，并不存在物理意义）。</p>
+<p>这表明 ”-&gt;“ 表示的是，系统中事件之间非自反性的偏序关系。</p>
+<blockquote>
+<p>示例</p>
+</blockquote>
+<p><img src="media/16382803392655.jpg" alt=""></p>
+<p>其中的”-&gt;&ldquo;关系如下：</p>
+<ul>
+<li>p1 -&gt; p2 -&gt; p3 -&gt; p4</li>
+<li>q1 -&gt; q2 -&gt; q3 -&gt; q4 -&gt; q5 -&gt; q6 -&gt; q7</li>
+<li>r1 -&gt; r2 -&gt; r3 -&gt; r4</li>
+<li>p1 -&gt; q2</li>
+<li>q1 -&gt; p2</li>
+<li>q4 -&gt; r3</li>
+<li>q5 -&gt; p4</li>
+<li>r2 -&gt; q7</li>
+</ul>
+<p>其中的“||”关系如下：</p>
+<ul>
+<li>p1 || q1</li>
+<li>p2 || q3</li>
+<li>p3 || q3</li>
+<li>等等</li>
+</ul>
+<h2 id="7-逻辑时钟">7. 逻辑时钟</h2>
+<p>确定事件的全序关系，对实现分布式系统非常有用。实际上，实现逻辑时钟系统的目的就是为了获取全序关系。总体来说， 逻辑时钟尝试用「通过进程间创造通信以添加因果关系」的方式来对分布式中的事件顺序做描述。逻辑时钟并不度量时间本身，仅区分事件发生的前后顺序。</p>
+<p>时钟是为事件分配编号的方式，其中编号可看作为事件发生的时间。更精确的表述，对于任意进程 Pi，定义时钟 Ci，其中，Ci(a) 表示进程 Pi 中事件 a 的编号分配函数。整个时钟系统通过函数 C 来分配，如果事件 b 在进程 Pj 中，那么 C(b) = Cj(b)。</p>
+<p>逻辑时钟的定义必须基于事件发生的顺序。最合理的条件是，如果事件 a 发生在事件 b 之前，那么 a 的发生事件应该比 b 更早。通过下面的式子更正式的进行表达该条件（反之不然）：</p>
+
+\[(\forall a,b)(a \to b) \Rightarrow (C(a) < C(b))\]
+
+<p>满足时钟条件需要符合以下两点：</p>
+<ul>
+<li>C1: 当进程 Pi 中的事件 a 在事件 b 之前，则 Ci(a) &lt; Ci(b)</li>
+<li>C2: 当事件 a 是进程 Pi 的消息发送事件，事件 b 是进程 Pj 的该消息接收事件，则 Ci(a) &lt; Cj(b)</li>
+</ul>
+<blockquote>
+<p>逻辑时钟的实现</p>
+</blockquote>
+<ul>
+<li>IR1. Each process Pi increments Ci between any two successive events.</li>
+<li>IR2.
+<ul>
+<li>(a) If event a is the sending of a message m by process Pi, then the message m contains a timestamp Tm = Ci(a).</li>
+<li>(b) Upon receiving a message m, process Pi sets Ci greater than or equal to its present value and greater than Tm.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Lamport的时钟算法</p>
+</blockquote>
+<p><img src="media/16382846870718.jpg" alt=""></p>
+<p>Lamport时钟的缺陷在于：如果两个事件并不相关，那么这个时钟给出的大小关系则没有意义， 这个缺陷其实恰好就是全序和偏序的不同点而已。</p>
+<blockquote>
+<p>改进算法</p>
+</blockquote>
+<ul>
+<li>向量时钟（Vector Clock）</li>
+<li>版本时钟（Version Clock）</li>
+<li>区间树时钟（Interval Tree Clock）</li>
+<li>布隆时钟（Bloom Clock）</li>
+</ul>
+<h2 id="8-lamport-逻辑时钟代码实现">8. Lamport 逻辑时钟代码实现</h2>
+<h2 id="总结">总结</h2>
+<p>现实中，无法构建精确的全局时钟来描述事件顺序。受狭义相对论的启发，我们用因果关系（引入消息收发）来描述事件顺序。因果关系是一种偏序关系。Lamport时钟构造的计数器之间的大小关系是一种全序关系，无法准确刻画事件顺序的偏序关系。向量时钟是一种对lamport时钟的延伸，以偏序关系准确刻画了事件的因果顺序。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/">https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</a></li>
+<li>《离散数学及应用》（第2版），刘铎编著，清华大学，2018年</li>
+<li>Time, Clocks and the Ordering of Events in a Distributed System</li>
+<li><a href="https://writings.sh/post/logical-clocks">https://writings.sh/post/logical-clocks</a></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/golang-channel-study-6-1/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/golang-channel-study-6-1/media/16391442225941_hubaae0ff782c8b75f8b806f4834290463_353712_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/golang-channel-study-6-1/media/16391442225941_hubaae0ff782c8b75f8b806f4834290463_353712_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/golang-channel-study-6-1/media/16391442225941_hubaae0ff782c8b75f8b806f4834290463_353712_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/golang-channel-study-6-1/media/16391442225941_hubaae0ff782c8b75f8b806f4834290463_353712_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">Golang 并发开发实践（6）- 微服务与Context</h2>
+    <p class="card-text">A Context carries a deadline, a cancelation signal, and other values across API boundaries. 一个上下文携带着一个到期时间，一个取消信号以及其它的值跨越 API 的界线。
+Google 在内部要求 Go 开发者必须将 Context 作为 API 的第一个参数，无论是提供给别人还是自己调用。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-11-28 1128:00">Nov 28, 2021</time></p>
+      <p>#golang #channel #context </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

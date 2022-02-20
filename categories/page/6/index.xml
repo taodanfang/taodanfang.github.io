@@ -1,0 +1,48 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/</link>
+    <description>Recent content in Categories on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>page</title>
+      <link>https://taodanfang.github.io/categories/page/</link>
+      <pubDate>Wed, 11 Aug 2021 18:32:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/page/</guid>
+      <description></description>
+    </item><item>
+      <title>websocket</title>
+      <link>https://taodanfang.github.io/categories/websocket/</link>
+      <pubDate>Mon, 09 Aug 2021 18:05:04 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/websocket/</guid>
+      <description></description>
+    </item><item>
+      <title>iot</title>
+      <link>https://taodanfang.github.io/categories/iot/</link>
+      <pubDate>Mon, 02 Aug 2021 16:59:28 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/iot/</guid>
+      <description></description>
+    </item><item>
+      <title>kit</title>
+      <link>https://taodanfang.github.io/categories/kit/</link>
+      <pubDate>Tue, 27 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/kit/</guid>
+      <description></description>
+    </item><item>
+      <title>d2admin</title>
+      <link>https://taodanfang.github.io/categories/d2admin/</link>
+      <pubDate>Mon, 12 Jul 2021 10:28:06 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/d2admin/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

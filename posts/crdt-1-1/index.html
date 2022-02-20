@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CRDT协议基础知识(1) - 基本实现框架 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  CRDT协议基础知识(1) - 基本实现框架</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >CRDT协议基础知识(1) - 基本实现框架</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2021-01-27">Jan 27, 2021</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/crdt-1-1/img-1_hu64d27b9e7b9cf8744283a042b04ee8fe_233303_711x0_resize_q75_lanczos.jpeg 1x, https://taodanfang.github.io/posts/crdt-1-1/img-1_hu64d27b9e7b9cf8744283a042b04ee8fe_233303_1422x0_resize_q75_lanczos.jpeg 2x, https://taodanfang.github.io/posts/crdt-1-1/img-1_hu64d27b9e7b9cf8744283a042b04ee8fe_233303_2133x0_resize_q75_lanczos.jpeg 3x">
+            <img src="https://taodanfang.github.io/posts/crdt-1-1/img-1_hu64d27b9e7b9cf8744283a042b04ee8fe_233303_711x0_resize_q75_lanczos.jpeg" >
+          </picture>
+          
+
+
+          
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+          </div>
+
+          <h2 id="背景">背景</h2>
+<p>2016年3月，Google上线的Google Docs，协同文档的诞生，无疑给基于互联网的沟通协作带来了一场革命。</p>
+<p>1984 年，MIT 的科学家提出了计算机支持的协同工作（Computer Supported Cooperative Work，缩写为 CSCW），使得人们可以借助计算机和互联网去完成协同工作。</p>
+<h2 id="基本问题">基本问题</h2>
+<p>需要解决两个技术点：</p>
+<ul>
+<li>
+<p>实时通信问题</p>
+</li>
+<li>
+<p>编辑冲突问题</p>
+</li>
+</ul>
+<p>为了保证高可用性，分布式系统通常采用数据副本技术，将数据的不同副本存放在不同的物理节点上。为了保证低延迟并且容忍网络分区，用户提交到某个副本节点的操作需要立即返回，而不需要先与其他副本节点进行通信。本地副本节点上的更新操作将以异步的方式发送给其他副本节点。在这种情况下，多个副本节点上的更新操作将产生冲突，导致<strong>数据一致性问题</strong>。</p>
+<h2 id="基本知识">基本知识</h2>
+<h3 id="cap理论">CAP理论</h3>
+<p>任何一个分布式数据副本系统都无法同时满足(强)数据一致性、可用性及网络分区容忍性这 3 种特性。</p>
+<h3 id="crdt">CRDT</h3>
+<p>CRDT（conflict-free replicated data type，无冲突复制数据类型）</p>
+<p>是一种抽象分布式数据类型，它封装了并发冲突的消解策略，向上层应用提供所需的强最终一致性</p>
+<p>已实现的 CRDT 包括：</p>
+<ul>
+<li>计数器(counter)</li>
+<li>读写寄存器(read/write register)</li>
+<li>集合(set)</li>
+<li>列表(list)</li>
+<li>哈希表(hashtable)</li>
+<li>树(tree)</li>
+<li>图(graph)等</li>
+</ul>
+<p>CRDT 协议分为两类</p>
+<ul>
+<li>基于操作的(op-based)协议，每次仅广播本地最新执行的更新操作，每条消息仅携带自上次广播以来本地节点执行的更新操作。此类协议通常要求底层网络是可靠的，即消息不能丢失、也不能重复交付。如果并发的更新操作之间具有可交换性，那么此类协议可以满足强最终一致性</li>
+<li>基于状态的(state-based)协议，将副本节点状态包含在消息中广播给其他节点，每条消息会包含发送节点的当前状态。此类协议对底层网络的要求较低，通常能容忍消息的丢失、重复交付与乱序交付。如果节点的状态集合在“合并(merge)”操作下能构成半格(join semilattice)，那么此类协议可以满足强最终一致性</li>
+<li>CRDT 协议通常需要精巧的设计，正确性难以理解也难以保证</li>
+</ul>
+<p>CRDT 必须符合<strong>可交换性，结合性，还有幂等性</strong>，所以 CRDT 数据类型合并最终会收敛到相同状态。为什么要符合可交换性，结合性，还有幂等性三个特性呢？因为可以解决分布式达到最终一致会遇到的问题：</p>
+<ul>
+<li>
+<p>网络问题导致发送接收顺序不一致（幂等性）</p>
+</li>
+<li>
+<p>多次发送（可交换性）</p>
+</li>
+</ul>
+<h3 id="tla">TLA+</h3>
+<p>TLA（temporal logic of actions）：时序逻辑</p>
+<p>TLA+ 是由 Leslie Lamport 开发的、适于描述并发与分布式系统的形式化规约语言</p>
+<p>TLA+ 将系统建模为状态机</p>
+<ul>
+<li>
+<p>一个状态机由它可能的初始状态(initial states)与一组动作(actions)来刻画</p>
+</li>
+<li>
+<p>一个状态是对所有变量的一种赋值</p>
+</li>
+<li>
+<p>一个动作表达了新、旧状态之间的某种关系，可用包含带撇变量(表示新状态)与不带撇变量(表示旧状态)的公式来描述</p>
+<ul>
+<li>例如：x′=y+42 断言，新状态中 x 的值比旧状态中 y 的值大 42.</li>
+</ul>
+</li>
+<li>
+<p>系统的一个行为就是一个状态序列，它表示系统的一次可能的执行过程</p>
+</li>
+</ul>
+<h3 id="逻辑时钟">逻辑时钟</h3>
+<h2 id="协议实例">协议实例</h2>
+<p>基于操作的计数器CRDT协议</p>
+<ul>
+<li>在基于操作的计数器协议中，每个副本节点 r 维护一个二元组(c,d)
+<ul>
+<li>c：表示计数器的当前值</li>
+<li>d：表示自上次消息广播以来该副本结点执行自增操作的次数（又称更新缓冲值）</li>
+</ul>
+</li>
+<li>自增操作 inc 会同时增加c与d的值</li>
+<li>每个副本节点以异步消息传递的方式将 <em>d</em> 值广播给其他副本节点，同时将 <em>d</em> 置为 0</li>
+<li>当副本节点接收到消息 d 时，它会将当前计数器的值 c 更新为 c+d</li>
+</ul>
+<p>基于状态的计数器CRDT协议</p>
+<ul>
+<li>在基于状态的计数器协议中，每个副本节点 r 维护一个从副本节点到自然数的映射（也称向量）vv，对于副本结点 s，
+<ul>
+<li>vv[s]：表示 r 已经接收的来自 s 的自增操作的次数</li>
+</ul>
+</li>
+<li>副本节点 <em>r</em> 上的计数器的当前值就是它的 <em>vv</em> 向量的所有分量之和</li>
+<li>自增操作 inc 仅增加本地分量 vv[r]的值</li>
+<li>每个副本节点会以异步消息传递的方式将自己的 vv 向量广播给其他副本节点</li>
+<li>当副本节点接收到向量 vv~m~ 时,它会将 vv~m~“合并”到本地向量 vv 中，即将 vv 的每个分量
+vv[s] 更新为 vv[s]与 vv~m~[s]中的较大值</li>
+</ul>
+<h2 id="实现原理">实现原理</h2>
+<h3 id="通信协议选择">通信协议选择</h3>
+<ul>
+<li>websocket</li>
+</ul>
+<h3 id="客户标识">客户标识</h3>
+<ul>
+<li>UUID</li>
+</ul>
+<h3 id="操作标识">操作标识</h3>
+<ul>
+<li>Lamport 时间戳</li>
+</ul>
+<h3 id="操作定序">操作定序</h3>
+<ul>
+<li>因果关系</li>
+<li>非因果关系</li>
+<li>选择合适的数据结构（例如因果树、关系图等）</li>
+</ul>
+<h3 id="客户端实现">客户端实现</h3>
+<ul>
+<li>前端接受服务器生成的初始 UUID、Lamport timestamp、操作序列，初始化前端状态</li>
+<li>前端接受用户输入，产生初始操作，然后通过当前位置深度遍历因果树（或其他数据结构），找到操作对象的 ID，并且生成操作 ID，生成操作，然后发送到服务器</li>
+<li>前端接受服务器广播操作，更新前端 timestamp，插入因果树（或其他数据结构），生成最新状态，更新前端状态</li>
+</ul>
+<h3 id="服务端实现">服务端实现</h3>
+<ul>
+<li>提供 UUID</li>
+<li>生成 Lamport timestamp</li>
+<li>接受客户端的操作，并且广播给其他客户端</li>
+</ul>
+<h2 id="参考文献">参考文献:</h2>
+<blockquote>
+<p><a href="http://www.jos.org.cn/jos/ch/reader/create_pdf.aspx?file_no=5956&amp;journal_id=jos"><strong>CRDT</strong> 协议的 <strong>TLA</strong>+描述与验证</a></p>
+<p><a href="https://imweb.io/topic/5b3ec8dd4d378e703a4f4450">https://imweb.io/topic/5b3ec8dd4d378e703a4f4450</a></p>
+</blockquote>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

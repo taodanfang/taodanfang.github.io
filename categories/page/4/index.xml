@@ -1,0 +1,48 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/</link>
+    <description>Recent content in Categories on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Feb 2022 21:27:19 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>math</title>
+      <link>https://taodanfang.github.io/categories/math/</link>
+      <pubDate>Mon, 29 Nov 2021 20:01:45 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/math/</guid>
+      <description></description>
+    </item><item>
+      <title>channel</title>
+      <link>https://taodanfang.github.io/categories/channel/</link>
+      <pubDate>Sun, 28 Nov 2021 00:50:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/channel/</guid>
+      <description></description>
+    </item><item>
+      <title>context</title>
+      <link>https://taodanfang.github.io/categories/context/</link>
+      <pubDate>Sun, 28 Nov 2021 00:50:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/context/</guid>
+      <description></description>
+    </item><item>
+      <title>practice</title>
+      <link>https://taodanfang.github.io/categories/practice/</link>
+      <pubDate>Tue, 23 Nov 2021 23:55:41 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/practice/</guid>
+      <description></description>
+    </item><item>
+      <title>goroutine</title>
+      <link>https://taodanfang.github.io/categories/goroutine/</link>
+      <pubDate>Tue, 23 Nov 2021 20:23:42 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/categories/goroutine/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

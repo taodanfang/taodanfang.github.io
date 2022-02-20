@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>协同计算相关消息处理技术学习与实践 &middot; CC-Table： 专注协同计算技术研发</title>
+  <meta name="description" content="" />
+  <link href="https://taodanfang.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://taodanfang.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+
+
+</head>
+
+
+  <body > 
+    <div style="position: fixed; z-index: 500;
+    width: 100vw; background-color: black; color: white;
+    box-shadow: 0 0.4rem 2rem 0 rgba(0,0,0,0.2);">
+        
+<nav class="nav-bar side-padding" style="max-width: 100vw;"
+>
+  <h1 class="nav-header"><a href="https://taodanfang.github.io" 
+    class="nav-text" style="color: wheat;">熙熙表格</a></h1>
+ 
+  <h3 class="nav-header nav-text" 
+  >
+  <a href="#single-page-head" style="font-size: 18px; color:lightgreen; padding-top: 4px;">  协同计算相关消息处理技术学习与实践</a>
+
+</h3>
+  
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span  style="background-color: wheat;"></span>
+      <span  style="background-color: wheat;"></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://taodanfang.github.io" class="hamburger-menu-overlay-link">Home</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/bleve/" class="hamburger-menu-overlay-link">bleve</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/boltdb/" class="hamburger-menu-overlay-link">boltdb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/casbin/" class="hamburger-menu-overlay-link">casbin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/cc-table/" class="hamburger-menu-overlay-link">cc-table</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/channel/" class="hamburger-menu-overlay-link">channel</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/context/" class="hamburger-menu-overlay-link">context</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/crdt/" class="hamburger-menu-overlay-link">CRDT</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/d2admin/" class="hamburger-menu-overlay-link">d2admin</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/deployment/" class="hamburger-menu-overlay-link">deployment</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/distributed-computing/" class="hamburger-menu-overlay-link">distributed computing</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/drag-and-drop/" class="hamburger-menu-overlay-link">drag and drop</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/event/" class="hamburger-menu-overlay-link">event</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/go/" class="hamburger-menu-overlay-link">go</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/golang/" class="hamburger-menu-overlay-link">golang</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/goroutine/" class="hamburger-menu-overlay-link">goroutine</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/iot/" class="hamburger-menu-overlay-link">iot</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/kit/" class="hamburger-menu-overlay-link">kit</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/math/" class="hamburger-menu-overlay-link">math</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/microservice/" class="hamburger-menu-overlay-link">microservice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/mongodb/" class="hamburger-menu-overlay-link">mongodb</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/nats/" class="hamburger-menu-overlay-link">nats</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/page/" class="hamburger-menu-overlay-link">page</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/practice/" class="hamburger-menu-overlay-link">practice</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/pubsub/" class="hamburger-menu-overlay-link">pubsub</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/rule/" class="hamburger-menu-overlay-link">rule</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/schedule/" class="hamburger-menu-overlay-link">“schedule&#34;</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/search/" class="hamburger-menu-overlay-link">search</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/socket.io/" class="hamburger-menu-overlay-link">socket.io</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/task/" class="hamburger-menu-overlay-link">task</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tenant/" class="hamburger-menu-overlay-link">tenant</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/tree/" class="hamburger-menu-overlay-link">tree</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/vue/" class="hamburger-menu-overlay-link">vue</a></li>
+      
+      <li><a href="https://taodanfang.github.io/categories/websocket/" class="hamburger-menu-overlay-link">websocket</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+
+
+    </div>
+
+    <div class="single-body">
+      <main id="single-page-head" class="content side-text-padding" style="margin-top: 108px;">
+        <article class="post dropcase">
+          <header class="post-header">
+
+            <h1 class="post-title" >协同计算相关消息处理技术学习与实践</h1>
+            
+            <div class="nav-bar">
+              <p class="post-date">
+                Posted 
+                <time datetime="2022-02-14">Feb 14, 2022</time>
+              </p>
+
+              <div>
+                <span style="font-size: 14px; padding-top: 0px;;"
+                 id="busuanzi_container_site_uv">
+                本站访客数
+                <span style="padding-left: 4px; padding-right: 4px; color: red;"
+                id="busuanzi_value_site_uv"></span> 人次, 
+                </span>
+                <span style="font-size: 14px; padding-bottom: 10px;;"
+                id="busuanzi_container_page_pv">
+                    本文总阅读量
+                    <span style="padding-left: 4px; padding-right: 4px; color: red;"  
+                    id="busuanzi_value_page_pv"></span> 次
+                </span>
+              </div>
+            </div>
+            
+            
+
+          </header>
+          <picture class="post-figure">
+            
+            
+            
+            <source srcset="https://taodanfang.github.io/posts/pubsub-event-study/media/16449364149441_hubaae0ff782c8b75f8b806f4834290463_61300_711x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/pubsub-event-study/media/16449364149441_hubaae0ff782c8b75f8b806f4834290463_61300_1422x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/pubsub-event-study/media/16449364149441_hubaae0ff782c8b75f8b806f4834290463_61300_2133x0_resize_q75_lanczos.jpg 3x">
+            <img src="https://taodanfang.github.io/posts/pubsub-event-study/media/16449364149441_hubaae0ff782c8b75f8b806f4834290463_61300_711x0_resize_q75_lanczos.jpg" >
+          </picture>
+          
+
+
+          <div class="content-toc" style="min-width: 280px;" >
+            <div style="margin-top: -20px;">
+              <h2 style="margin-top: 10px;">目录</h2>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#后端通用分发技术">后端通用分发技术</a></li>
+    <li><a href="#事件驱动型系统开发">事件驱动型系统开发</a>
+      <ul>
+        <li><a href="#订阅消息">订阅消息</a></li>
+        <li><a href="#发布消息">发布消息</a></li>
+        <li><a href="#消息路由转发">消息路由（转发）</a></li>
+      </ul>
+    </li>
+    <li><a href="#前端实时接收技术">前端实时接收技术</a>
+      <ul>
+        <li><a href="#常用技术">常用技术</a></li>
+        <li><a href="#sse-技术">SSE 技术</a></li>
+        <li><a href="#websocket-vs-sse">Websocket vs. SSE</a></li>
+        <li><a href="#sse-使用方法">SSE 使用方法</a></li>
+      </ul>
+    </li>
+    <li><a href="#协同计算相关案例学习">协同计算相关案例学习</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+            </div>
+          </div>
+
+          <div class="next-post"  style="min-width: 250px;" >
+            
+            <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/agenda-study/" class="card blog-card bc-next" rel="bookmark" >
+
+  <article class="card-body">
+    <h2 class="card-title">活动文档（任务进度、状态管理）技术开发实践</h2>
+    <p class="card-text">任务是将静态文档转变成一个活动文档的重要方法，在协作文档系统中，应当将任务作为文档的一个辅助对象，参考操作系统中“进程管理”的相关思想进行设计开发。任务管理侧重于“时间”管理，包括任务启动结束、任务进度、任务状态、事件通知等等内容。本文介绍go语言环境下，基于Gocraft/work技术实现任务管理的相关开发实践方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2022-02-13 213:00">Feb 13, 2022</time></p>
+      <p>#task #“schedule&#34; #go </p>
+    </div>
+  </article>
+</a>
+            
+          </div>
+
+          <p>消息（事件）通信分为前端和后端两类，前端接收以WS、RPC-WEB、SSE技术为典型代表，后端分发存在的技术相对较多，例如NATS、Kafka等，而Watermill提供了一种以PubSub形式来统一各种消息分发接口的通用技术框架，极大的简化和屏蔽了其他各类相关技术的复杂性。本文介绍了“协同计算”相关的重要消息处理技术实践方法。</p>
+<p><img src="media/16448459141298.jpg" alt=""></p>
+<h2 id="后端通用分发技术">后端通用分发技术</h2>
+<blockquote>
+<p>简介（目标）</p>
+</blockquote>
+<p>Watermill 尝试让消息通信技术象HTTP路由一样简单。 Watermill aims to be the standard messaging library for Go, hiding all that complexity behind an API that is easy to understand.</p>
+<ul>
+<li>Watermill is a Go library for working efficiently with message streams. Watermill&rsquo;s goal is to make communication with messages as easy to use as HTTP routers.</li>
+<li>It comes with a set of Pub/Sub implementations and can be easily extended by your own.</li>
+<li>Watermill also ships with standard middlewares like instrumentation, poison queue, throttling, correlation, and other tools used by every message-driven application.</li>
+<li>It can be used for event sourcing, RPC over messages, sagas, and whatever else comes to your mind.</li>
+</ul>
+<blockquote>
+<p>提供统一接口（PubSub）</p>
+</blockquote>
+<p>There are many third party and standard library tools which help to implement standardized RPC or HTTP communication in Golang. There are also multiple third party HTTP routers and frameworks. But when you want to build a message-driven application, there are no libraries which are infrastructure-agnostic and not opinionated. Watermill is a library which will work with any implementation of Publisher and Subscriber interfaces：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> Publisher <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Publish</span>(topic <span style="color:#b00040">string</span>, messages <span style="color:#666">...*</span>Message) <span style="color:#b00040">error</span>
+	<span style="color:#00f">Close</span>() <span style="color:#b00040">error</span>
+}
+
+<span style="color:#008000;font-weight:bold">type</span> Subscriber <span style="color:#008000;font-weight:bold">interface</span> {
+	<span style="color:#00f">Subscribe</span>(topic <span style="color:#b00040">string</span>) (<span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>Message, <span style="color:#b00040">error</span>)
+	<span style="color:#00f">Close</span>() <span style="color:#b00040">error</span>
+}
+
+</code></pre></div><p>目前已经支持以下通信协议：AMQP、Bolt、Firestore、GoogleCloud、HTTP、io.Reader/Writer、Kafka、NATS、SQL等。对于NATS jetstream的支持请参考（https://github.com/AlexCuse/watermill-jetstream）</p>
+<p><img src="media/16448502020525.jpg" alt=""></p>
+<blockquote>
+<p>支持类似于REST API 形式的处理函数注册方式（消息处理）</p>
+</blockquote>
+<p>Watermill works with high level handler functions, with abstraction level similar to Golang HTTP handlers:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> HandlerFunc <span style="color:#008000;font-weight:bold">func</span>(msg <span style="color:#666">*</span>Message) ([]<span style="color:#666">*</span>Message, <span style="color:#b00040">error</span>)
+
+</code></pre></div><blockquote>
+<p>提供钩子中间件注册</p>
+</blockquote>
+<p>Nowadays, any modern service must support metrics and distributed tracing. When building a message-driven application, often we need a posion queue or retrying support. Also, sometimes we need to limit the rate of message processing with throttling. Every one of these functionalities can be implemented by a middleware：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">type</span> HandlerMiddleware <span style="color:#008000;font-weight:bold">func</span>(h HandlerFunc) HandlerFunc
+
+</code></pre></div><h2 id="事件驱动型系统开发">事件驱动型系统开发</h2>
+<p>The basic idea behind event-driven applications stays always the same: listen for incoming messages and react to them. Watermill supports this behavior for multiple publishers and subscribers. （事件驱动系统的典型处理模式是监听和接收消息，然后响应）</p>
+<p>The core part of Watermill is the Message. It is as important as http.Request is for the http package. Most Watermill features use this struct in some way. （核心对象是消息，类似于http.Request）</p>
+<p>Even though PubSub libraries come with complex features, for Watermill it’s enough to implement two interfaces to start working with them: the Publisher and Subscriber. (核心接口是发布、订阅）</p>
+<h3 id="订阅消息">订阅消息</h3>
+<p>Subscribe expects a topic name and returns a channel of incoming messages. What topic exactly means depends on the PubSub implementation. 订阅消息，需要提供一个主题名，返回一个通道。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+    pubSub <span style="color:#666">:=</span> gochannel.<span style="color:#00f">NewGoChannel</span>(
+        gochannel.Config{},
+        watermill.<span style="color:#00f">NewStdLogger</span>(<span style="color:#008000;font-weight:bold">false</span>, <span style="color:#008000;font-weight:bold">false</span>),
+    )
+
+    messages, err <span style="color:#666">:=</span> pubSub.<span style="color:#00f">Subscribe</span>(context.<span style="color:#00f">Background</span>(), <span style="color:#ba2121">&#34;example.topic&#34;</span>)
+    <span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+        <span style="color:#008000">panic</span>(err)
+    }
+
+    <span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">process</span>(messages)
+    
+}
+
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">process</span>(messages <span style="color:#666">&lt;-</span><span style="color:#008000;font-weight:bold">chan</span> <span style="color:#666">*</span>message.Message) {
+    <span style="color:#008000;font-weight:bold">for</span> msg <span style="color:#666">:=</span> <span style="color:#008000;font-weight:bold">range</span> messages {
+        log.<span style="color:#00f">Printf</span>(<span style="color:#ba2121">&#34;received message: %s, payload: %s&#34;</span>, msg.UUID, <span style="color:#008000">string</span>(msg.Payload))
+
+        <span style="color:#408080;font-style:italic">// we need to Acknowledge that we received and processed the message,
+</span><span style="color:#408080;font-style:italic"></span>       <span style="color:#408080;font-style:italic">// otherwise, it will be resent over and over again.
+</span><span style="color:#408080;font-style:italic"></span>       msg.<span style="color:#00f">Ack</span>()
+    }
+}
+
+</code></pre></div><h3 id="发布消息">发布消息</h3>
+<p>消息类型采用 []byte，可以序列化任何类型的数据。
+Watermill doesn’t enforce any message format. NewMessage expects a slice of bytes as the payload. You can use strings, JSON, protobuf, Avro, gob, or anything else that serializes to []byte. The message UUID is optional, but recommended, as it helps with debugging.</p>
+<p>发布消息，需要提供一个主题名，和若干消息。
+Publish expects a topic and one or more Messages to be published.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">publishMessages</span>(publisher message.Publisher) {
+    <span style="color:#008000;font-weight:bold">for</span> {
+        msg <span style="color:#666">:=</span> message.<span style="color:#00f">NewMessage</span>(watermill.<span style="color:#00f">NewUUID</span>(), []<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;Hello, world!&#34;</span>))
+
+        <span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> publisher.<span style="color:#00f">Publish</span>(<span style="color:#ba2121">&#34;example.topic&#34;</span>, msg); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+            <span style="color:#008000">panic</span>(err)
+        }
+
+        time.<span style="color:#00f">Sleep</span>(time.Second)
+    }
+}
+
+</code></pre></div><h3 id="消息路由转发">消息路由（转发）</h3>
+<blockquote>
+<p>路由配置</p>
+</blockquote>
+<p>Start with configuring the router, adding plugins and middlewares. 路由配置，需要完成对路由类型的设置，添加插件、消息中间件，绑定消息处理函数等工作。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#008000;font-weight:bold">func</span> <span style="color:#00f">main</span>() {
+    
+    <span style="color:#408080;font-style:italic">// 创建路由器
+</span><span style="color:#408080;font-style:italic"></span>    router, err <span style="color:#666">:=</span> message.<span style="color:#00f">NewRouter</span>(message.RouterConfig{}, logger)
+    <span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+        <span style="color:#008000">panic</span>(err)
+    }
+    
+    <span style="color:#408080;font-style:italic">// 开始配置路由器
+</span><span style="color:#408080;font-style:italic"></span>    
+    <span style="color:#408080;font-style:italic">// 添加插件
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// SignalsHandler will gracefully shutdown Router when SIGTERM is received.
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// You can also close the router by just calling `r.Close()`.
+</span><span style="color:#408080;font-style:italic"></span>    router.<span style="color:#00f">AddPlugin</span>(plugin.SignalsHandler)
+
+    <span style="color:#408080;font-style:italic">// 添加内置消息中间件（钩子）
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// Router level middleware are executed for every message sent to the router
+</span><span style="color:#408080;font-style:italic"></span>    router.<span style="color:#00f">AddMiddleware</span>(
+        <span style="color:#408080;font-style:italic">// CorrelationID will copy the correlation id from the incoming 
+</span><span style="color:#408080;font-style:italic"></span>        <span style="color:#408080;font-style:italic">// message&#39;s metadata to the produced messages
+</span><span style="color:#408080;font-style:italic"></span>        middleware.CorrelationID,
+
+        <span style="color:#408080;font-style:italic">// The handler function is retried if it returns an error.
+</span><span style="color:#408080;font-style:italic"></span>        <span style="color:#408080;font-style:italic">// After MaxRetries, the message is Nacked and it&#39;s up to the PubSub to resend it.
+</span><span style="color:#408080;font-style:italic"></span>        middleware.Retry{
+            MaxRetries:      <span style="color:#666">3</span>,
+            InitialInterval: time.Millisecond <span style="color:#666">*</span> <span style="color:#666">100</span>,
+            Logger:          logger,
+        }.Middleware,
+
+        <span style="color:#408080;font-style:italic">// Recoverer handles panics from handlers.
+</span><span style="color:#408080;font-style:italic"></span>        <span style="color:#408080;font-style:italic">// In this case, it passes them as errors to the Retry middleware.
+</span><span style="color:#408080;font-style:italic"></span>        middleware.Recoverer,
+    )
+
+    <span style="color:#408080;font-style:italic">// For simplicity, we are using the gochannel Pub/Sub here,
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// You can replace it with any Pub/Sub implementation, it will work the same.
+</span><span style="color:#408080;font-style:italic"></span>    pubSub <span style="color:#666">:=</span> gochannel.<span style="color:#00f">NewGoChannel</span>(gochannel.Config{}, logger)
+
+    <span style="color:#408080;font-style:italic">// Producing some incoming messages in background
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#008000;font-weight:bold">go</span> <span style="color:#00f">publishMessages</span>(pubSub)
+
+    <span style="color:#408080;font-style:italic">// 绑定复杂消息处理函数
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// AddHandler returns a handler which can be used to add handler level middleware
+</span><span style="color:#408080;font-style:italic"></span>    handler <span style="color:#666">:=</span> router.<span style="color:#00f">AddHandler</span>(
+        <span style="color:#ba2121">&#34;struct_handler&#34;</span>,          <span style="color:#408080;font-style:italic">// handler name, must be unique
+</span><span style="color:#408080;font-style:italic"></span>       <span style="color:#ba2121">&#34;incoming_messages_topic&#34;</span>, <span style="color:#408080;font-style:italic">// topic from which we will read events
+</span><span style="color:#408080;font-style:italic"></span>       pubSub,
+        <span style="color:#ba2121">&#34;outgoing_messages_topic&#34;</span>, <span style="color:#408080;font-style:italic">// topic to which we will publish events
+</span><span style="color:#408080;font-style:italic"></span>       pubSub,
+        structHandler{}.Handler,
+    )
+
+    <span style="color:#408080;font-style:italic">// 绑定简单消息处理函数
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// Handler level middleware is only executed for a specific handler
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// Such middleware can be added the same way the router level ones
+</span><span style="color:#408080;font-style:italic"></span>    handler.<span style="color:#00f">AddMiddleware</span>(<span style="color:#008000;font-weight:bold">func</span>(h message.HandlerFunc) message.HandlerFunc {
+        <span style="color:#008000;font-weight:bold">return</span> <span style="color:#008000;font-weight:bold">func</span>(message <span style="color:#666">*</span>message.Message) ([]<span style="color:#666">*</span>message.Message, <span style="color:#b00040">error</span>) {
+            log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;executing handler specific middleware for &#34;</span>, message.UUID)
+
+            <span style="color:#008000;font-weight:bold">return</span> <span style="color:#00f">h</span>(message)
+        }
+    })
+
+    <span style="color:#408080;font-style:italic">// 添加调试用途类型的内置消息处理函数
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// just for debug, we are printing all messages received on `incoming_messages_topic`
+</span><span style="color:#408080;font-style:italic"></span>    router.<span style="color:#00f">AddNoPublisherHandler</span>(
+        <span style="color:#ba2121">&#34;print_incoming_messages&#34;</span>,
+        <span style="color:#ba2121">&#34;incoming_messages_topic&#34;</span>,
+        pubSub,
+        printMessages,
+    )
+
+    <span style="color:#408080;font-style:italic">// just for debug, we are printing all events sent to `outgoing_messages_topic`
+</span><span style="color:#408080;font-style:italic"></span>    router.<span style="color:#00f">AddNoPublisherHandler</span>(
+        <span style="color:#ba2121">&#34;print_outgoing_messages&#34;</span>,
+        <span style="color:#ba2121">&#34;outgoing_messages_topic&#34;</span>,
+        pubSub,
+        printMessages,
+    )
+
+    <span style="color:#408080;font-style:italic">// 启动路由器
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// Now that all handlers are registered, we&#39;re running the Router.
+</span><span style="color:#408080;font-style:italic"></span>    <span style="color:#408080;font-style:italic">// Run is blocking while the router is running.
+</span><span style="color:#408080;font-style:italic"></span>    ctx <span style="color:#666">:=</span> context.<span style="color:#00f">Background</span>()
+    <span style="color:#008000;font-weight:bold">if</span> err <span style="color:#666">:=</span> router.<span style="color:#00f">Run</span>(ctx); err <span style="color:#666">!=</span> <span style="color:#008000;font-weight:bold">nil</span> {
+        <span style="color:#008000">panic</span>(err)
+    }
+}
+
+
+</code></pre></div><blockquote>
+<p>消息处理函数（Handler）</p>
+</blockquote>
+<p>支持以下三种类型的消息处理函数（handler）：</p>
+<ul>
+<li>内置处理器</li>
+<li>简单处理器，该处理函数几乎没有任何外部依赖，是一个简单函数</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">func</span>(msg <span style="color:#666">*</span>message.Message) ([]<span style="color:#666">*</span>message.Message, <span style="color:#b00040">error</span>)
+</code></pre></div><ul>
+<li>复杂处理器，该处理函数是一个方法函数，接收者可以包含外部依赖（例如数据库、日志等等）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#008000;font-weight:bold">type</span> structHandler <span style="color:#008000;font-weight:bold">struct</span> {
+    <span style="color:#408080;font-style:italic">// we can add some dependencies here
+</span><span style="color:#408080;font-style:italic"></span>}
+
+<span style="color:#008000;font-weight:bold">func</span> (s structHandler) <span style="color:#00f">Handler</span>(msg <span style="color:#666">*</span>message.Message) ([]<span style="color:#666">*</span>message.Message, <span style="color:#b00040">error</span>) {
+    log.<span style="color:#00f">Println</span>(<span style="color:#ba2121">&#34;structHandler received message&#34;</span>, msg.UUID)
+
+    msg = message.<span style="color:#00f">NewMessage</span>(watermill.<span style="color:#00f">NewUUID</span>(), []<span style="color:#008000">byte</span>(<span style="color:#ba2121">&#34;message produced by structHandler&#34;</span>))
+    <span style="color:#008000;font-weight:bold">return</span> message.Messages{msg}, <span style="color:#008000;font-weight:bold">nil</span>
+}
+</code></pre></div><h2 id="前端实时接收技术">前端实时接收技术</h2>
+<h3 id="常用技术">常用技术</h3>
+<ul>
+<li>同步轮训技术：Vue-polling</li>
+<li>异步单向接收：Vue-sse</li>
+<li>异步双向接收：Websocket</li>
+</ul>
+<p><img src="media/16449115603099.jpg" alt=""></p>
+<h3 id="sse-技术">SSE 技术</h3>
+<p>Server-Sent Events 技术：SSE is a server push technology enabling a client to receive automatic updates from a server via an HTTP connection, and describes how servers can initiate data transmission towards clients once an initial client connection has been established. They are commonly used to send message updates or continuous data streams to a browser client and designed to enhance native, cross-browser streaming through a JavaScript API called EventSource, through which a client requests a particular URL in order to receive an event stream. The Server-Sent Events EventSource API is standardized as part of HTML5[1] by the W3C.</p>
+<p>SSE 又称 EventSource 技术。</p>
+<h3 id="websocket-vs-sse">Websocket vs. SSE</h3>
+<p>WebSockets are bilateral (you don’t always need bi-direction), not HTTP (some proxy won’t let it go through) “protocol” without standards for error handling. SSE is mono-directional (server to client), HTTP protocol with error handling standards. Both improve hugely latency for users. From a server load point of view, we achieved better performance with SSE than WebSockets (a higher number of final users handled by one server).</p>
+<p>SSE的优势：</p>
+<ul>
+<li>WS是双向技术, SSE是单向技术</li>
+<li>WS没有标准的出错处理方案，SSE遵循HTTP出错处理</li>
+<li>WS在某些情况下会被阻断，但是HTTP一般均可通过</li>
+<li>两种技术都关注优化前端响应，但是从服务器负载角度来说，SSE性能优于WS技术</li>
+</ul>
+<p>SSE的不足：</p>
+<ul>
+<li>WS支持二进制数据，而SSE仅仅支持文本数据（UFT8)</li>
+<li>One problem is that all browsers do not support EventSource</li>
+</ul>
+<h3 id="sse-使用方法">SSE 使用方法</h3>
+<p>A client subscribes to a “stream” from a server and the server will send messages (“event-stream”) to the client until the server or the client closes the stream. It is up to the server to decide when and what to send the client, for instance, as soon as data changes.</p>
+<blockquote>
+<p>SSE(event-stream)协议</p>
+</blockquote>
+<p>The event-stream is a simple stream of text data which must be encoded using UTF-8. Messages in the event-stream are separated by a pair of newline characters (“\n”).  You can easily send JSON format without breaking the synthax!  The following field names are defined in the specification:</p>
+<ul>
+<li>
+<p>Event: The event’s type. It will allow you to use the same stream for different content. A client can decide to “listen” only to one type of event or to interpret differently each event type.</p>
+</li>
+<li>
+<p>Data: The data field for the message. You can put consecutive “data” lines.</p>
+</li>
+<li>
+<p>ID: ID for each event-stream. Useful to track lost messages.</p>
+</li>
+<li>
+<p>Retry: The time to use before the browser attempts a new connection after all connections are lost (in milliseconds). The reconnection process is automatic and is set by default at three seconds. During this reconnection process, the last ID received will be automatically sent to the server… something you would need to code by yourself with WebSockets or Long-polling.</p>
+</li>
+<li>
+<p>“:” : if you start the message by a colon, it will be considered as comments</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a0a000">id:</span> 12345
+<span style="color:#a0a000">event:</span> newuser
+<span style="color:#a0a000">data:</span> <span style="color:#666">{</span> <span style="">\</span>n
+<span style="color:#a0a000">data:</span> first name <span style="color:#666">:</span> John<span style="color:#666">,</span> <span style="">\</span>n
+<span style="color:#a0a000">data:</span> last name <span style="color:#666">:</span> Doe <span style="">\</span>n
+<span style="color:#a0a000">data:</span> <span style="color:#666">}</span><span style="">\</span>n<span style="">\</span>n
+</code></pre></div><blockquote>
+<p>前端处理</p>
+</blockquote>
+<ul>
+<li>检查浏览器是否支持SSE</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">if</span>(<span style="color:#008000;font-weight:bold">typeof</span>(EventSource) <span style="color:#666">!==</span> <span style="">“</span><span style="color:#008000;font-weight:bold">undefined</span><span style="">”</span>) {
+      <span style="color:#408080;font-style:italic">//Yeah … SSE supported!
+</span><span style="color:#408080;font-style:italic"></span>} <span style="color:#008000;font-weight:bold">else</span> {
+      <span style="color:#408080;font-style:italic">//wtf! Let’s make a polyfill
+</span><span style="color:#408080;font-style:italic"></span>}
+</code></pre></div><p>If the browser does not support SSE, you can use a Polyfill. （https://github.com/amvtek/EventSource）</p>
+<ul>
+<li>代码样例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">var</span> source <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">new</span> EventSource(<span style="color:#ba2121">&#39;/stats&#39;</span>);
+
+source.onopen <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">function</span>() {
+   connectionOpen(<span style="color:#008000;font-weight:bold">true</span>);
+};
+source.onerror <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">function</span> () {
+  connectionOpen(<span style="color:#008000;font-weight:bold">false</span>);
+};
+
+source.addEventListener(<span style="color:#ba2121">&#39;connections&#39;</span>, updateConnections, <span style="color:#008000;font-weight:bold">false</span>);
+source.addEventListener(<span style="color:#ba2121">&#39;requests&#39;</span>, updateRequests, <span style="color:#008000;font-weight:bold">false</span>);
+source.addEventListener(<span style="color:#ba2121">&#39;uptime&#39;</span>, updateUptime, <span style="color:#008000;font-weight:bold">false</span>);
+
+source.onmessage <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">function</span> (event) {
+  <span style="color:#408080;font-style:italic">// a message without a type was fired
+</span><span style="color:#408080;font-style:italic"></span>};
+</code></pre></div><h2 id="协同计算相关案例学习">协同计算相关案例学习</h2>
+<blockquote>
+<p>前端自动刷新：web application using Server-Sent Events to support real-time refreshing.</p>
+</blockquote>
+<p>请参考博客：https://cloud.tencent.com/developer/article/1829154</p>
+<p><img src="media/16449098100156.jpg" alt=""></p>
+<h2 id="总结">总结</h2>
+<p>后端消息分发技术选型思路是，优先采用Watermill构建消息接口，然后优先考虑GoChannel作为进程内部消息通信、优先选择NATS实现进程或微服务之间的消息通信，同时提供统一的面向前端推送的服务端口。前端消息接收技术选型思路是，需要根据不同场景分别处理，1）简单状态监测（尤其是部分单个模块页面的数据采集，例如某一个处理的进度检查），优先考虑轮训技术；2）社交聊天及其非文本数据推送场景，优先选择Websocket技术；3）数据页面实时刷新或协作实时同步更新，优先选择SSE，浏览器不支持的场景替换为WS。前端优先选择SuperVuex作为数据缓存。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://github.com/ThreeDotsLabs/watermill/">https://github.com/ThreeDotsLabs/watermill/</a></li>
+<li><a href="https://threedots.tech/post/introducing-watermill/">https://threedots.tech/post/introducing-watermill/</a></li>
+<li><a href="https://github.com/AlexCuse/watermill-jetstream">https://github.com/AlexCuse/watermill-jetstream</a></li>
+<li><a href="https://github.com/ThreeDotsLabs/watermill/tree/master/_examples/real-world-examples/server-sent-events">https://github.com/ThreeDotsLabs/watermill/tree/master/_examples/real-world-examples/server-sent-events</a></li>
+<li><a href="https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events">https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events</a></li>
+<li><a href="https://blog.axway.com/api-streaming/server-sent-events">https://blog.axway.com/api-streaming/server-sent-events</a></li>
+<li><a href="https://medium.com/js-dojo/integrating-server-sent-events-with-vuex-9de7c0dfb3f3">https://medium.com/js-dojo/integrating-server-sent-events-with-vuex-9de7c0dfb3f3</a></li>
+<li><a href="https://github.com/tserkov/vue-sse">https://github.com/tserkov/vue-sse</a></li>
+<li><a href="https://github.com/amvtek/EventSource">https://github.com/amvtek/EventSource</a></li>
+<li><a href="https://juejin.cn/post/7009079180482576420">https://juejin.cn/post/7009079180482576420</a></li>
+<li><a href="https://www.jianshu.com/p/3e2fe67e1f64">https://www.jianshu.com/p/3e2fe67e1f64</a></li>
+<li><a href="https://github.com/euskadi31/go-sse">https://github.com/euskadi31/go-sse</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1829154">https://cloud.tencent.com/developer/article/1829154</a></li>
+<li><a href="https://blog.csdn.net/HOOKTTG/article/details/72867174">https://blog.csdn.net/HOOKTTG/article/details/72867174</a></li>
+<li><a href="https://www.kancloud.cn/idcpj/python/2037357">https://www.kancloud.cn/idcpj/python/2037357</a></li>
+</ul>
+        </article>
+        
+
+      </main>
+
+      <nav class="end-nav">
+        
+        <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://taodanfang.github.io/posts/agenda-study/" class="card blog-card" rel="bookmark" >
+  
+  <div class="card-img-container">
+    <p class="card-img-overlay">下一篇</p>
+    <picture>
+      
+      
+      
+      <source srcset="https://taodanfang.github.io/posts/agenda-study/media/16449357226394_hubaae0ff782c8b75f8b806f4834290463_54294_400x0_resize_q75_lanczos.jpg 1x, https://taodanfang.github.io/posts/agenda-study/media/16449357226394_hubaae0ff782c8b75f8b806f4834290463_54294_800x0_resize_q75_lanczos.jpg 2x, https://taodanfang.github.io/posts/agenda-study/media/16449357226394_hubaae0ff782c8b75f8b806f4834290463_54294_1200x0_resize_q75_lanczos.jpg 3x">
+      <img src="https://taodanfang.github.io/posts/agenda-study/media/16449357226394_hubaae0ff782c8b75f8b806f4834290463_54294_400x0_resize_q75_lanczos.jpg" class="card-img" >
+    </picture>
+  </div>
+  
+  <article class="card-body">
+    <h2 class="card-title">活动文档（任务进度、状态管理）技术开发实践</h2>
+    <p class="card-text">任务是将静态文档转变成一个活动文档的重要方法，在协作文档系统中，应当将任务作为文档的一个辅助对象，参考操作系统中“进程管理”的相关思想进行设计开发。任务管理侧重于“时间”管理，包括任务启动结束、任务进度、任务状态、事件通知等等内容。本文介绍go语言环境下，基于Gocraft/work技术实现任务管理的相关开发实践方法。
+</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2022-02-13 213:00">Feb 13, 2022</time></p>
+      <p>#task #“schedule&#34; #go </p>
+    </div>
+  </article>
+</a>
+        
+      </nav>
+
+      
+        <script src="https://utteranc.es/client.js"
+        repo="taodanfang/hugoblogtalks"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+        </script>
+      
+
+  </div>
+
+  <footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</footer>
+  
+  <script defer src="https://taodanfang.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://taodanfang.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://taodanfang.github.io/js/core.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+  <script>
+    $('#TableOfContents a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+    $('body > div:nth-child(1) > nav > h3 > a').click(function () {
+      console.log("click");
+    var target = $(this).attr('href');
+    console.log(target);
+    $('html, body').animate({
+       scrollTop: $(target).offset().top - 108 
+     }, 500);
+     return false;
+    });
+  </script>
+  </body>
+</html>

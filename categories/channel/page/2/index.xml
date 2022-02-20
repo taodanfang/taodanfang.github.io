@@ -1,0 +1,20 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>channel - CC-Table： 专注协同计算技术研发</title>
+    <link>https://taodanfang.github.io/categories/channel/</link>
+    <description>Recent content in channel on CC-Table： 专注协同计算技术研发</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 28 Nov 2021 00:50:41 +0800</lastBuildDate>
+    
+        <atom:link href="https://taodanfang.github.io/categories/channel/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Golang 并发开发实践（1）- 入门与规则</title>
+      <link>https://taodanfang.github.io/posts/golang-channel-study-1/</link>
+      <pubDate>Tue, 23 Nov 2021 20:23:42 +0800</pubDate>
+      
+      <guid>https://taodanfang.github.io/posts/golang-channel-study-1/</guid>
+      <description>&lt;p&gt;Go语言设计团队的首任负责人Rob Pike对并发编程的一个建议是不要让计算通过共享内存来通讯，而应该让它们通过通讯来共享内存。 通道机制就是这种哲学的一个设计结果。（在Go编程中，我们可以认为一个计算就是一个协程。）&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
